@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Halovision", "Halovision\Halovision.csproj", "{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "LucidScribe.Halovision", "Installer\Lucid Scribe Halovision.vdproj", "{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}"
