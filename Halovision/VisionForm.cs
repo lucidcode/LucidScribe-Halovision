@@ -9,13 +9,14 @@ using System.Xml;
 using System.Threading;
 using AForge.Video.DirectShow;
 using AForge.Video;
-using lucidcode.LucidScribe.Plugin.Halovision.VLC;
 using System.IO.Pipes;
 using Eneter.Messaging.MessagingSystems.MessagingSystemBase;
 using Eneter.Messaging.MessagingSystems.TcpMessagingSystem;
 using Microsoft.VisualBasic;
 using Emgu.CV;
 using Emgu.CV.Structure;
+using LibVLCSharp.Shared;
+using System.IO.MemoryMappedFiles;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
 {
@@ -79,7 +80,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                 if (cmbDevices.Text == "") cmbDevices.Text = videoDevices[deviceId].Name;
 
-                cascadeClassifier = new CascadeClassifier(@"haarcascade.xml");
+                cascadeClassifier = new CascadeClassifier("haarcascade.xml");
 
                 if (cmbDevices.Text == "lucidcode Halovision Device")
                 {
@@ -239,66 +240,79 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
 
         // VLC will read video from the named pipe.
-        private NamedPipeServerStream myVideoPipe;
-        private VlcInstance myVlcInstance;
-        private IDuplexOutputChannel myVideoChannel;
-        VlcMediaPlayer myPlayer;
+        private NamedPipeServerStream videoPipe;
+        private IDuplexOutputChannel videoChannel;
+        MediaPlayer player;
+        LibVLC libvlc;
 
         private void ConnectHalovisionDevice()
         {
-            myVlcInstance = new VlcInstance("");
-
-            // Use TCP messaging.
-            // You can try to use UDP or WebSockets too.
-            myVideoChannel = new TcpMessagingSystemFactory()
-                //myVideoChannel = new UdpMessagingSystemFactory()
-                // Note: Provide address of your service here.
-                .CreateDuplexOutputChannel("tcp://" + txtDeviceIP.Text + ":8093/");
-            myVideoChannel.ResponseMessageReceived += OnResponseMessageReceived;
-
-            // Use unique name for the pipe.
-            string aVideoPipeName = Guid.NewGuid().ToString();
-
-            // Open pipe that will be read by VLC.
-            myVideoPipe = new NamedPipeServerStream(@"\" + aVideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 32764);
-            ManualResetEvent aVlcConnectedPipe = new ManualResetEvent(false);
-            ThreadPool.QueueUserWorkItem(x =>
+            try
             {
-                myVideoPipe.WaitForConnection();
+                LibVLCSharp.Shared.Core.Initialize();
+                libvlc = new LibVLC(enableDebugLogs: true, "--rtsp-tcp");
+                //libvlc = new LibVLC(enableDebugLogs: true);
 
-                // Indicate VLC has connected the pipe.
-                aVlcConnectedPipe.Set();
-            });
+                // Use TCP messaging.
+                // You can try to use UDP or WebSockets too.
+                videoChannel = new TcpMessagingSystemFactory()
+                    //myVideoChannel = new UdpMessagingSystemFactory()
+                    // Note: Provide address of your service here.
+                    .CreateDuplexOutputChannel("tcp://" + txtDeviceIP.Text + ":8093/");
+                videoChannel.ResponseMessageReceived += OnResponseMessageReceived;
 
-            // VLC connects the pipe and starts playing.
-            using (VlcMedia aMedia = new VlcMedia(myVlcInstance, @"stream://\\\.\pipe\" + aVideoPipeName))
-            {
-                // Setup VLC so that it can process raw h264 data (i.e. not in mp4 container)
-                aMedia.AddOption(":demux=H264");
+                // Use unique name for the pipe.
+                string aVideoPipeName = Guid.NewGuid().ToString();
 
-                myPlayer = new VlcMediaPlayer(aMedia);
-                myPlayer.Drawable = pbDisplay.Handle; // VideoWindow.Child.Handle;
+                // Open pipe that will be read by VLC.
+                videoPipe = new NamedPipeServerStream(@"\" + aVideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 32764);
+                ManualResetEvent aVlcConnectedPipe = new ManualResetEvent(false);
+                ThreadPool.QueueUserWorkItem(x =>
+                {
+                    videoPipe.WaitForConnection();
 
-                // Note: This will connect the pipe and read the video.
-                myPlayer.Play();
+                    // Indicate VLC has connected the pipe.
+                    aVlcConnectedPipe.Set();
+                });
+
+                // VLC connects the pipe and starts playing.
+                //using (Media aMedia = new Media(libvlc, @"stream/h264://\\\.\pipe\" + aVideoPipeName))
+                using (Media aMedia = new Media(libvlc, @"stream://\\\.\pipe\" + aVideoPipeName, FromType.FromLocation))
+                {
+                    // Setup VLC so that it can process raw h264 data (i.e. not in mp4 container)
+                    aMedia.AddOption(":demux=H264");
+                    
+                    player = new MediaPlayer(aMedia);
+
+                    //player.SetVideoCallbacks(Lock, null, Display);
+
+                    player.Hwnd = pbDisplay.Handle;
+
+                    // Note: This will connect the pipe and read the video.
+                    player.Play();
+                }
+
+                // Wait until VLC connects the pipe so that it is ready to receive the stream.
+                if (!aVlcConnectedPipe.WaitOne(5000))
+                {
+                    throw new TimeoutException($"VLC did not open connection with {txtDeviceIP.Text}.");
+                }
+
+                // Open connection with service running on Raspberry.
+                videoChannel.OpenConnection();
             }
-
-            // Wait until VLC connects the pipe so that it is ready to receive the stream.
-            if (!aVlcConnectedPipe.WaitOne(5000))
+            catch (Exception ex)
             {
-                throw new TimeoutException("VLC did not open connection with the pipe.");
+                MessageBox.Show(ex.Message, "LucidScribe.InitializePlugin()", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            // Open connection with service running on Raspberry.
-            myVideoChannel.OpenConnection();
         }
 
         public void DisconnectHalovisionHeadband()
         {
             try
             {
-                myVideoChannel.CloseConnection();
-                myVideoPipe.Close();
+                videoChannel.CloseConnection();
+                videoPipe.Close();
             }
             catch (Exception ex)
             {
@@ -310,7 +324,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             byte[] aVideoData = (byte[])e.Message;
 
             // Forward received data to the named pipe so that VLC can process it.
-            myVideoPipe.Write(aVideoData, 0, aVideoData.Length);
+            videoPipe.Write(aVideoData, 0, aVideoData.Length);
         }
 
         Image previousImage = null;
@@ -319,24 +333,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int dwRop);
         public Bitmap CaptureControl(IntPtr handle, int width, int height)
         {
-            Bitmap controlBmp;
-            using (Graphics g1 = Graphics.FromHwnd(handle))
+            var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            using (Graphics graphics = Graphics.FromImage(bmp))
             {
-                controlBmp = new Bitmap(width, height, g1);
-                using (Graphics g2 = Graphics.FromImage(controlBmp))
-                {
-                    g2.CopyFromScreen(this.Location.X + 26, this.Location.Y + 71, 0, 0, pbDisplay.Size);
-
-                    IntPtr dc1 = g1.GetHdc();
-                    IntPtr dc2 = g2.GetHdc();
-
-                    BitBlt(dc2, 0, 0, width, height, dc1, 0, 0, 13369376);
-                    g1.ReleaseHdc(dc1);
-                    g2.ReleaseHdc(dc2);
-                }
+                graphics.CopyFromScreen(this.Location.X + 26, this.Location.Y + 71, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
             }
-
-            return controlBmp;
+            return bmp;
         }
 
         private void CreateDirectories()
@@ -367,25 +369,34 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
         }
 
+        Boolean processing;
         private void tmrDiff_Tick(object sender, EventArgs e)
         {
+            if (processing)
+            {
+                return;
+            }
+
+            processing = true;
+
             try
             {
-                pbDisplay.Image = CaptureControl(pbDisplay.Handle, pbDisplay.Width, pbDisplay.Height);
+                var bmp = CaptureControl(pbDisplay.Handle, pbDisplay.Width, pbDisplay.Height);
+                pbDisplay.Image = bmp;
 
                 if (pbDisplay.Image != null)
                 {
                     if (previousImage == null)
                     {
-                        previousImage = pbDisplay.Image;
+                        previousImage = (Image)pbDisplay.Image.Clone();
                     }
 
                     if (DetectFace)
                     {
                         using (Bitmap bitmap = new Bitmap(pbDisplay.Image))
                         {
-                            Emgu.CV.Image<Bgr, byte> imageFrame = new Emgu.CV.Image<Bgr, byte>(bitmap);
-                            Image<Gray, Byte> grayFrame = imageFrame.Convert<Gray, Byte>();
+                            Image<Bgr, byte> imageFrame = bitmap.ToImage<Bgr, byte>(); ;
+                            Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
                             var detectedFaces = cascadeClassifier.DetectMultiScale(grayFrame);
 
                             foreach (var face in detectedFaces)
@@ -416,7 +427,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     {
                         feedChanged = true;
                     }
-
+                    
                     previousImage = pbDisplay.Image;
                     Value = diff;
 
@@ -522,6 +533,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             catch (Exception ex)
             {
             }
+            processing = false;
         }
         List<int> m_arrHistory = new List<int>();
 
