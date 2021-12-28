@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using lucidcode.LucidScribe.Plugin.Halovision;
+using System;
 using System.Windows.Forms;
 
-namespace TestProject
+namespace HalovisionMonitor
 {
     static class Program
     {
@@ -15,7 +14,7 @@ namespace TestProject
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new VisionForm());
         }
     }
 }

@@ -16,7 +16,6 @@ using Microsoft.VisualBasic;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using LibVLCSharp.Shared;
-using System.IO.MemoryMappedFiles;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
 {
@@ -26,28 +25,28 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public int vREM = 0;
         private string m_strPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\lucidcode\\Lucid Scribe\\";
 
-        [DllImport("avicap32.dll")]
-        protected static extern bool capGetDriverDescriptionA(short wDriverIndex, [MarshalAs(UnmanagedType.VBByRefStr)]ref String lpszName, int cbName, [MarshalAs(UnmanagedType.VBByRefStr)] ref String lpszVer, int cbVer);
-
-        [DllImport("gdi32.dll")]
-        protected static extern bool BitBlt(IntPtr hdc, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, uint dwRop);
-
         public delegate void ReconnectHanlder();
         public event ReconnectHanlder Reconnect;
 
-        private Boolean loaded = false;
+        private bool loaded = false;
         private int PixelThreshold = 20;
         private int PixelsInARow = 2;
         private int FrameThreshold = 960;
         private int IgnorePercentage = 16;
         private int Sensitivity = 5;
-        private Boolean TCMP = false;
-        private Boolean RecordVideo = false;
-        private Boolean feedChanged = true;
+        private int PixelSize = 4;
+        private bool TCMP = false;
+        private bool RecordVideo = false;
+        private bool feedChanged = true;
         private VideoCaptureDevice videoSource;
-        private Boolean DetectFace = false;
+        private bool DetectFace = false;
         private Rectangle lastFaceRegion;
-        CascadeClassifier cascadeClassifier;
+        private CascadeClassifier cascadeClassifier;
+
+        private bool processing = false;
+        private Bitmap currentBitmap = null;
+        private PictureBox pictureBoxCurrent = new PictureBox();
+        private Bitmap previousBitmap = null;
 
         public VisionForm()
         {
@@ -63,11 +62,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 // enumerate video devices
                 FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
                 cmbDevices.Items.Clear();
-                cmbDevices.Items.Add("lucidcode Halovision Device");
                 foreach (FilterInfo filterInfo in videoDevices)
                 {
                     cmbDevices.Items.Add(filterInfo.Name);
                 }
+                cmbDevices.Items.Add("lucidcode Halovision Device");
 
                 LoadSettings();
                 loadingDevices = false;
@@ -125,11 +124,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
         }
 
-        private void video_NewFrame(object sender,
-            NewFrameEventArgs eventArgs)
+        private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            Bitmap bitmap = (Bitmap)eventArgs.Frame.Clone();
-            pbDisplay.Image = bitmap;
+            Bitmap videoBitmap = (Bitmap)eventArgs.Frame.Clone();
+            if (pbDisplay.Image != null)
+            {
+                pbDisplay.Image.Dispose();
+            }
+            pbDisplay.Image = videoBitmap;
         }
 
         private void LoadSettings()
@@ -249,23 +251,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             try
             {
-                LibVLCSharp.Shared.Core.Initialize();
-                libvlc = new LibVLC(enableDebugLogs: true, "--rtsp-tcp");
-                //libvlc = new LibVLC(enableDebugLogs: true);
+                Core.Initialize();
+                libvlc = new LibVLC(enableDebugLogs: false, "--rtsp-tcp");
 
                 // Use TCP messaging.
-                // You can try to use UDP or WebSockets too.
-                videoChannel = new TcpMessagingSystemFactory()
-                    //myVideoChannel = new UdpMessagingSystemFactory()
-                    // Note: Provide address of your service here.
-                    .CreateDuplexOutputChannel("tcp://" + txtDeviceIP.Text + ":8093/");
+                videoChannel = new TcpMessagingSystemFactory().CreateDuplexOutputChannel("tcp://" + txtDeviceIP.Text + ":8093/");
                 videoChannel.ResponseMessageReceived += OnResponseMessageReceived;
 
                 // Use unique name for the pipe.
                 string aVideoPipeName = Guid.NewGuid().ToString();
 
                 // Open pipe that will be read by VLC.
-                videoPipe = new NamedPipeServerStream(@"\" + aVideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 32764);
+                videoPipe = new NamedPipeServerStream(@"\" + aVideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 65528);
                 ManualResetEvent aVlcConnectedPipe = new ManualResetEvent(false);
                 ThreadPool.QueueUserWorkItem(x =>
                 {
@@ -276,16 +273,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 });
 
                 // VLC connects the pipe and starts playing.
-                //using (Media aMedia = new Media(libvlc, @"stream/h264://\\\.\pipe\" + aVideoPipeName))
                 using (Media aMedia = new Media(libvlc, @"stream://\\\.\pipe\" + aVideoPipeName, FromType.FromLocation))
                 {
-                    // Setup VLC so that it can process raw h264 data (i.e. not in mp4 container)
+                    // Setup VLC so that it can process raw h264 data
                     aMedia.AddOption(":demux=H264");
-                    
+
                     player = new MediaPlayer(aMedia);
-
-                    //player.SetVideoCallbacks(Lock, null, Display);
-
                     player.Hwnd = pbDisplay.Handle;
 
                     // Note: This will connect the pipe and read the video.
@@ -324,14 +317,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             byte[] aVideoData = (byte[])e.Message;
 
             // Forward received data to the named pipe so that VLC can process it.
-            videoPipe.Write(aVideoData, 0, aVideoData.Length);
+            videoPipe.WriteAsync(aVideoData, 0, aVideoData.Length);
         }
 
-        Image previousImage = null;
-
-        [DllImport("gdi32.dll")]
-        private static extern bool BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, int nHeight, IntPtr hdcSrc, int nXSrc, int nYSrc, int dwRop);
-        public Bitmap CaptureControl(IntPtr handle, int width, int height)
+        public Bitmap CaptureControl(int width, int height)
         {
             var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             using (Graphics graphics = Graphics.FromImage(bmp))
@@ -368,8 +357,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 Directory.CreateDirectory(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm"));
             }
         }
-
-        Boolean processing;
         private void tmrDiff_Tick(object sender, EventArgs e)
         {
             if (processing)
@@ -381,154 +368,59 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             try
             {
-                var bmp = CaptureControl(pbDisplay.Handle, pbDisplay.Width, pbDisplay.Height);
-                pbDisplay.Image = bmp;
+                int diff = 0;
+                currentBitmap = CaptureControl(pbDisplay.Width, pbDisplay.Height);
 
-                if (pbDisplay.Image != null)
+                if (DetectFace && currentBitmap != null)
                 {
-                    if (previousImage == null)
+                    Image<Bgr, byte> imageFrame = currentBitmap.ToImage<Bgr, byte>(); ;
+                    Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
+                    var detectedFaces = cascadeClassifier.DetectMultiScale(grayFrame);
+
+                    if (detectedFaces.Length > 0)
                     {
-                        previousImage = (Image)pbDisplay.Image.Clone();
-                    }
-
-                    if (DetectFace)
-                    {
-                        using (Bitmap bitmap = new Bitmap(pbDisplay.Image))
-                        {
-                            Image<Bgr, byte> imageFrame = bitmap.ToImage<Bgr, byte>(); ;
-                            Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
-                            var detectedFaces = cascadeClassifier.DetectMultiScale(grayFrame);
-
-                            foreach (var face in detectedFaces)
-                            {
-                                lastFaceRegion = face;
-                            }
-                        }
-                    }
-
-                    int diff = 0;
-                    pbDifference.Image = Difference(previousImage, pbDisplay.Image, out diff);
-
-                    if (RecordVideo)
-                    {
-                        if (feedChanged | diff > 0)
-                        {
-                            CreateDirectories();
-                            String secondFile = m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm") + "\\" + Strings.Format(DateTime.Now, "ss.") + DateTime.Now.Millisecond + ".png";
-                            pbDifference.Image.Save(secondFile, System.Drawing.Imaging.ImageFormat.Png);
-                            if (diff == 0)
-                            {
-                                feedChanged = false;
-                            }
-                        }
-                    }
-
-                    if (diff > 0)
-                    {
-                        feedChanged = true;
-                    }
-                    
-                    previousImage = pbDisplay.Image;
-                    Value = diff;
-
-                    lblTime.Text = DateTime.Now.ToString("yyy-MM-dd hh:mm:ss - ") + Value;
-
-                    bool boolDreaming = false;
-                    if (cmbAlgorithm.Text == "Motion Detector")
-                    {
-                        if (Value >= FrameThreshold)
-                        {
-                            boolDreaming = true;
-                        }
-                    }
-                    else if (cmbAlgorithm.Text == "REM Detector")
-                    {
-                        m_arrHistory.Add(Value);
-                        if (m_arrHistory.Count > 128) { m_arrHistory.RemoveAt(0); }
-
-                        int intBlinks = 0;
-                        bool boolBlinking = false;
-
-                        int intBelow = 0;
-                        int intAbove = 0;
-
-                        foreach (Double dblValue in m_arrHistory)
-                        {
-                            if (dblValue > FrameThreshold)
-                            {
-                                intAbove += 1;
-                                intBelow = 0;
-                            }
-                            else
-                            {
-                                intBelow += 1;
-                                intAbove = 0;
-                            }
-
-                            if (!boolBlinking)
-                            {
-                                if (intAbove >= 2)
-                                {
-                                    boolBlinking = true;
-                                    intBlinks += 1;
-                                    intAbove = 0;
-                                    intBelow = 0;
-                                }
-                            }
-                            else
-                            {
-                                if (intBelow >= 8)
-                                {
-                                    boolBlinking = false;
-                                    intBlinks += 1;
-                                    intBelow = 0;
-                                    intAbove = 0;
-                                }
-                                else
-                                {
-                                    if (intAbove >= 12)
-                                    {
-                                        // reset
-                                        boolBlinking = false;
-                                        intBlinks = 0;
-                                        intBelow = 0;
-                                        intAbove = 0;
-                                    }
-                                }
-                            }
-
-                            if (intBlinks > 10)
-                            {
-                                boolDreaming = true;
-                                break;
-                            }
-
-                            if (intAbove > 12)
-                            { // reset
-                                boolBlinking = false;
-                                intBlinks = 0;
-                                intBelow = 0;
-                                intAbove = 0; ;
-                            }
-                            if (intBelow > 40)
-                            { // reset
-                                boolBlinking = false;
-                                intBlinks = 0;
-                                intBelow = 0;
-                                intAbove = 0; ;
-                            }
-                        }
-                    }
-
-                    if (boolDreaming)
-                    {
-                        vREM = 888;
-                    }
-                    else
-                    {
-                        vREM = 0;
+                        lastFaceRegion = detectedFaces[0];
                     }
                 }
+
+                Difference(ref previousBitmap, ref currentBitmap, out diff);
+
+                if (pbDifference.Image != null)
+                {
+                    pbDifference.Image.Dispose();
+                }
+                pbDifference.Image = currentBitmap;
+
+                previousBitmap = CaptureControl(pbDisplay.Width, pbDisplay.Height);
+
+                if (pictureBoxCurrent.Image != null)
+                {
+                    pictureBoxCurrent.Image.Dispose();
+                }
+                pictureBoxCurrent.Image = previousBitmap;
+
+                if (RecordVideo)
+                {
+                    if (feedChanged | diff > 0)
+                    {
+                        CreateDirectories();
+                        String secondFile = m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm") + "\\" + Strings.Format(DateTime.Now, "ss.") + DateTime.Now.Millisecond + ".png";
+                        pbDifference.Image.Save(secondFile, System.Drawing.Imaging.ImageFormat.Png);
+                        if (diff == 0)
+                        {
+                            feedChanged = false;
+                        }
+                    }
+                }
+
+                if (diff > 0)
+                {
+                    feedChanged = true;
+                }
+
+                Value = diff;
+
+                lblTime.Text = DateTime.Now.ToString("yyy-MM-dd hh:mm:ss - ") + Value;
             }
             catch (Exception ex)
             {
@@ -539,21 +431,19 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         Random random = new Random();
         String effect = "White";
-        private Image Difference(Image image1, Image image2, out int diff)
+        private void Difference(ref Bitmap bitmap1, ref Bitmap bitmap2, out int diff)
         {
-            Bitmap bitmap1 = new Bitmap(image1);
-            BitmapData bmd1 = bitmap1.LockBits(new Rectangle(0, 0, image1.Width, image1.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap1.PixelFormat);
+            diff = 0;
+            if (bitmap1 == null) return;
+            if (bitmap2 == null) return;
 
-            Bitmap bitmap2 = new Bitmap(image2);
-            BitmapData bmd2 = bitmap2.LockBits(new Rectangle(0, 0, image2.Width, image2.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap2.PixelFormat);
-
-            int PixelSize = 4;
-
-            if (image1.Width + image1.Height != image2.Width + image2.Height)
+            if (bitmap1.Width + bitmap1.Height != bitmap2.Width + bitmap2.Height)
             {
-                diff = 0;
-                return image1;
+                return;
             }
+
+            BitmapData bmd1 = bitmap1.LockBits(new Rectangle(0, 0, bitmap1.Width, bitmap1.Height), ImageLockMode.ReadOnly, bitmap1.PixelFormat);
+            BitmapData bmd2 = bitmap2.LockBits(new Rectangle(0, 0, bitmap2.Width, bitmap2.Height), ImageLockMode.ReadOnly, bitmap2.PixelFormat);
 
             int differences = 0;
             int size = bmd2.Height * bmd2.Width;
@@ -692,22 +582,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             bitmap1.UnlockBits(bmd1);
             bitmap2.UnlockBits(bmd2);
 
+            bmd1 = null;
+            bmd2 = null;
+
             diff = differences;
 
             double percentage = (Convert.ToDouble(changedPixels) / Convert.ToDouble(totalPixels)) * 100;
             if (percentage > IgnorePercentage)
             {
                 diff = 0;
-            }
-
-            return bitmap2;
-        }
-
-        private void VisionForm_Resize(object sender, EventArgs e)
-        {
-            if (cmbDevices.Items.Count > 0)
-            {
-                cmbDevices.SelectedIndex = 0;
             }
         }
 

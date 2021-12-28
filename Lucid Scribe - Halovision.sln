@@ -23,6 +23,7 @@ Global
 		{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}.Debug|x86.Build.0 = Debug|Any CPU
 		{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}.Release|Any CPU.ActiveCfg = Release|x86
 		{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}.Release|Any CPU.Build.0 = Release|x86
 		{76A8DCF1-68D4-4766-88BB-03F6E72E0A09}.Release|x64.ActiveCfg = Release|Any CPU
@@ -31,7 +32,6 @@ Global
 		{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}.Debug|x64.ActiveCfg = Debug
 		{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}.Debug|x64.Build.0 = Debug
 		{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}.Debug|x86.ActiveCfg = Debug
-		{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}.Debug|x86.Build.0 = Debug
 		{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}.Release|Any CPU.ActiveCfg = Release
 		{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}.Release|x64.ActiveCfg = Release
 		{6FE9FC48-32C0-49BF-8B35-D51C86AFACC7}.Release|x64.Build.0 = Release
@@ -52,5 +52,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44068927-698C-4048-B7B0-A6B914A78303}
 	EndGlobalSection
 EndGlobal
