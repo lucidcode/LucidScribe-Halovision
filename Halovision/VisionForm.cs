@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Xml;
@@ -21,12 +20,13 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 {
     public partial class VisionForm : Form
     {
-        public int Value = 0;
-        public int vREM = 0;
         private string m_strPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\lucidcode\\Lucid Scribe\\";
 
         public delegate void ReconnectHanlder();
         public event ReconnectHanlder Reconnect;
+
+        public delegate void ValueChangedHandler(int value);
+        public event ValueChangedHandler ValueChanged;
 
         private bool loaded = false;
         private int PixelThreshold = 20;
@@ -116,7 +116,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             if (cmbDevices.Text == "lucidcode Halovision Device")
             {
-                DisconnectHalovisionHeadband();
+                DisconnectHalovisionDevice();
             }
             else
             {
@@ -124,14 +124,19 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
         }
 
+        Bitmap videoBitmap;
         private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
         {
-            Bitmap videoBitmap = (Bitmap)eventArgs.Frame.Clone();
-            if (pbDisplay.Image != null)
+            try
             {
-                pbDisplay.Image.Dispose();
+                if (processing) return;
+                videoBitmap = (Bitmap)eventArgs.Frame.Clone();
             }
-            pbDisplay.Image = videoBitmap;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
         }
 
         private void LoadSettings()
@@ -300,7 +305,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
         }
 
-        public void DisconnectHalovisionHeadband()
+        public void DisconnectHalovisionDevice()
         {
             try
             {
@@ -320,14 +325,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             videoPipe.WriteAsync(aVideoData, 0, aVideoData.Length);
         }
 
-        public Bitmap CaptureControl(int width, int height)
+        public void CaptureControl(ref Bitmap bmp, int width, int height)
         {
-            var bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
             using (Graphics graphics = Graphics.FromImage(bmp))
             {
                 graphics.CopyFromScreen(this.Location.X + 26, this.Location.Y + 71, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                graphics.Dispose();
             }
-            return bmp;
         }
 
         private void CreateDirectories()
@@ -368,12 +373,21 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             try
             {
+                if (cmbDevices.Text != "lucidcode Halovision Device")
+                {
+                    if (pbDisplay.Image != null)
+                    {
+                        pbDisplay.Image.Dispose();
+                    }
+                    pbDisplay.Image = videoBitmap;
+                }
+
                 int diff = 0;
-                currentBitmap = CaptureControl(pbDisplay.Width, pbDisplay.Height);
+                CaptureControl(ref currentBitmap, pbDisplay.Width, pbDisplay.Height);
 
                 if (DetectFace && currentBitmap != null)
                 {
-                    Image<Bgr, byte> imageFrame = currentBitmap.ToImage<Bgr, byte>(); ;
+                    Image<Bgr, byte> imageFrame = new Image<Bgr, Byte>(currentBitmap);
                     Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
                     var detectedFaces = cascadeClassifier.DetectMultiScale(grayFrame);
 
@@ -391,7 +405,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 }
                 pbDifference.Image = currentBitmap;
 
-                previousBitmap = CaptureControl(pbDisplay.Width, pbDisplay.Height);
+               CaptureControl(ref previousBitmap, pbDisplay.Width, pbDisplay.Height);
 
                 if (pictureBoxCurrent.Image != null)
                 {
@@ -401,7 +415,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                 if (RecordVideo)
                 {
-                    if (feedChanged | diff > 0)
+                    if (feedChanged || diff > 0)
                     {
                         CreateDirectories();
                         String secondFile = m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm") + "\\" + Strings.Format(DateTime.Now, "ss.") + DateTime.Now.Millisecond + ".png";
@@ -418,9 +432,13 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     feedChanged = true;
                 }
 
-                Value = diff;
+                //Value = diff;
+                if (ValueChanged != null)
+                {
+                    ValueChanged(diff);
+                }
 
-                lblTime.Text = DateTime.Now.ToString("yyy-MM-dd hh:mm:ss - ") + Value;
+                lblTime.Text = DateTime.Now.ToString("yyy-MM-dd hh:mm:ss - ") + diff;
             }
             catch (Exception ex)
             {
@@ -695,10 +713,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private void VisionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (videoSource != null)
-            {
-                videoSource.Stop();
-            }
+            Disconnect();
         }
 
         private void chkTCMP_CheckedChanged(object sender, EventArgs e)
