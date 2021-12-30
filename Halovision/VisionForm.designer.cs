@@ -45,14 +45,12 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.chkRecordVideo = new System.Windows.Forms.CheckBox();
             this.chkDetectFace = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.cmbIgnorePercentage = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbPixelThreshold = new System.Windows.Forms.ComboBox();
             this.cmbPixelsInARow = new System.Windows.Forms.ComboBox();
-            this.chkRecordVideo = new System.Windows.Forms.CheckBox();
             this.txtDeviceIP = new System.Windows.Forms.TextBox();
             this.lblDeviceIP = new System.Windows.Forms.Label();
             this.chkTCMP = new System.Windows.Forms.CheckBox();
@@ -241,14 +239,12 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.chkRecordVideo);
             this.panel3D3.Controls.Add(this.chkDetectFace);
-            this.panel3D3.Controls.Add(this.textBox1);
-            this.panel3D3.Controls.Add(this.label11);
             this.panel3D3.Controls.Add(this.cmbIgnorePercentage);
             this.panel3D3.Controls.Add(this.label2);
             this.panel3D3.Controls.Add(this.cmbPixelThreshold);
             this.panel3D3.Controls.Add(this.cmbPixelsInARow);
-            this.panel3D3.Controls.Add(this.chkRecordVideo);
             this.panel3D3.Controls.Add(this.txtDeviceIP);
             this.panel3D3.Controls.Add(this.lblDeviceIP);
             this.panel3D3.Controls.Add(this.chkTCMP);
@@ -269,34 +265,25 @@
             this.panel3D3.Size = new System.Drawing.Size(600, 153);
             this.panel3D3.TabIndex = 36;
             // 
+            // chkRecordVideo
+            // 
+            this.chkRecordVideo.Location = new System.Drawing.Point(125, 88);
+            this.chkRecordVideo.Name = "chkRecordVideo";
+            this.chkRecordVideo.Size = new System.Drawing.Size(125, 22);
+            this.chkRecordVideo.TabIndex = 286;
+            this.chkRecordVideo.Text = "Record Video";
+            this.chkRecordVideo.UseVisualStyleBackColor = true;
+            this.chkRecordVideo.CheckedChanged += new System.EventHandler(this.chkRecordVideo_CheckedChanged);
+            // 
             // chkDetectFace
             // 
-            this.chkDetectFace.Location = new System.Drawing.Point(430, 119);
+            this.chkDetectFace.Location = new System.Drawing.Point(6, 88);
             this.chkDetectFace.Name = "chkDetectFace";
-            this.chkDetectFace.Size = new System.Drawing.Size(151, 22);
+            this.chkDetectFace.Size = new System.Drawing.Size(122, 22);
             this.chkDetectFace.TabIndex = 291;
             this.chkDetectFace.Text = "Detect Face";
             this.chkDetectFace.UseVisualStyleBackColor = true;
             this.chkDetectFace.CheckedChanged += new System.EventHandler(this.chkDetectFace_CheckedChanged);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(99, 151);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(154, 21);
-            this.textBox1.TabIndex = 290;
-            this.textBox1.Visible = false;
-            // 
-            // label11
-            // 
-            this.label11.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label11.Location = new System.Drawing.Point(6, 151);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(85, 21);
-            this.label11.TabIndex = 289;
-            this.label11.Text = "Video Data ";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label11.Visible = false;
             // 
             // cmbIgnorePercentage
             // 
@@ -726,21 +713,11 @@
             "30",
             "31",
             "32"});
-            this.cmbPixelsInARow.Location = new System.Drawing.Point(540, 89);
+            this.cmbPixelsInARow.Location = new System.Drawing.Point(540, 88);
             this.cmbPixelsInARow.Name = "cmbPixelsInARow";
             this.cmbPixelsInARow.Size = new System.Drawing.Size(54, 21);
             this.cmbPixelsInARow.TabIndex = 278;
             this.cmbPixelsInARow.SelectedIndexChanged += new System.EventHandler(this.cmbPixelsInARow_SelectedIndexChanged);
-            // 
-            // chkRecordVideo
-            // 
-            this.chkRecordVideo.Location = new System.Drawing.Point(99, 88);
-            this.chkRecordVideo.Name = "chkRecordVideo";
-            this.chkRecordVideo.Size = new System.Drawing.Size(151, 22);
-            this.chkRecordVideo.TabIndex = 286;
-            this.chkRecordVideo.Text = "Record Video";
-            this.chkRecordVideo.UseVisualStyleBackColor = true;
-            this.chkRecordVideo.CheckedChanged += new System.EventHandler(this.chkRecordVideo_CheckedChanged);
             // 
             // txtDeviceIP
             // 
@@ -1225,7 +1202,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label5.Location = new System.Drawing.Point(425, 58);
+            this.label5.Location = new System.Drawing.Point(427, 58);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(104, 21);
             this.label5.TabIndex = 272;
@@ -1347,8 +1324,6 @@
     private System.Windows.Forms.CheckBox chkRecordVideo;
     private System.Windows.Forms.ComboBox cmbIgnorePercentage;
     internal System.Windows.Forms.Label label2;
-    private System.Windows.Forms.TextBox textBox1;
-    internal System.Windows.Forms.Label label11;
     private System.Windows.Forms.CheckBox chkDetectFace;
     }
 }
