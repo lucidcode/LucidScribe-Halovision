@@ -45,6 +45,10 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.tossHalfLifeInput = new System.Windows.Forms.NumericUpDown();
+            this.tossThresholdInput = new System.Windows.Forms.NumericUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.chkRecordVideo = new System.Windows.Forms.CheckBox();
             this.chkDetectFace = new System.Windows.Forms.CheckBox();
             this.cmbIgnorePercentage = new System.Windows.Forms.ComboBox();
@@ -76,6 +80,8 @@
             this.panel3D1.SuspendLayout();
             this.panel3D2.SuspendLayout();
             this.panel3D3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).BeginInit();
             this.panel3D5.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -182,8 +188,7 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -239,6 +244,10 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.tossHalfLifeInput);
+            this.panel3D3.Controls.Add(this.tossThresholdInput);
+            this.panel3D3.Controls.Add(this.label12);
+            this.panel3D3.Controls.Add(this.label11);
             this.panel3D3.Controls.Add(this.chkRecordVideo);
             this.panel3D3.Controls.Add(this.chkDetectFace);
             this.panel3D3.Controls.Add(this.cmbIgnorePercentage);
@@ -262,12 +271,70 @@
             this.panel3D3.Controls.Add(this.cmbDevices);
             this.panel3D3.Location = new System.Drawing.Point(9, 214);
             this.panel3D3.Name = "panel3D3";
-            this.panel3D3.Size = new System.Drawing.Size(600, 153);
+            this.panel3D3.Size = new System.Drawing.Size(600, 181);
             this.panel3D3.TabIndex = 36;
+            // 
+            // tossHalfLifeInput
+            // 
+            this.tossHalfLifeInput.Location = new System.Drawing.Point(540, 111);
+            this.tossHalfLifeInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.tossHalfLifeInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.tossHalfLifeInput.Name = "tossHalfLifeInput";
+            this.tossHalfLifeInput.Size = new System.Drawing.Size(54, 21);
+            this.tossHalfLifeInput.TabIndex = 297;
+            this.tossHalfLifeInput.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.tossHalfLifeInput.ValueChanged += new System.EventHandler(this.tossHalfLife_ValueChanged);
+            // 
+            // tossThresholdInput
+            // 
+            this.tossThresholdInput.Location = new System.Drawing.Point(361, 111);
+            this.tossThresholdInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.tossThresholdInput.Name = "tossThresholdInput";
+            this.tossThresholdInput.Size = new System.Drawing.Size(54, 21);
+            this.tossThresholdInput.TabIndex = 296;
+            this.tossThresholdInput.ValueChanged += new System.EventHandler(this.tossThreshold_ValueChanged);
+            // 
+            // label12
+            // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label12.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label12.Location = new System.Drawing.Point(427, 112);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(122, 21);
+            this.label12.TabIndex = 295;
+            this.label12.Text = "Toss Half-life";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label11.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label11.Location = new System.Drawing.Point(256, 112);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(122, 21);
+            this.label11.TabIndex = 293;
+            this.label11.Text = "Toss Threshold";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkRecordVideo
             // 
-            this.chkRecordVideo.Location = new System.Drawing.Point(125, 88);
+            this.chkRecordVideo.Location = new System.Drawing.Point(99, 111);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(125, 22);
             this.chkRecordVideo.TabIndex = 286;
@@ -277,7 +344,7 @@
             // 
             // chkDetectFace
             // 
-            this.chkDetectFace.Location = new System.Drawing.Point(6, 88);
+            this.chkDetectFace.Location = new System.Drawing.Point(99, 139);
             this.chkDetectFace.Name = "chkDetectFace";
             this.chkDetectFace.Size = new System.Drawing.Size(122, 22);
             this.chkDetectFace.TabIndex = 291;
@@ -391,7 +458,7 @@
             "98",
             "99",
             "100"});
-            this.cmbIgnorePercentage.Location = new System.Drawing.Point(361, 120);
+            this.cmbIgnorePercentage.Location = new System.Drawing.Point(361, 138);
             this.cmbIgnorePercentage.Name = "cmbIgnorePercentage";
             this.cmbIgnorePercentage.Size = new System.Drawing.Size(54, 21);
             this.cmbIgnorePercentage.TabIndex = 287;
@@ -401,7 +468,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label2.Location = new System.Drawing.Point(259, 120);
+            this.label2.Location = new System.Drawing.Point(259, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(104, 21);
             this.label2.TabIndex = 288;
@@ -669,7 +736,7 @@
             "253",
             "254",
             "255"});
-            this.cmbPixelThreshold.Location = new System.Drawing.Point(540, 58);
+            this.cmbPixelThreshold.Location = new System.Drawing.Point(540, 57);
             this.cmbPixelThreshold.Name = "cmbPixelThreshold";
             this.cmbPixelThreshold.Size = new System.Drawing.Size(54, 21);
             this.cmbPixelThreshold.TabIndex = 34;
@@ -713,7 +780,7 @@
             "30",
             "31",
             "32"});
-            this.cmbPixelsInARow.Location = new System.Drawing.Point(540, 88);
+            this.cmbPixelsInARow.Location = new System.Drawing.Point(540, 84);
             this.cmbPixelsInARow.Name = "cmbPixelsInARow";
             this.cmbPixelsInARow.Size = new System.Drawing.Size(54, 21);
             this.cmbPixelsInARow.TabIndex = 278;
@@ -721,23 +788,22 @@
             // 
             // txtDeviceIP
             // 
-            this.txtDeviceIP.Location = new System.Drawing.Point(99, 121);
+            this.txtDeviceIP.Enabled = false;
+            this.txtDeviceIP.Location = new System.Drawing.Point(99, 84);
             this.txtDeviceIP.Name = "txtDeviceIP";
             this.txtDeviceIP.Size = new System.Drawing.Size(154, 21);
             this.txtDeviceIP.TabIndex = 285;
-            this.txtDeviceIP.Visible = false;
             this.txtDeviceIP.TextChanged += new System.EventHandler(this.txtDeviceIP_TextChanged);
             // 
             // lblDeviceIP
             // 
             this.lblDeviceIP.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.lblDeviceIP.Location = new System.Drawing.Point(6, 121);
+            this.lblDeviceIP.Location = new System.Drawing.Point(6, 84);
             this.lblDeviceIP.Name = "lblDeviceIP";
             this.lblDeviceIP.Size = new System.Drawing.Size(85, 21);
             this.lblDeviceIP.TabIndex = 284;
             this.lblDeviceIP.Text = "Device IP";
             this.lblDeviceIP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblDeviceIP.Visible = false;
             // 
             // chkTCMP
             // 
@@ -754,7 +820,7 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label10.Location = new System.Drawing.Point(256, 89);
+            this.label10.Location = new System.Drawing.Point(256, 84);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(100, 21);
             this.label10.TabIndex = 281;
@@ -1022,7 +1088,7 @@
             "253",
             "254",
             "255"});
-            this.cmbSensitivity.Location = new System.Drawing.Point(361, 89);
+            this.cmbSensitivity.Location = new System.Drawing.Point(361, 84);
             this.cmbSensitivity.Name = "cmbSensitivity";
             this.cmbSensitivity.Size = new System.Drawing.Size(54, 21);
             this.cmbSensitivity.TabIndex = 280;
@@ -1032,7 +1098,7 @@
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label9.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label9.Location = new System.Drawing.Point(427, 89);
+            this.label9.Location = new System.Drawing.Point(427, 85);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(122, 21);
             this.label9.TabIndex = 279;
@@ -1079,7 +1145,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label7.Location = new System.Drawing.Point(256, 58);
+            this.label7.Location = new System.Drawing.Point(256, 57);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(107, 21);
             this.label7.TabIndex = 274;
@@ -1192,7 +1258,7 @@
             "980",
             "990",
             "1000"});
-            this.cmbFrameThreshold.Location = new System.Drawing.Point(361, 58);
+            this.cmbFrameThreshold.Location = new System.Drawing.Point(361, 57);
             this.cmbFrameThreshold.Name = "cmbFrameThreshold";
             this.cmbFrameThreshold.Size = new System.Drawing.Size(54, 21);
             this.cmbFrameThreshold.TabIndex = 273;
@@ -1260,7 +1326,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(624, 380);
+            this.ClientSize = new System.Drawing.Size(624, 407);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel3D3);
             this.Font = new System.Drawing.Font("Verdana", 8.25F);
@@ -1281,6 +1347,8 @@
             this.panel3D2.ResumeLayout(false);
             this.panel3D3.ResumeLayout(false);
             this.panel3D3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).EndInit();
             this.panel3D5.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1325,5 +1393,9 @@
     private System.Windows.Forms.ComboBox cmbIgnorePercentage;
     internal System.Windows.Forms.Label label2;
     private System.Windows.Forms.CheckBox chkDetectFace;
+        internal System.Windows.Forms.Label label12;
+        internal System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown tossHalfLifeInput;
+        private System.Windows.Forms.NumericUpDown tossThresholdInput;
     }
 }

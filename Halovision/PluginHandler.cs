@@ -9,9 +9,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         static bool Initialized;
         static bool InitError;
-        static Thread liveThread;
-        static int m_dblValue = 0;
-        static int m_dblREMValue = 0;
+        static int Value = 0;
 
         static VisionForm visionForm;
         public static bool Initialize()
@@ -38,7 +36,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private static void VisionForm_ValueChanged(int value)
         {
-            m_dblValue = value;
+            Value = value;
         }
 
         static void loadVisionForm()
@@ -71,14 +69,29 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
         }
 
-        public static Double GetVision()
+        public static int GetVision()
         {
-            return m_dblValue;
+            return Value;
         }
 
-        public static Double GetREM()
+        public static int GetTossThreshold()
         {
-            return m_dblREMValue;
+            return visionForm.TossThreshold;
+        }
+
+        public static int GetTossHalfLife()
+        {
+            return visionForm.TossHalfLife;
+        }
+
+        public static int GetTossValue()
+        {
+            return visionForm.TossValue;
+        }
+
+        public static void SetTossValue(int value)
+        {
+            visionForm.TossValue = value;
         }
     }
 
@@ -86,8 +99,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
-            private double m_dblValue = 256;
-
             public override string Name
             {
                 get
@@ -130,7 +141,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
-
             public override string Name
             {
                 get
@@ -151,15 +161,21 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 }
             }
 
-            List<int> m_arrHistory = new List<int>();
+            List<int> history = new List<int>();
 
             public override double Value
             {
                 get
                 {
                     // Update the mem list
-                    m_arrHistory.Add(Convert.ToInt32(Device.GetVision()));
-                    if (m_arrHistory.Count > 768) { m_arrHistory.RemoveAt(0); }
+                    if (Device.GetTossValue() > 0)
+                    {
+                        history.Clear();
+                        return 0;
+                    }
+
+                    history.Add(Convert.ToInt32(Device.GetVision()));
+                    if (history.Count > 768) { history.RemoveAt(0); }
 
                     // Check for blinks
                     int intBlinks = 0;
@@ -169,22 +185,22 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     int intAbove = 0;
 
                     bool boolDreaming = false;
-                    for (int i = 0; i < m_arrHistory.Count; i++)
+                    for (int i = 0; i < history.Count; i++)
                     {
-                        Double dblValue = m_arrHistory[i];
+                        Double dblValue = history[i];
 
                         // Check if the last 10 or next 10 were 1000
                         int lastOrNextOver1000 = 0;
                         for (int l = i; l > 0 & l > i - 10; l--)
                         {
-                            if (m_arrHistory[l] > 999)
+                            if (history[l] > 999)
                             {
                                 lastOrNextOver1000++;
                             }
                         }
-                        for (int n = i; n < m_arrHistory.Count & n < i + 10; n++)
+                        for (int n = i; n < history.Count & n < i + 10; n++)
                         {
-                            if (m_arrHistory[n] > 999)
+                            if (history[n] > 999)
                             {
                                 lastOrNextOver1000++;
                             }
@@ -269,6 +285,66 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     if (intBlinks > 10) { intBlinks = 10; }
                     return intBlinks * 100;
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
+    namespace Toss
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            List<int> history = new List<int>();
+
+            public override string Name
+            {
+                get
+                {
+                    return "Toss";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                try
+                {
+                    return Device.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
+                }
+            }
+
+            public override double Value
+            {
+                get
+                {
+                    history.Add(Convert.ToInt32(Device.GetVision()));
+                    if (history.Count > 1000) { history.RemoveAt(0); }
+
+                    int tossValue = 0;
+                    for (int i = 0; i < history.Count; i++)
+                    {
+                        if (history[i] > Device.GetTossThreshold())
+                        {
+                            tossValue = 999;
+                        }
+                        tossValue = tossValue - Device.GetTossHalfLife();
+                    }
+
+                    if (tossValue < 0)
+                    {
+                        tossValue = 0;
+                    }
+
+                    Device.SetTossValue(tossValue);
+                    return tossValue;
                 }
             }
 
