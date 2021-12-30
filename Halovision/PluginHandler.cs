@@ -14,14 +14,13 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         static int m_dblREMValue = 0;
 
         static VisionForm visionForm;
-        public static Boolean Initialize()
+        public static bool Initialize()
         {
             if (!Initialized & !InitError)
             {
                 try
                 {
-                    liveThread = new Thread(new ThreadStart(updateProgress));
-                    liveThread.Start();
+                    loadVisionForm();
                 }
                 catch (Exception ex)
                 {
@@ -36,46 +35,31 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             return true;
         }
-        static void updateProgress()
+
+        private static void VisionForm_ValueChanged(int value)
         {
-            try
-            {
-                visionForm = new VisionForm();
-                visionForm.Reconnect += new VisionForm.ReconnectHanlder(visionForm_Reconnect);
-                visionForm.Show();
-                reconnecting = false;
-
-                while (true)
-                {
-                    if (reconnecting) { break; }
-                    m_dblValue = visionForm.Value;
-                    m_dblREMValue = visionForm.vREM;
-                    Thread.Sleep(100);
-                    Application.DoEvents();
-                }
-            }
-            catch (ThreadAbortException ex)
-            {
-
-            }
+            m_dblValue = value;
         }
 
-        static bool reconnecting = false;
+        static void loadVisionForm()
+        {
+            visionForm = new VisionForm();
+            visionForm.Reconnect += new VisionForm.ReconnectHanlder(visionForm_Reconnect);
+            visionForm.ValueChanged += VisionForm_ValueChanged;
+            visionForm.Show();
+        }
 
         static void visionForm_Reconnect()
         {
             visionForm.Close();
 
-            reconnecting = true;
             Thread.Sleep(128);
             Application.DoEvents();
-            Thread.Sleep(128);
 
-            Thread.Sleep(2048);
+            Thread.Sleep(1024);
             Application.DoEvents();
 
-            liveThread = new Thread(new ThreadStart(updateProgress));
-            liveThread.Start();
+            loadVisionForm();
         }
 
         public static void Dispose()
@@ -84,7 +68,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 visionForm.Disconnect();
                 Initialized = false;
-                reconnecting = true;
             }
         }
 
@@ -239,7 +222,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         }
                         else
                         {
-                            if (intBelow >= 24)
+                            if (intBelow >= 4)
                             {
                                 boolBlinking = false;
                                 intBelow = 0;
