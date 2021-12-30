@@ -94,16 +94,17 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             visionForm.TossValue = value;
         }
     }
-
-    namespace Vision
+    namespace Toss
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
+            List<int> history = new List<int>();
+
             public override string Name
             {
                 get
                 {
-                    return "Halovision";
+                    return "Toss";
                 }
             }
 
@@ -123,10 +124,26 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    double tempValue = Device.GetVision();
-                    if (tempValue > 999) { tempValue = 999; }
-                    if (tempValue < 0) { tempValue = 0; }
-                    return tempValue;
+                    history.Add(Convert.ToInt32(Device.GetVision()));
+                    if (history.Count > 1000) { history.RemoveAt(0); }
+
+                    int tossValue = 0;
+                    for (int i = 0; i < history.Count; i++)
+                    {
+                        if (history[i] > Device.GetTossThreshold())
+                        {
+                            tossValue = 999;
+                        }
+                        tossValue = tossValue - Device.GetTossHalfLife();
+                    }
+
+                    if (tossValue < 0)
+                    {
+                        tossValue = 0;
+                    }
+
+                    Device.SetTossValue(tossValue);
+                    return tossValue;
                 }
             }
 
@@ -295,17 +312,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
     }
 
-    namespace Toss
+    namespace Vision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
-            List<int> history = new List<int>();
-
             public override string Name
             {
                 get
                 {
-                    return "Toss";
+                    return "Halovision";
                 }
             }
 
@@ -325,26 +340,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    history.Add(Convert.ToInt32(Device.GetVision()));
-                    if (history.Count > 1000) { history.RemoveAt(0); }
-
-                    int tossValue = 0;
-                    for (int i = 0; i < history.Count; i++)
-                    {
-                        if (history[i] > Device.GetTossThreshold())
-                        {
-                            tossValue = 999;
-                        }
-                        tossValue = tossValue - Device.GetTossHalfLife();
-                    }
-
-                    if (tossValue < 0)
-                    {
-                        tossValue = 0;
-                    }
-
-                    Device.SetTossValue(tossValue);
-                    return tossValue;
+                    double tempValue = Device.GetVision();
+                    if (tempValue > 999) { tempValue = 999; }
+                    if (tempValue < 0) { tempValue = 0; }
+                    return tempValue;
                 }
             }
 
@@ -354,4 +353,5 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
         }
     }
+
 }
