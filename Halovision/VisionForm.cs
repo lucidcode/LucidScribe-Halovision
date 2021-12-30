@@ -34,6 +34,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private int FrameThreshold = 960;
         private int IgnorePercentage = 16;
         private int Sensitivity = 5;
+
+        public int TossThreshold = 800;
+        public int TossHalfLife = 10;
+        public int TossValue = 0;
+
         private int PixelSize = 4;
         private bool TCMP = false;
         private bool RecordVideo = false;
@@ -152,6 +157,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<PixelsInARow>4</PixelsInARow>";
                 defaultSettings += "<FrameThreshold>960</FrameThreshold>";
                 defaultSettings += "<Sensitivity>0</Sensitivity>";
+                defaultSettings += "<TossThreshold>999</TossThreshold>";
+                defaultSettings += "<TossHalfLife>10</TossHalfLife>";
                 defaultSettings += "<IgnorePercentage>16</IgnorePercentage>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
@@ -200,6 +207,24 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 DetectFace = true;
             }
 
+            if (xmlSettings.DocumentElement.SelectSingleNode("//TossThreshold") != null)
+            {
+                tossThresholdInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//TossThreshold").InnerText);
+            }
+            else
+            {
+                tossThresholdInput.Value = TossThreshold;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//TossHalfLife") != null)
+            {
+                tossHalfLifeInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//TossHalfLife").InnerText);
+            } 
+            else
+            {
+                tossHalfLifeInput.Value = TossHalfLife;
+            }
+
             if (xmlSettings.DocumentElement.SelectSingleNode("//TCMP") != null && xmlSettings.DocumentElement.SelectSingleNode("//TCMP").InnerText == "1")
             {
                 chkTCMP.Checked = true;
@@ -211,13 +236,13 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             if (cmbDevices.Text == "lucidcode Halovision Device")
             {
-                txtDeviceIP.Visible = true;
-                lblDeviceIP.Visible = true;
+                txtDeviceIP.Enabled = true;
+                lblDeviceIP.Enabled = true;
             }
             else
             {
-                txtDeviceIP.Visible = false;
-                lblDeviceIP.Visible = false;
+                txtDeviceIP.Enabled = false;
+                lblDeviceIP.Enabled = false;
             }
 
             if (loadingDevices) { return; }
@@ -614,44 +639,37 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private void cmbAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
             SaveSettings();
         }
 
         private void cmbPixelThreshold_SelectedIndexChanged(object sender, EventArgs e)
         {
             PixelThreshold = Convert.ToInt32(cmbPixelThreshold.Text);
-
-            if (!loaded) { return; }
             SaveSettings();
         }
 
         private void cmbPixelsInARow_SelectedIndexChanged(object sender, EventArgs e)
         {
             PixelsInARow = Convert.ToInt32(cmbPixelsInARow.Text);
-
-            if (!loaded) { return; }
             SaveSettings();
         }
 
         private void cmbFrameThreshold_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
-
             FrameThreshold = Convert.ToInt32(cmbFrameThreshold.Text);
             SaveSettings();
         }
 
         private void cmbSensitivity_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
-
             Sensitivity = Convert.ToInt32(cmbSensitivity.Text);
             SaveSettings();
         }
 
         private void SaveSettings()
         {
+            if (!loaded) return;
+
             String defaultSettings = "<LucidScribeData>";
             defaultSettings += "<Plugin>";
             defaultSettings += "<Algorithm>" + cmbAlgorithm.Text + "</Algorithm>";
@@ -661,6 +679,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             defaultSettings += "<PixelsInARow>" + cmbPixelsInARow.Text + "</PixelsInARow>";
             defaultSettings += "<FrameThreshold>" + cmbFrameThreshold.Text + "</FrameThreshold>";
             defaultSettings += "<Sensitivity>" + cmbSensitivity.Text + "</Sensitivity>";
+            defaultSettings += "<TossThreshold>" + tossThresholdInput.Value + "</TossThreshold>";
+            defaultSettings += "<TossHalfLife>" + tossHalfLifeInput.Value + "</TossHalfLife>";
             defaultSettings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
             if (chkTCMP.Checked)
@@ -718,39 +738,42 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private void chkTCMP_CheckedChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
-
             TCMP = chkTCMP.Checked;
             SaveSettings();
         }
 
         private void txtDeviceIP_TextChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
             SaveSettings();
         }
 
         private void chkRecordVideo_CheckedChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
-
             RecordVideo = chkRecordVideo.Checked;
             SaveSettings();
         }
 
         private void cmbIgnorePercentage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
-
             IgnorePercentage = Convert.ToInt32(cmbIgnorePercentage.Text);
             SaveSettings();
         }
 
         private void chkDetectFace_CheckedChanged(object sender, EventArgs e)
         {
-            if (!loaded) { return; }
-
             DetectFace = chkDetectFace.Checked;
+            SaveSettings();
+        }
+
+        private void tossThreshold_ValueChanged(object sender, EventArgs e)
+        {
+            TossThreshold = (int)tossThresholdInput.Value;
+            SaveSettings();
+        }
+
+        private void tossHalfLife_ValueChanged(object sender, EventArgs e)
+        {
+            TossHalfLife = (int)tossHalfLifeInput.Value;
             SaveSettings();
         }
     }
