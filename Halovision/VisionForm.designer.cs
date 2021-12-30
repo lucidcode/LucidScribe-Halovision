@@ -55,8 +55,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cmbPixelThreshold = new System.Windows.Forms.ComboBox();
             this.cmbPixelsInARow = new System.Windows.Forms.ComboBox();
-            this.txtDeviceIP = new System.Windows.Forms.TextBox();
-            this.lblDeviceIP = new System.Windows.Forms.Label();
+            this.txtDeviceURL = new System.Windows.Forms.TextBox();
+            this.lblDeviceURL = new System.Windows.Forms.Label();
             this.chkTCMP = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.cmbSensitivity = new System.Windows.Forms.ComboBox();
@@ -254,8 +254,8 @@
             this.panel3D3.Controls.Add(this.label2);
             this.panel3D3.Controls.Add(this.cmbPixelThreshold);
             this.panel3D3.Controls.Add(this.cmbPixelsInARow);
-            this.panel3D3.Controls.Add(this.txtDeviceIP);
-            this.panel3D3.Controls.Add(this.lblDeviceIP);
+            this.panel3D3.Controls.Add(this.txtDeviceURL);
+            this.panel3D3.Controls.Add(this.lblDeviceURL);
             this.panel3D3.Controls.Add(this.chkTCMP);
             this.panel3D3.Controls.Add(this.label10);
             this.panel3D3.Controls.Add(this.cmbSensitivity);
@@ -786,24 +786,24 @@
             this.cmbPixelsInARow.TabIndex = 278;
             this.cmbPixelsInARow.SelectedIndexChanged += new System.EventHandler(this.cmbPixelsInARow_SelectedIndexChanged);
             // 
-            // txtDeviceIP
+            // txtDeviceURL
             // 
-            this.txtDeviceIP.Enabled = false;
-            this.txtDeviceIP.Location = new System.Drawing.Point(99, 84);
-            this.txtDeviceIP.Name = "txtDeviceIP";
-            this.txtDeviceIP.Size = new System.Drawing.Size(154, 21);
-            this.txtDeviceIP.TabIndex = 285;
-            this.txtDeviceIP.TextChanged += new System.EventHandler(this.txtDeviceIP_TextChanged);
+            this.txtDeviceURL.Enabled = false;
+            this.txtDeviceURL.Location = new System.Drawing.Point(99, 84);
+            this.txtDeviceURL.Name = "txtDeviceURL";
+            this.txtDeviceURL.Size = new System.Drawing.Size(154, 21);
+            this.txtDeviceURL.TabIndex = 285;
+            this.txtDeviceURL.TextChanged += new System.EventHandler(this.txtDeviceURL_TextChanged);
             // 
             // lblDeviceIP
             // 
-            this.lblDeviceIP.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.lblDeviceIP.Location = new System.Drawing.Point(6, 84);
-            this.lblDeviceIP.Name = "lblDeviceIP";
-            this.lblDeviceIP.Size = new System.Drawing.Size(85, 21);
-            this.lblDeviceIP.TabIndex = 284;
-            this.lblDeviceIP.Text = "Device IP";
-            this.lblDeviceIP.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblDeviceURL.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.lblDeviceURL.Location = new System.Drawing.Point(6, 84);
+            this.lblDeviceURL.Name = "lblDeviceIP";
+            this.lblDeviceURL.Size = new System.Drawing.Size(85, 21);
+            this.lblDeviceURL.TabIndex = 284;
+            this.lblDeviceURL.Text = "Device URL";
+            this.lblDeviceURL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkTCMP
             // 
@@ -1387,8 +1387,8 @@
     internal lucidcode.Controls.Panel3D panel3D2;
     internal System.Windows.Forms.Label lblTime;
     private System.Windows.Forms.CheckBox chkTCMP;
-    private System.Windows.Forms.TextBox txtDeviceIP;
-    internal System.Windows.Forms.Label lblDeviceIP;
+    private System.Windows.Forms.TextBox txtDeviceURL;
+    internal System.Windows.Forms.Label lblDeviceURL;
     private System.Windows.Forms.CheckBox chkRecordVideo;
     private System.Windows.Forms.ComboBox cmbIgnorePercentage;
     internal System.Windows.Forms.Label label2;
