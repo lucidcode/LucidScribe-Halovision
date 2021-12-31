@@ -93,9 +93,19 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             visionForm.TossValue = value;
         }
+
+        public static int GetEyeMoveMin()
+        {
+            return visionForm.EyeMoveMin;
+        }
+
+        public static int GetEyeMoveMax()
+        {
+            return visionForm.EyeMoveMax;
+        }
     }
 
-    namespace Vision
+    namespace EyeMin
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
@@ -103,7 +113,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    return "Halovision";
+                    return "Eye Move Min";
                 }
             }
 
@@ -123,10 +133,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    double tempValue = Device.GetVision();
-                    if (tempValue > 999) { tempValue = 999; }
-                    if (tempValue < 0) { tempValue = 0; }
-                    return tempValue;
+                    return Device.GetEyeMoveMin();
                 }
             }
 
@@ -137,7 +144,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
     }
 
-    namespace REM
+    namespace EyeMax
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
@@ -145,7 +152,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    return "vREM";
+                    return "Eye Move Max";
                 }
             }
 
@@ -161,130 +168,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 }
             }
 
-            List<int> history = new List<int>();
-
             public override double Value
             {
                 get
                 {
-                    // Update the mem list
-                    if (Device.GetTossValue() > 0)
-                    {
-                        history.Clear();
-                        return 0;
-                    }
-
-                    history.Add(Convert.ToInt32(Device.GetVision()));
-                    if (history.Count > 768) { history.RemoveAt(0); }
-
-                    // Check for blinks
-                    int intBlinks = 0;
-                    bool boolBlinking = false;
-
-                    int intBelow = 0;
-                    int intAbove = 0;
-
-                    bool boolDreaming = false;
-                    for (int i = 0; i < history.Count; i++)
-                    {
-                        Double dblValue = history[i];
-
-                        // Check if the last 10 or next 10 were 1000
-                        int lastOrNextOver1000 = 0;
-                        for (int l = i; l > 0 & l > i - 10; l--)
-                        {
-                            if (history[l] > 999)
-                            {
-                                lastOrNextOver1000++;
-                            }
-                        }
-                        for (int n = i; n < history.Count & n < i + 10; n++)
-                        {
-                            if (history[n] > 999)
-                            {
-                                lastOrNextOver1000++;
-                            }
-                        }
-
-                        if (lastOrNextOver1000 == 0)
-                        {
-                            if (dblValue > 8 & dblValue < 999)
-                            {
-                                intAbove += 1;
-                                intBelow = 0;
-                            }
-                            else
-                            {
-                                intBelow += 1;
-                                intAbove = 0;
-                            }
-                        }
-
-                        if (lastOrNextOver1000 > 10)
-                        {
-                            intBlinks = 0;
-                        }
-
-
-                        if (!boolBlinking)
-                        {
-                            if (intAbove >= 1)
-                            {
-                                boolBlinking = true;
-                                intBlinks += 1;
-                                intAbove = 0;
-                                intBelow = 0;
-                            }
-                        }
-                        else
-                        {
-                            if (intBelow >= 4)
-                            {
-                                boolBlinking = false;
-                                intBelow = 0;
-                                intAbove = 0;
-                            }
-                            else
-                            {
-                                if (intAbove >= 12)
-                                {
-                                    // reset
-                                    boolBlinking = false;
-                                    intBlinks = 0;
-                                    intBelow = 0;
-                                    intAbove = 0;
-                                }
-                            }
-                        }
-
-                        if (intBlinks > 8)
-                        {
-                            boolDreaming = true;
-                            break;
-                        }
-
-                        if (intAbove > 12)
-                        { // reset
-                            boolBlinking = false;
-                            MessageBox.Show("2");
-                            intBlinks = 0;
-                            intBelow = 0;
-                            intAbove = 0; ;
-                        }
-                        if (intBelow > 256)
-                        { // reset
-                            boolBlinking = false;
-                            intBlinks = 0;
-                            intBelow = 0;
-                            intAbove = 0; ;
-                        }
-                    }
-
-                    if (boolDreaming)
-                    { return 888; }
-
-                    if (intBlinks > 10) { intBlinks = 10; }
-                    return intBlinks * 100;
+                    return Device.GetEyeMoveMax();
                 }
             }
 
@@ -354,4 +242,202 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
         }
     }
+
+    namespace REM
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            public override string Name
+            {
+                get
+                {
+                    return "vREM";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                try
+                {
+                    return Device.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
+                }
+            }
+
+            List<int> history = new List<int>();
+
+            public override double Value
+            {
+                get
+                {
+                    // Update the mem list
+                    if (Device.GetTossValue() > 0)
+                    {
+                        history.Clear();
+                        return 0;
+                    }
+
+                    int eyeMoveMin = Device.GetEyeMoveMin();
+                    int eyeMoveMax = Device.GetEyeMoveMax();
+
+                    history.Add(Convert.ToInt32(Device.GetVision()));
+                    if (history.Count > 768) { history.RemoveAt(0); }
+
+                    // Check for blinks
+                    int intBlinks = 0;
+                    bool boolBlinking = false;
+
+                    int intBelow = 0;
+                    int intAbove = 0;
+
+                    bool boolDreaming = false;
+                    for (int i = 0; i < history.Count; i++)
+                    {
+                        double value = history[i];
+
+                        bool overMax = false;
+                        for (int l = i; l > 0 & l > i - 10; l--)
+                        {
+                            if (history[l] > eyeMoveMax)
+                            {
+                                overMax = true;
+                                break;
+                            }
+                        }
+                        for (int n = i; n < history.Count & n < i + 10; n++)
+                        {
+                            if (history[n] > eyeMoveMax)
+                            {
+                                overMax = true;
+                                break;
+                            }
+                        }
+
+                        if (!overMax)
+                        {
+                            if (value > eyeMoveMin & value < eyeMoveMax)
+                            {
+                                intAbove += 1;
+                                intBelow = 0;
+                            }
+                            else
+                            {
+                                intBelow += 1;
+                                intAbove = 0;
+                            }
+                        }
+
+                        if (!boolBlinking)
+                        {
+                            if (intAbove >= 1)
+                            {
+                                boolBlinking = true;
+                                intBlinks += 1;
+                                intAbove = 0;
+                                intBelow = 0;
+                            }
+                        }
+                        else
+                        {
+                            if (intBelow >= 4)
+                            {
+                                boolBlinking = false;
+                                intBelow = 0;
+                                intAbove = 0;
+                            }
+                            else
+                            {
+                                if (intAbove >= 12)
+                                {
+                                    // reset
+                                    boolBlinking = false;
+                                    intBlinks = 0;
+                                    intBelow = 0;
+                                    intAbove = 0;
+                                }
+                            }
+                        }
+
+                        if (intBlinks > 8)
+                        {
+                            boolDreaming = true;
+                            break;
+                        }
+
+                        if (intAbove > 12)
+                        { // reset
+                            boolBlinking = false;
+                            intBlinks = 0;
+                            intBelow = 0;
+                            intAbove = 0; ;
+                        }
+                        if (intBelow > 256)
+                        { // reset
+                            boolBlinking = false;
+                            intBlinks = 0;
+                            intBelow = 0;
+                            intAbove = 0; ;
+                        }
+                    }
+
+                    if (boolDreaming)
+                    { return 888; }
+
+                    if (intBlinks > 10) { intBlinks = 10; }
+                    return intBlinks * 100;
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
+    namespace Vision
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            public override string Name
+            {
+                get
+                {
+                    return "Halovision";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                try
+                {
+                    return Device.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
+                }
+            }
+
+            public override double Value
+            {
+                get
+                {
+                    double tempValue = Device.GetVision();
+                    if (tempValue > 999) { tempValue = 999; }
+                    if (tempValue < 0) { tempValue = 0; }
+                    return tempValue;
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
 }

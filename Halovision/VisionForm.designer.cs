@@ -71,6 +71,10 @@
             this.panel3D5 = new lucidcode.Controls.Panel3D();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.eyeMoveMaxInput = new System.Windows.Forms.NumericUpDown();
+            this.eyeMoveMinInput = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -83,6 +87,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).BeginInit();
             this.panel3D5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlPlugins
@@ -188,14 +194,15 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.pnlPlugins, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel3D1, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -244,6 +251,10 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.eyeMoveMaxInput);
+            this.panel3D3.Controls.Add(this.eyeMoveMinInput);
+            this.panel3D3.Controls.Add(this.label13);
+            this.panel3D3.Controls.Add(this.label14);
             this.panel3D3.Controls.Add(this.tossHalfLifeInput);
             this.panel3D3.Controls.Add(this.tossThresholdInput);
             this.panel3D3.Controls.Add(this.label12);
@@ -271,12 +282,12 @@
             this.panel3D3.Controls.Add(this.cmbDevices);
             this.panel3D3.Location = new System.Drawing.Point(9, 214);
             this.panel3D3.Name = "panel3D3";
-            this.panel3D3.Size = new System.Drawing.Size(600, 181);
+            this.panel3D3.Size = new System.Drawing.Size(600, 199);
             this.panel3D3.TabIndex = 36;
             // 
             // tossHalfLifeInput
             // 
-            this.tossHalfLifeInput.Location = new System.Drawing.Point(540, 111);
+            this.tossHalfLifeInput.Location = new System.Drawing.Point(540, 138);
             this.tossHalfLifeInput.Maximum = new decimal(new int[] {
             999,
             0,
@@ -291,7 +302,7 @@
             this.tossHalfLifeInput.Size = new System.Drawing.Size(54, 21);
             this.tossHalfLifeInput.TabIndex = 297;
             this.tossHalfLifeInput.Value = new decimal(new int[] {
-            1,
+            10,
             0,
             0,
             0});
@@ -299,7 +310,7 @@
             // 
             // tossThresholdInput
             // 
-            this.tossThresholdInput.Location = new System.Drawing.Point(361, 111);
+            this.tossThresholdInput.Location = new System.Drawing.Point(361, 138);
             this.tossThresholdInput.Maximum = new decimal(new int[] {
             999,
             0,
@@ -308,13 +319,18 @@
             this.tossThresholdInput.Name = "tossThresholdInput";
             this.tossThresholdInput.Size = new System.Drawing.Size(54, 21);
             this.tossThresholdInput.TabIndex = 296;
+            this.tossThresholdInput.Value = new decimal(new int[] {
+            800,
+            0,
+            0,
+            0});
             this.tossThresholdInput.ValueChanged += new System.EventHandler(this.tossThreshold_ValueChanged);
             // 
             // label12
             // 
             this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label12.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label12.Location = new System.Drawing.Point(427, 112);
+            this.label12.Location = new System.Drawing.Point(427, 139);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(122, 21);
             this.label12.TabIndex = 295;
@@ -325,7 +341,7 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label11.Location = new System.Drawing.Point(256, 112);
+            this.label11.Location = new System.Drawing.Point(256, 139);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(122, 21);
             this.label11.TabIndex = 293;
@@ -458,7 +474,7 @@
             "98",
             "99",
             "100"});
-            this.cmbIgnorePercentage.Location = new System.Drawing.Point(361, 138);
+            this.cmbIgnorePercentage.Location = new System.Drawing.Point(361, 165);
             this.cmbIgnorePercentage.Name = "cmbIgnorePercentage";
             this.cmbIgnorePercentage.Size = new System.Drawing.Size(54, 21);
             this.cmbIgnorePercentage.TabIndex = 287;
@@ -468,7 +484,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label2.Location = new System.Drawing.Point(259, 138);
+            this.label2.Location = new System.Drawing.Point(259, 165);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(104, 21);
             this.label2.TabIndex = 288;
@@ -1321,12 +1337,75 @@
             this.label4.Text = "Settings";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // eyeMoveMaxInput
+            // 
+            this.eyeMoveMaxInput.Location = new System.Drawing.Point(540, 111);
+            this.eyeMoveMaxInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.eyeMoveMaxInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.eyeMoveMaxInput.Name = "eyeMoveMaxInput";
+            this.eyeMoveMaxInput.Size = new System.Drawing.Size(54, 21);
+            this.eyeMoveMaxInput.TabIndex = 301;
+            this.eyeMoveMaxInput.Value = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.eyeMoveMaxInput.ValueChanged += new System.EventHandler(this.eyeMoveMaxInput_ValueChanged);
+            // 
+            // eyeMoveMinInput
+            // 
+            this.eyeMoveMinInput.Location = new System.Drawing.Point(361, 111);
+            this.eyeMoveMinInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.eyeMoveMinInput.Name = "eyeMoveMinInput";
+            this.eyeMoveMinInput.Size = new System.Drawing.Size(54, 21);
+            this.eyeMoveMinInput.TabIndex = 300;
+            this.eyeMoveMinInput.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.eyeMoveMinInput.ValueChanged += new System.EventHandler(this.eyeMoveMinInput_ValueChanged);
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label13.Location = new System.Drawing.Point(427, 112);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(122, 21);
+            this.label13.TabIndex = 299;
+            this.label13.Text = "Eye Move Max";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label14.Location = new System.Drawing.Point(256, 112);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(122, 21);
+            this.label14.TabIndex = 298;
+            this.label14.Text = "Eye Move Min";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // VisionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(624, 407);
+            this.ClientSize = new System.Drawing.Size(624, 425);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel3D3);
             this.Font = new System.Drawing.Font("Verdana", 8.25F);
@@ -1350,6 +1429,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).EndInit();
             this.panel3D5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).EndInit();
             this.ResumeLayout(false);
 
     }
@@ -1397,5 +1478,9 @@
         internal System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown tossHalfLifeInput;
         private System.Windows.Forms.NumericUpDown tossThresholdInput;
+        private System.Windows.Forms.NumericUpDown eyeMoveMaxInput;
+        private System.Windows.Forms.NumericUpDown eyeMoveMinInput;
+        internal System.Windows.Forms.Label label13;
+        internal System.Windows.Forms.Label label14;
     }
 }

@@ -39,6 +39,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public int TossHalfLife = 10;
         public int TossValue = 0;
 
+        public int EyeMoveMin = 4;
+        public int EyeMoveMax = 200;
+
         private int PixelSize = 4;
         private bool TCMP = false;
         private bool RecordVideo = false;
@@ -157,8 +160,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<PixelsInARow>4</PixelsInARow>";
                 defaultSettings += "<FrameThreshold>960</FrameThreshold>";
                 defaultSettings += "<Sensitivity>0</Sensitivity>";
-                defaultSettings += "<TossThreshold>999</TossThreshold>";
+                defaultSettings += "<TossThreshold>800</TossThreshold>";
                 defaultSettings += "<TossHalfLife>10</TossHalfLife>";
+                defaultSettings += "<EyeMoveMin>4</EyeMoveMin>";
+                defaultSettings += "<EyeMoveMax>200</EyeMoveMax>";
                 defaultSettings += "<IgnorePercentage>16</IgnorePercentage>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
@@ -223,6 +228,24 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             else
             {
                 tossHalfLifeInput.Value = TossHalfLife;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMin") != null)
+            {
+                eyeMoveMinInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMin").InnerText);
+            } 
+            else
+            {
+                eyeMoveMinInput.Value = EyeMoveMin;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMax") != null)
+            {
+                eyeMoveMaxInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMax").InnerText);
+            } 
+            else
+            {
+                eyeMoveMaxInput.Value = EyeMoveMax;
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//TCMP") != null && xmlSettings.DocumentElement.SelectSingleNode("//TCMP").InnerText == "1")
@@ -696,6 +719,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             defaultSettings += "<Sensitivity>" + cmbSensitivity.Text + "</Sensitivity>";
             defaultSettings += "<TossThreshold>" + tossThresholdInput.Value + "</TossThreshold>";
             defaultSettings += "<TossHalfLife>" + tossHalfLifeInput.Value + "</TossHalfLife>";
+            defaultSettings += "<EyeMoveMin>" + eyeMoveMinInput.Value + "</EyeMoveMin>";
+            defaultSettings += "<EyeMoveMax>" + eyeMoveMaxInput.Value + "</EyeMoveMax>";
             defaultSettings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
             if (chkTCMP.Checked)
@@ -789,6 +814,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void tossHalfLife_ValueChanged(object sender, EventArgs e)
         {
             TossHalfLife = (int)tossHalfLifeInput.Value;
+            SaveSettings();
+        }
+
+        private void eyeMoveMinInput_ValueChanged(object sender, EventArgs e)
+        {
+            EyeMoveMin = (int)eyeMoveMinInput.Value;
+            SaveSettings();
+        }
+
+        private void eyeMoveMaxInput_ValueChanged(object sender, EventArgs e)
+        {
+            EyeMoveMax = (int)eyeMoveMaxInput.Value;
             SaveSettings();
         }
     }
