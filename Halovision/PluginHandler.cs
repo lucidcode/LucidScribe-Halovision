@@ -93,7 +93,96 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             visionForm.TossValue = value;
         }
+
+        public static int GetEyeMoveMin()
+        {
+            return visionForm.EyeMoveMin;
+        }
+
+        public static int GetEyeMoveMax()
+        {
+            return visionForm.EyeMoveMax;
+        }
     }
+
+    namespace EyeMin
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            public override string Name
+            {
+                get
+                {
+                    return "Eye Move Min";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                try
+                {
+                    return Device.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
+                }
+            }
+
+            public override double Value
+            {
+                get
+                {
+                    return Device.GetEyeMoveMin();
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
+    namespace EyeMax
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            public override string Name
+            {
+                get
+                {
+                    return "Eye Move Max";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                try
+                {
+                    return Device.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
+                }
+            }
+
+            public override double Value
+            {
+                get
+                {
+                    return Device.GetEyeMoveMax();
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
     namespace Toss
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
@@ -191,6 +280,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         return 0;
                     }
 
+                    int eyeMoveMin = Device.GetEyeMoveMin();
+                    int eyeMoveMax = Device.GetEyeMoveMax();
+
                     history.Add(Convert.ToInt32(Device.GetVision()));
                     if (history.Count > 768) { history.RemoveAt(0); }
 
@@ -204,28 +296,29 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     bool boolDreaming = false;
                     for (int i = 0; i < history.Count; i++)
                     {
-                        Double dblValue = history[i];
+                        double value = history[i];
 
-                        // Check if the last 10 or next 10 were 1000
-                        int lastOrNextOver1000 = 0;
+                        bool overMax = false;
                         for (int l = i; l > 0 & l > i - 10; l--)
                         {
-                            if (history[l] > 999)
+                            if (history[l] > eyeMoveMax)
                             {
-                                lastOrNextOver1000++;
+                                overMax = true;
+                                break;
                             }
                         }
                         for (int n = i; n < history.Count & n < i + 10; n++)
                         {
-                            if (history[n] > 999)
+                            if (history[n] > eyeMoveMax)
                             {
-                                lastOrNextOver1000++;
+                                overMax = true;
+                                break;
                             }
                         }
 
-                        if (lastOrNextOver1000 == 0)
+                        if (!overMax)
                         {
-                            if (dblValue > 8 & dblValue < 999)
+                            if (value > eyeMoveMin & value < eyeMoveMax)
                             {
                                 intAbove += 1;
                                 intBelow = 0;
@@ -236,12 +329,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                                 intAbove = 0;
                             }
                         }
-
-                        if (lastOrNextOver1000 > 10)
-                        {
-                            intBlinks = 0;
-                        }
-
 
                         if (!boolBlinking)
                         {
@@ -283,7 +370,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         if (intAbove > 12)
                         { // reset
                             boolBlinking = false;
-                            MessageBox.Show("2");
                             intBlinks = 0;
                             intBelow = 0;
                             intAbove = 0; ;
