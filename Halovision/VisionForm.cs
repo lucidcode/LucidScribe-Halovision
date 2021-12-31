@@ -195,9 +195,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 cmbDevices.Text = xmlSettings.DocumentElement.SelectSingleNode("//Camera").InnerText;
             }
 
-            if (xmlSettings.DocumentElement.SelectSingleNode("//DeviceIP") != null)
+            if (xmlSettings.DocumentElement.SelectSingleNode("//DeviceURL") != null)
             {
-                txtDeviceIP.Text = xmlSettings.DocumentElement.SelectSingleNode("//DeviceIP").InnerText;
+                txtDeviceURL.Text = xmlSettings.DocumentElement.SelectSingleNode("//DeviceURL").InnerText;
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//RecordVideo") != null && xmlSettings.DocumentElement.SelectSingleNode("//RecordVideo").InnerText == "1")
@@ -259,13 +259,13 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             if (cmbDevices.Text == "lucidcode Halovision Device")
             {
-                txtDeviceIP.Enabled = true;
-                lblDeviceIP.Enabled = true;
+                txtDeviceURL.Enabled = true;
+                lblDeviceURL.Enabled = true;
             }
             else
             {
-                txtDeviceIP.Enabled = false;
-                lblDeviceIP.Enabled = false;
+                txtDeviceURL.Enabled = false;
+                lblDeviceURL.Enabled = false;
             }
 
             if (loadingDevices) { return; }
@@ -305,10 +305,25 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             try
             {
                 Core.Initialize();
+
+                if (txtDeviceURL.Text.Contains("://"))
+                {
+                    libvlc = new LibVLC(enableDebugLogs: true);
+                    libvlc.SetLogFile(m_strPath + "vlc.log");
+
+                    using (Media media = new Media(libvlc, txtDeviceURL.Text, FromType.FromLocation))
+                    {
+                        player = new MediaPlayer(media);
+                        player.Hwnd = pbDisplay.Handle;
+                        player.Play();
+                    }
+                    return;
+                }
+
                 libvlc = new LibVLC(enableDebugLogs: false, "--rtsp-tcp");
 
                 // Use TCP messaging.
-                videoChannel = new TcpMessagingSystemFactory().CreateDuplexOutputChannel("tcp://" + txtDeviceIP.Text + ":8093/");
+                videoChannel = new TcpMessagingSystemFactory().CreateDuplexOutputChannel("tcp://" + txtDeviceURL.Text + ":8093/");
                 videoChannel.ResponseMessageReceived += OnResponseMessageReceived;
 
                 // Use unique name for the pipe.
@@ -316,22 +331,22 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                 // Open pipe that will be read by VLC.
                 videoPipe = new NamedPipeServerStream(@"\" + aVideoPipeName, PipeDirection.Out, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 65528);
-                ManualResetEvent aVlcConnectedPipe = new ManualResetEvent(false);
+                ManualResetEvent vlcConnectedPipe = new ManualResetEvent(false);
                 ThreadPool.QueueUserWorkItem(x =>
                 {
                     videoPipe.WaitForConnection();
 
                     // Indicate VLC has connected the pipe.
-                    aVlcConnectedPipe.Set();
+                    vlcConnectedPipe.Set();
                 });
 
                 // VLC connects the pipe and starts playing.
-                using (Media aMedia = new Media(libvlc, @"stream://\\\.\pipe\" + aVideoPipeName, FromType.FromLocation))
+                using (Media media = new Media(libvlc, @"stream://\\\.\pipe\" + aVideoPipeName, FromType.FromLocation))
                 {
                     // Setup VLC so that it can process raw h264 data
-                    aMedia.AddOption(":demux=H264");
+                    media.AddOption(":demux=H264");
 
-                    player = new MediaPlayer(aMedia);
+                    player = new MediaPlayer(media);
                     player.Hwnd = pbDisplay.Handle;
 
                     // Note: This will connect the pipe and read the video.
@@ -339,9 +354,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 }
 
                 // Wait until VLC connects the pipe so that it is ready to receive the stream.
-                if (!aVlcConnectedPipe.WaitOne(5000))
+                if (!vlcConnectedPipe.WaitOne(5000))
                 {
-                    throw new TimeoutException($"VLC did not open connection with {txtDeviceIP.Text}.");
+                    throw new TimeoutException($"VLC did not open connection with {txtDeviceURL.Text}.");
                 }
 
                 // Open connection with service running on Raspberry.
@@ -697,7 +712,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             defaultSettings += "<Plugin>";
             defaultSettings += "<Algorithm>" + cmbAlgorithm.Text + "</Algorithm>";
             defaultSettings += "<Camera>" + cmbDevices.Text + "</Camera>";
-            defaultSettings += "<DeviceIP>" + txtDeviceIP.Text + "</DeviceIP>";
+            defaultSettings += "<DeviceURL>" + txtDeviceURL.Text + "</DeviceURL>";
             defaultSettings += "<PixelThreshold>" + cmbPixelThreshold.Text + "</PixelThreshold>";
             defaultSettings += "<PixelsInARow>" + cmbPixelsInARow.Text + "</PixelsInARow>";
             defaultSettings += "<FrameThreshold>" + cmbFrameThreshold.Text + "</FrameThreshold>";
@@ -767,7 +782,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             SaveSettings();
         }
 
-        private void txtDeviceIP_TextChanged(object sender, EventArgs e)
+        private void txtDeviceURL_TextChanged(object sender, EventArgs e)
         {
             SaveSettings();
         }
