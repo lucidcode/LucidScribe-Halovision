@@ -45,6 +45,10 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.eyeMoveMaxInput = new System.Windows.Forms.NumericUpDown();
+            this.eyeMoveMinInput = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.tossHalfLifeInput = new System.Windows.Forms.NumericUpDown();
             this.tossThresholdInput = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
@@ -71,10 +75,6 @@
             this.panel3D5 = new lucidcode.Controls.Panel3D();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.eyeMoveMaxInput = new System.Windows.Forms.NumericUpDown();
-            this.eyeMoveMinInput = new System.Windows.Forms.NumericUpDown();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -84,11 +84,11 @@
             this.panel3D1.SuspendLayout();
             this.panel3D2.SuspendLayout();
             this.panel3D3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).BeginInit();
             this.panel3D5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlPlugins
@@ -284,6 +284,69 @@
             this.panel3D3.Name = "panel3D3";
             this.panel3D3.Size = new System.Drawing.Size(600, 199);
             this.panel3D3.TabIndex = 36;
+            // 
+            // eyeMoveMaxInput
+            // 
+            this.eyeMoveMaxInput.Location = new System.Drawing.Point(540, 111);
+            this.eyeMoveMaxInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.eyeMoveMaxInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.eyeMoveMaxInput.Name = "eyeMoveMaxInput";
+            this.eyeMoveMaxInput.Size = new System.Drawing.Size(54, 21);
+            this.eyeMoveMaxInput.TabIndex = 301;
+            this.eyeMoveMaxInput.Value = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.eyeMoveMaxInput.ValueChanged += new System.EventHandler(this.eyeMoveMaxInput_ValueChanged);
+            // 
+            // eyeMoveMinInput
+            // 
+            this.eyeMoveMinInput.Location = new System.Drawing.Point(361, 111);
+            this.eyeMoveMinInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.eyeMoveMinInput.Name = "eyeMoveMinInput";
+            this.eyeMoveMinInput.Size = new System.Drawing.Size(54, 21);
+            this.eyeMoveMinInput.TabIndex = 300;
+            this.eyeMoveMinInput.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.eyeMoveMinInput.ValueChanged += new System.EventHandler(this.eyeMoveMinInput_ValueChanged);
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label13.Location = new System.Drawing.Point(427, 112);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(122, 21);
+            this.label13.TabIndex = 299;
+            this.label13.Text = "Eye Move Max";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label14.Location = new System.Drawing.Point(256, 112);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(122, 21);
+            this.label14.TabIndex = 298;
+            this.label14.Text = "Eye Move Min";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tossHalfLifeInput
             // 
@@ -811,11 +874,11 @@
             this.txtDeviceURL.TabIndex = 285;
             this.txtDeviceURL.TextChanged += new System.EventHandler(this.txtDeviceURL_TextChanged);
             // 
-            // lblDeviceIP
+            // lblDeviceURL
             // 
             this.lblDeviceURL.ForeColor = System.Drawing.Color.MidnightBlue;
             this.lblDeviceURL.Location = new System.Drawing.Point(6, 84);
-            this.lblDeviceURL.Name = "lblDeviceIP";
+            this.lblDeviceURL.Name = "lblDeviceURL";
             this.lblDeviceURL.Size = new System.Drawing.Size(85, 21);
             this.lblDeviceURL.TabIndex = 284;
             this.lblDeviceURL.Text = "Device URL";
@@ -1337,69 +1400,6 @@
             this.label4.Text = "Settings";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // eyeMoveMaxInput
-            // 
-            this.eyeMoveMaxInput.Location = new System.Drawing.Point(540, 111);
-            this.eyeMoveMaxInput.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.eyeMoveMaxInput.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.eyeMoveMaxInput.Name = "eyeMoveMaxInput";
-            this.eyeMoveMaxInput.Size = new System.Drawing.Size(54, 21);
-            this.eyeMoveMaxInput.TabIndex = 301;
-            this.eyeMoveMaxInput.Value = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            this.eyeMoveMaxInput.ValueChanged += new System.EventHandler(this.eyeMoveMaxInput_ValueChanged);
-            // 
-            // eyeMoveMinInput
-            // 
-            this.eyeMoveMinInput.Location = new System.Drawing.Point(361, 111);
-            this.eyeMoveMinInput.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.eyeMoveMinInput.Name = "eyeMoveMinInput";
-            this.eyeMoveMinInput.Size = new System.Drawing.Size(54, 21);
-            this.eyeMoveMinInput.TabIndex = 300;
-            this.eyeMoveMinInput.Value = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.eyeMoveMinInput.ValueChanged += new System.EventHandler(this.eyeMoveMinInput_ValueChanged);
-            // 
-            // label13
-            // 
-            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label13.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label13.Location = new System.Drawing.Point(427, 112);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(122, 21);
-            this.label13.TabIndex = 299;
-            this.label13.Text = "Eye Move Max";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // label14
-            // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label14.Location = new System.Drawing.Point(256, 112);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(122, 21);
-            this.label14.TabIndex = 298;
-            this.label14.Text = "Eye Move Min";
-            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // VisionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -1426,11 +1426,11 @@
             this.panel3D2.ResumeLayout(false);
             this.panel3D3.ResumeLayout(false);
             this.panel3D3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).EndInit();
             this.panel3D5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).EndInit();
             this.ResumeLayout(false);
 
     }

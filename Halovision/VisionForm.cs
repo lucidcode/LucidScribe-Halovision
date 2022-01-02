@@ -137,13 +137,19 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             try
             {
-                if (processing) return;
-                videoBitmap = (Bitmap)eventArgs.Frame.Clone();
+                Invoke(new Action(() =>
+                {
+                    if (pbDisplay.Image != null)
+                    {
+                        pbDisplay.Image.Dispose();
+                    }
+                    videoBitmap = (Bitmap)eventArgs.Frame.Clone();
+                    pbDisplay.Image = videoBitmap;
+                }));
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-
             }
         }
 
@@ -436,15 +442,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             try
             {
-                if (cmbDevices.Text != "lucidcode Halovision Device")
-                {
-                    if (pbDisplay.Image != null)
-                    {
-                        pbDisplay.Image.Dispose();
-                    }
-                    pbDisplay.Image = videoBitmap;
-                }
-
                 int diff = 0;
                 CaptureControl(ref currentBitmap, pbDisplay.Width, pbDisplay.Height);
 
@@ -557,19 +554,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     for (int x = xStart; x < xEnd; x++)
                     {
-                        int totalpixelDiff = 0;
-
-                        int pixelDiff = row1[x * PixelSize] - row2[x * PixelSize];
-                        if (pixelDiff < 0) { pixelDiff *= -1; }
-                        totalpixelDiff = pixelDiff;
-
-                        pixelDiff = row1[x * PixelSize + 1] - row2[x * PixelSize + 1];
-                        if (pixelDiff < 0) { pixelDiff *= -1; }
-                        totalpixelDiff += pixelDiff;
-
-                        pixelDiff = row1[x * PixelSize + 2] - row2[x * PixelSize + 2];
-                        if (pixelDiff < 0) { pixelDiff *= -1; }
-                        totalpixelDiff += pixelDiff;
+                        int pixelDiff = pixelDiff = Math.Abs(row1[x * PixelSize] - row2[x * PixelSize]);
+                        pixelDiff += Math.Abs(row1[x * PixelSize + 1] - row2[x * PixelSize + 1]);
+                        pixelDiff += Math.Abs(row1[x * PixelSize + 2] - row2[x * PixelSize + 2]);
 
                         if (pixelDiff >= PixelThreshold)
                         {
@@ -594,28 +581,28 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                                 int ran = random.Next(1, 4);
                                 if (ran == 1)
                                 {
-                                    r = r + (totalpixelDiff * 2);
+                                    r = r + (pixelDiff * 2);
                                 }
                                 else if (ran == 2)
                                 {
-                                    g = g + (totalpixelDiff * 2);
+                                    g = g + (pixelDiff * 2);
                                 }
                                 else if (ran == 3)
                                 {
-                                    b = b + (totalpixelDiff * 2);
+                                    b = b + (pixelDiff * 2);
                                 }
                                 else
                                 {
-                                    r = r + (totalpixelDiff * 2);
-                                    g = g + (totalpixelDiff * 2);
-                                    b = b + (totalpixelDiff * 2);
+                                    r = r + (pixelDiff * 2);
+                                    g = g + (pixelDiff * 2);
+                                    b = b + (pixelDiff * 2);
                                 }
                             }
                             else
                             {
-                                r = r + (totalpixelDiff * 2);
-                                g = g + (totalpixelDiff * 2);
-                                b = b + (totalpixelDiff * 2);
+                                r = r + (pixelDiff);
+                                g = g + (pixelDiff);
+                                b = b + (pixelDiff);
                             }
 
                             if (r > 255) r = 255;
