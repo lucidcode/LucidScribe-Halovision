@@ -554,9 +554,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     for (int x = xStart; x < xEnd; x++)
                     {
-                        int pixelDiff = pixelDiff = Math.Abs(row1[x * PixelSize] - row2[x * PixelSize]);
-                        pixelDiff += Math.Abs(row1[x * PixelSize + 1] - row2[x * PixelSize + 1]);
-                        pixelDiff += Math.Abs(row1[x * PixelSize + 2] - row2[x * PixelSize + 2]);
+                        int bDiff = Math.Abs(row1[x * PixelSize] - row2[x * PixelSize]);
+                        int gDiff = Math.Abs(row1[x * PixelSize + 1] - row2[x * PixelSize + 1]);
+                        int rDiff = Math.Abs(row1[x * PixelSize + 2] - row2[x * PixelSize + 2]);
+
+                        int pixelDiff = rDiff + gDiff + bDiff;
 
                         if (pixelDiff >= PixelThreshold)
                         {
