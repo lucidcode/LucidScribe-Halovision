@@ -122,13 +122,20 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         public void Disconnect()
         {
+            tmrDiff.Enabled = false;
+            processing = false;
+
             if (cmbDevices.Text == "lucidcode Halovision Device")
             {
                 DisconnectHalovisionDevice();
             }
             else
             {
-                videoSource.Stop();
+                Thread.Sleep(256);
+                Application.DoEvents();
+                videoSource.NewFrame -= new NewFrameEventHandler(video_NewFrame);
+                videoSource.SignalToStop();
+                videoSource = null;
             }
         }
 
