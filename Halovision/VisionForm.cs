@@ -225,6 +225,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 DetectFace = true;
             }
 
+            if (xmlSettings.DocumentElement.SelectSingleNode("//TopMost") != null && xmlSettings.DocumentElement.SelectSingleNode("//TopMost").InnerText == "0")
+            {
+                chkTopMost.Checked = false;
+                TopMost = false;
+            } else
+            {
+                chkTopMost.Checked = true;
+                TopMost = true;
+            }
+
             if (xmlSettings.DocumentElement.SelectSingleNode("//TossThreshold") != null)
             {
                 tossThresholdInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//TossThreshold").InnerText);
@@ -746,6 +756,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<DetectFace>0</DetectFace>";
             }
 
+            if (chkTopMost.Checked)
+            {
+                defaultSettings += "<TopMost>1</TopMost>";
+            }
+            else
+            {
+                defaultSettings += "<TopMost>0</TopMost>";
+            }
+
             defaultSettings += "</Plugin>";
             defaultSettings += "</LucidScribeData>";
             File.WriteAllText(m_strPath + "Plugins\\Halovision.User.lsd", defaultSettings);
@@ -798,6 +817,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void chkDetectFace_CheckedChanged(object sender, EventArgs e)
         {
             DetectFace = chkDetectFace.Checked;
+            SaveSettings();
+        }
+
+        private void chkTopMost_CheckedChanged(object sender, EventArgs e)
+        {
+            TopMost = chkTopMost.Checked;
             SaveSettings();
         }
 

@@ -45,6 +45,7 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.chkTopMost = new System.Windows.Forms.CheckBox();
             this.eyeMoveMaxInput = new System.Windows.Forms.NumericUpDown();
             this.eyeMoveMinInput = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
@@ -251,6 +252,7 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.chkTopMost);
             this.panel3D3.Controls.Add(this.eyeMoveMaxInput);
             this.panel3D3.Controls.Add(this.eyeMoveMinInput);
             this.panel3D3.Controls.Add(this.label13);
@@ -284,6 +286,18 @@
             this.panel3D3.Name = "panel3D3";
             this.panel3D3.Size = new System.Drawing.Size(600, 199);
             this.panel3D3.TabIndex = 36;
+            // 
+            // chkTopMost
+            // 
+            this.chkTopMost.Checked = true;
+            this.chkTopMost.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkTopMost.Location = new System.Drawing.Point(99, 167);
+            this.chkTopMost.Name = "chkTopMost";
+            this.chkTopMost.Size = new System.Drawing.Size(154, 22);
+            this.chkTopMost.TabIndex = 302;
+            this.chkTopMost.Text = "Top Most Window";
+            this.chkTopMost.UseVisualStyleBackColor = true;
+            this.chkTopMost.CheckedChanged += new System.EventHandler(this.chkTopMost_CheckedChanged);
             // 
             // eyeMoveMaxInput
             // 
@@ -1413,7 +1427,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "VisionForm";
             this.Text = "Halovision";
-            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VisionForm_FormClosing);
             this.Load += new System.EventHandler(this.PortForm_Load);
             this.pnlPlugins.ResumeLayout(false);
@@ -1482,5 +1495,6 @@
         private System.Windows.Forms.NumericUpDown eyeMoveMinInput;
         internal System.Windows.Forms.Label label13;
         internal System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox chkTopMost;
     }
 }
