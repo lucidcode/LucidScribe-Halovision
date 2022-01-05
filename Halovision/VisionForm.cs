@@ -131,9 +131,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             else
             {
+                videoSource.NewFrame -= video_NewFrame;
                 Thread.Sleep(256);
                 Application.DoEvents();
-                videoSource.NewFrame -= new NewFrameEventHandler(video_NewFrame);
                 videoSource.SignalToStop();
                 videoSource = null;
             }
@@ -156,7 +156,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
             }
         }
 
