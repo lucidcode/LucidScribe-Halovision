@@ -64,7 +64,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             if (Initialized)
             {
-                visionForm.Disconnect();
+                visionForm.Close();
                 Initialized = false;
             }
         }
