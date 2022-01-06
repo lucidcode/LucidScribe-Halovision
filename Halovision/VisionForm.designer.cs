@@ -301,6 +301,7 @@
             // 
             // eyeMoveMaxInput
             // 
+            this.eyeMoveMaxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.eyeMoveMaxInput.Location = new System.Drawing.Point(540, 111);
             this.eyeMoveMaxInput.Maximum = new decimal(new int[] {
             999,
@@ -324,6 +325,7 @@
             // 
             // eyeMoveMinInput
             // 
+            this.eyeMoveMinInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.eyeMoveMinInput.Location = new System.Drawing.Point(361, 111);
             this.eyeMoveMinInput.Maximum = new decimal(new int[] {
             999,
@@ -364,6 +366,7 @@
             // 
             // tossHalfLifeInput
             // 
+            this.tossHalfLifeInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tossHalfLifeInput.Location = new System.Drawing.Point(540, 138);
             this.tossHalfLifeInput.Maximum = new decimal(new int[] {
             999,
@@ -387,6 +390,7 @@
             // 
             // tossThresholdInput
             // 
+            this.tossThresholdInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tossThresholdInput.Location = new System.Drawing.Point(361, 138);
             this.tossThresholdInput.Maximum = new decimal(new int[] {
             999,
