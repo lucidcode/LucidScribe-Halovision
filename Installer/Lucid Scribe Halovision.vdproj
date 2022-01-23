@@ -1972,12 +1972,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_080DC0647DC2BF736D48E244A5F02C63"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2731,6 +2725,12 @@
         "OwnerKey" = "8:_25139AF4CD2B1777F73BCA7EDF558D92"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_080DC0647DC2BF736D48E244A5F02C63"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -2828,7 +2828,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729                "
+                "FrameworkVersion" = "8:3.5.30729                 "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -10681,15 +10681,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Lucid Scribe Halovision"
-        "ProductCode" = "8:{AD7CDAC8-3C5B-470B-B792-5623F77D02E1}"
-        "PackageCode" = "8:{540153ED-6267-4B28-9FBD-C55F494F2149}"
+        "ProductCode" = "8:{43EEE9A1-5C2A-49EB-A6F7-904F02D2B8AD}"
+        "PackageCode" = "8:{AB1E8429-7911-48D3-8D4E-84EAE62FE0D0}"
         "UpgradeCode" = "8:{CAAB2187-AD23-435C-A3DB-568744247625}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.1"
+        "ProductVersion" = "8:1.1.2"
         "Manufacturer" = "8:lucidcode"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.lucidcode.com/Contact"
