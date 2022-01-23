@@ -45,6 +45,8 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.idleTicksInput = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
             this.chkTopMost = new System.Windows.Forms.CheckBox();
             this.eyeMoveMaxInput = new System.Windows.Forms.NumericUpDown();
             this.eyeMoveMinInput = new System.Windows.Forms.NumericUpDown();
@@ -85,6 +87,7 @@
             this.panel3D1.SuspendLayout();
             this.panel3D2.SuspendLayout();
             this.panel3D3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).BeginInit();
@@ -252,6 +255,8 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.idleTicksInput);
+            this.panel3D3.Controls.Add(this.label15);
             this.panel3D3.Controls.Add(this.chkTopMost);
             this.panel3D3.Controls.Add(this.eyeMoveMaxInput);
             this.panel3D3.Controls.Add(this.eyeMoveMinInput);
@@ -286,6 +291,36 @@
             this.panel3D3.Name = "panel3D3";
             this.panel3D3.Size = new System.Drawing.Size(600, 199);
             this.panel3D3.TabIndex = 36;
+            // 
+            // idleTicksInput
+            // 
+            this.idleTicksInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.idleTicksInput.Location = new System.Drawing.Point(540, 165);
+            this.idleTicksInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.idleTicksInput.Name = "idleTicksInput";
+            this.idleTicksInput.Size = new System.Drawing.Size(54, 21);
+            this.idleTicksInput.TabIndex = 304;
+            this.idleTicksInput.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.idleTicksInput.ValueChanged += new System.EventHandler(this.idleTicksInput_ValueChanged);
+            // 
+            // label15
+            // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label15.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label15.Location = new System.Drawing.Point(427, 166);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(122, 21);
+            this.label15.TabIndex = 303;
+            this.label15.Text = "Idle Ticks";
+            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkTopMost
             // 
@@ -904,9 +939,9 @@
             // 
             // chkTCMP
             // 
-            this.chkTCMP.Location = new System.Drawing.Point(246, 25);
+            this.chkTCMP.Location = new System.Drawing.Point(9, 167);
             this.chkTCMP.Name = "chkTCMP";
-            this.chkTCMP.Size = new System.Drawing.Size(151, 22);
+            this.chkTCMP.Size = new System.Drawing.Size(84, 22);
             this.chkTCMP.TabIndex = 282;
             this.chkTCMP.Text = "TCMP";
             this.chkTCMP.UseVisualStyleBackColor = true;
@@ -1443,6 +1478,7 @@
             this.panel3D2.ResumeLayout(false);
             this.panel3D3.ResumeLayout(false);
             this.panel3D3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).EndInit();
@@ -1500,5 +1536,7 @@
         internal System.Windows.Forms.Label label13;
         internal System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox chkTopMost;
+        private System.Windows.Forms.NumericUpDown idleTicksInput;
+        internal System.Windows.Forms.Label label15;
     }
 }

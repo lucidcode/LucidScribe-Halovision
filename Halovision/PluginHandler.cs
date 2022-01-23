@@ -103,6 +103,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             return visionForm.EyeMoveMax;
         }
+
+        public static int GetIdleTicks()
+        {
+            return visionForm.IdleTicks;
+        }
     }
 
     namespace EyeMin
@@ -217,13 +222,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (history.Count > 1000) { history.RemoveAt(0); }
 
                     int tossValue = 0;
+                    int tossThreshold = Device.GetTossThreshold();
+                    int tossHalfLife = Device.GetTossHalfLife();
                     for (int i = 0; i < history.Count; i++)
                     {
-                        if (history[i] > Device.GetTossThreshold())
+                        if (history[i] > tossThreshold)
                         {
                             tossValue = 999;
                         }
-                        tossValue = tossValue - Device.GetTossHalfLife();
+                        tossValue = tossValue - tossHalfLife;
                     }
 
                     if (tossValue < 0)
@@ -282,6 +289,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     int eyeMoveMin = Device.GetEyeMoveMin();
                     int eyeMoveMax = Device.GetEyeMoveMax();
+                    int idleTicks = Device.GetIdleTicks();
 
                     history.Add(Convert.ToInt32(Device.GetVision()));
                     if (history.Count > 768) { history.RemoveAt(0); }
@@ -342,7 +350,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         }
                         else
                         {
-                            if (intBelow >= 4)
+                            if (intBelow >= idleTicks)
                             {
                                 boolBlinking = false;
                                 intBelow = 0;

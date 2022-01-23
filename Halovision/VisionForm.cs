@@ -41,6 +41,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         public int EyeMoveMin = 4;
         public int EyeMoveMax = 200;
+        public int IdleTicks = 0;
 
         private int PixelSize = 4;
         private bool TCMP = false;
@@ -176,6 +177,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<TossHalfLife>10</TossHalfLife>";
                 defaultSettings += "<EyeMoveMin>4</EyeMoveMin>";
                 defaultSettings += "<EyeMoveMax>200</EyeMoveMax>";
+                defaultSettings += "<IdleTicks>200</IdleTicks>";
                 defaultSettings += "<IgnorePercentage>16</IgnorePercentage>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
@@ -268,6 +270,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             else
             {
                 eyeMoveMaxInput.Value = EyeMoveMax;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//IdleTicks") != null)
+            {
+                idleTicksInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//IdleTicks").InnerText);
+            } 
+            else
+            {
+                idleTicksInput.Value = IdleTicks;
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//TCMP") != null && xmlSettings.DocumentElement.SelectSingleNode("//TCMP").InnerText == "1")
@@ -726,6 +737,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             defaultSettings += "<TossHalfLife>" + tossHalfLifeInput.Value + "</TossHalfLife>";
             defaultSettings += "<EyeMoveMin>" + eyeMoveMinInput.Value + "</EyeMoveMin>";
             defaultSettings += "<EyeMoveMax>" + eyeMoveMaxInput.Value + "</EyeMoveMax>";
+            defaultSettings += "<IdleTicks>" + idleTicksInput.Value + "</IdleTicks>";
             defaultSettings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
             if (chkTCMP.Checked)
@@ -846,6 +858,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void eyeMoveMaxInput_ValueChanged(object sender, EventArgs e)
         {
             EyeMoveMax = (int)eyeMoveMaxInput.Value;
+            SaveSettings();
+        }
+
+        private void idleTicksInput_ValueChanged(object sender, EventArgs e)
+        {
+            IdleTicks = (int)idleTicksInput.Value;
             SaveSettings();
         }
     }
