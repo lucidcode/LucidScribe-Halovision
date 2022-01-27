@@ -505,8 +505,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (feedChanged || diff > 0)
                     {
                         CreateDirectories();
-                        String secondFile = m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm") + "\\" + Strings.Format(DateTime.Now, "ss.") + DateTime.Now.Millisecond + ".png";
-                        pbDifference.Image.Save(secondFile, System.Drawing.Imaging.ImageFormat.Png);
+                        String secondFile = m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm") + "\\" + Strings.Format(DateTime.Now, "ss.") + DateTime.Now.Millisecond + ".jpg";
+                        pbDifference.Image.Save(secondFile, System.Drawing.Imaging.ImageFormat.Jpeg);
                         if (diff == 0)
                         {
                             feedChanged = false;
