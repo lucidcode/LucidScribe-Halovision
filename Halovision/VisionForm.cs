@@ -41,7 +41,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         public int EyeMoveMin = 4;
         public int EyeMoveMax = 200;
-        public int IdleTicks = 0;
+        public int IdleTicks = 8;
 
         private int PixelSize = 4;
         private bool TCMP = false;
@@ -177,7 +177,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<TossHalfLife>10</TossHalfLife>";
                 defaultSettings += "<EyeMoveMin>4</EyeMoveMin>";
                 defaultSettings += "<EyeMoveMax>200</EyeMoveMax>";
-                defaultSettings += "<IdleTicks>200</IdleTicks>";
+                defaultSettings += "<IdleTicks>8</IdleTicks>";
                 defaultSettings += "<IgnorePercentage>16</IgnorePercentage>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
