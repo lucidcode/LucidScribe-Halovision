@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
@@ -47,9 +46,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private bool RecordVideo = false;
         private bool feedChanged = true;
 
-        private bool TCMP = false;
-        public int DotThreshold = 100;
-        public int DashThreshold = 500;
+        public bool TCMP = false;
+        public int DotThreshold = 200;
+        public int DashThreshold = 600;
 
         private VideoCaptureDevice videoSource;
         private Rectangle[] faceRegions;
@@ -213,11 +212,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<EyeMoveMin>4</EyeMoveMin>";
                 defaultSettings += "<EyeMoveMax>200</EyeMoveMax>";
                 defaultSettings += "<IdleTicks>8</IdleTicks>";
-                defaultSettings += "<IgnorePercentage>16</IgnorePercentage>";
+                defaultSettings += "<IgnorePercentage>100</IgnorePercentage>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
-                defaultSettings += "<DotThreshold>100</DotThreshold>";
-                defaultSettings += "<DashThreshold>500</DashThreshold>";
+                defaultSettings += "<DotThreshold>200</DotThreshold>";
+                defaultSettings += "<DashThreshold>600</DashThreshold>";
                 defaultSettings += "<Classifier>None</Classifier>";
                 defaultSettings += "</Plugin>";
                 defaultSettings += "</LucidScribeData>";

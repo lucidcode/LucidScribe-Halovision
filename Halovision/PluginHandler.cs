@@ -118,6 +118,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             return visionForm.DotThreshold;
         }
+
+        public static bool TCMP
+        {
+            get
+            {
+                return visionForm.TCMP;
+            }
+        }
     }
 
     namespace EyeMin

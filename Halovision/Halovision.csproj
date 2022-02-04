@@ -121,6 +121,9 @@
       <HintPath>Dependencies\lucidcode.LucidScribe.Interface.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="lucidcode.LucidScribe.TCMP">
+      <HintPath>Dependencies\lucidcode.LucidScribe.TCMP.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>
@@ -175,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PluginHandler.cs" />
+    <Compile Include="TCMP.cs" />
     <Compile Include="VisionForm.cs">
       <SubType>Form</SubType>
     </Compile>

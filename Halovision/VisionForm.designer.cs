@@ -322,7 +322,7 @@
             this.dotThresholdInput.Size = new System.Drawing.Size(54, 21);
             this.dotThresholdInput.TabIndex = 310;
             this.dotThresholdInput.Value = new decimal(new int[] {
-            100,
+            200,
             0,
             0,
             0});
@@ -341,7 +341,7 @@
             this.dashThresholdInput.Size = new System.Drawing.Size(54, 21);
             this.dashThresholdInput.TabIndex = 309;
             this.dashThresholdInput.Value = new decimal(new int[] {
-            500,
+            600,
             0,
             0,
             0});
@@ -1032,7 +1032,6 @@
             this.chkTCMP.TabIndex = 282;
             this.chkTCMP.Text = "TCMP";
             this.chkTCMP.UseVisualStyleBackColor = true;
-            this.chkTCMP.Visible = false;
             this.chkTCMP.CheckedChanged += new System.EventHandler(this.chkTCMP_CheckedChanged);
             // 
             // label10
