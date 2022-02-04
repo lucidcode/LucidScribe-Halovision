@@ -183,7 +183,7 @@
             this.cmbDevices.Location = new System.Drawing.Point(99, 30);
             this.cmbDevices.Name = "cmbDevices";
             this.cmbDevices.Size = new System.Drawing.Size(400, 21);
-            this.cmbDevices.TabIndex = 33;
+            this.cmbDevices.TabIndex = 0;
             this.cmbDevices.SelectedIndexChanged += new System.EventHandler(this.cmbDevices_SelectedIndexChanged);
             // 
             // tmrDiff
@@ -311,7 +311,7 @@
             this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 139);
             this.chkCopyFromScreen.Name = "chkCopyFromScreen";
             this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
-            this.chkCopyFromScreen.TabIndex = 312;
+            this.chkCopyFromScreen.TabIndex = 11;
             this.chkCopyFromScreen.Text = "Copy From Screen";
             this.chkCopyFromScreen.UseVisualStyleBackColor = true;
             this.chkCopyFromScreen.CheckedChanged += new System.EventHandler(this.chkCopyFromScreen_CheckedChanged);
@@ -332,7 +332,7 @@
             0});
             this.dotThresholdInput.Name = "dotThresholdInput";
             this.dotThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.dotThresholdInput.TabIndex = 310;
+            this.dotThresholdInput.TabIndex = 19;
             this.dotThresholdInput.Value = new decimal(new int[] {
             200,
             0,
@@ -351,7 +351,7 @@
             0});
             this.dashThresholdInput.Name = "dashThresholdInput";
             this.dashThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.dashThresholdInput.TabIndex = 309;
+            this.dashThresholdInput.TabIndex = 20;
             this.dashThresholdInput.Value = new decimal(new int[] {
             600,
             0,
@@ -400,7 +400,7 @@
             this.cmbClassifier.Location = new System.Drawing.Point(99, 84);
             this.cmbClassifier.Name = "cmbClassifier";
             this.cmbClassifier.Size = new System.Drawing.Size(145, 21);
-            this.cmbClassifier.TabIndex = 305;
+            this.cmbClassifier.TabIndex = 5;
             this.cmbClassifier.SelectedIndexChanged += new System.EventHandler(this.cmbClassifier_SelectedIndexChanged);
             // 
             // idleTicksInput
@@ -416,7 +416,7 @@
             this.idleTicksInput.Size = new System.Drawing.Size(54, 21);
             this.idleTicksInput.TabIndex = 304;
             this.idleTicksInput.Value = new decimal(new int[] {
-            10,
+            16,
             0,
             0,
             0});
@@ -438,7 +438,7 @@
             this.chkTopMost.Location = new System.Drawing.Point(9, 190);
             this.chkTopMost.Name = "chkTopMost";
             this.chkTopMost.Size = new System.Drawing.Size(84, 22);
-            this.chkTopMost.TabIndex = 302;
+            this.chkTopMost.TabIndex = 17;
             this.chkTopMost.Text = "Top Most";
             this.chkTopMost.UseVisualStyleBackColor = true;
             this.chkTopMost.CheckedChanged += new System.EventHandler(this.chkTopMost_CheckedChanged);
@@ -459,7 +459,7 @@
             0});
             this.eyeMoveMaxInput.Name = "eyeMoveMaxInput";
             this.eyeMoveMaxInput.Size = new System.Drawing.Size(54, 21);
-            this.eyeMoveMaxInput.TabIndex = 301;
+            this.eyeMoveMaxInput.TabIndex = 10;
             this.eyeMoveMaxInput.Value = new decimal(new int[] {
             200,
             0,
@@ -478,7 +478,7 @@
             0});
             this.eyeMoveMinInput.Name = "eyeMoveMinInput";
             this.eyeMoveMinInput.Size = new System.Drawing.Size(54, 21);
-            this.eyeMoveMinInput.TabIndex = 300;
+            this.eyeMoveMinInput.TabIndex = 9;
             this.eyeMoveMinInput.Value = new decimal(new int[] {
             4,
             0,
@@ -524,7 +524,7 @@
             0});
             this.tossHalfLifeInput.Name = "tossHalfLifeInput";
             this.tossHalfLifeInput.Size = new System.Drawing.Size(54, 21);
-            this.tossHalfLifeInput.TabIndex = 297;
+            this.tossHalfLifeInput.TabIndex = 13;
             this.tossHalfLifeInput.Value = new decimal(new int[] {
             10,
             0,
@@ -543,7 +543,7 @@
             0});
             this.tossThresholdInput.Name = "tossThresholdInput";
             this.tossThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.tossThresholdInput.TabIndex = 296;
+            this.tossThresholdInput.TabIndex = 12;
             this.tossThresholdInput.Value = new decimal(new int[] {
             800,
             0,
@@ -578,7 +578,7 @@
             this.chkRecordVideo.Location = new System.Drawing.Point(99, 166);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(145, 22);
-            this.chkRecordVideo.TabIndex = 286;
+            this.chkRecordVideo.TabIndex = 14;
             this.chkRecordVideo.Text = "Record Video";
             this.chkRecordVideo.UseVisualStyleBackColor = true;
             this.chkRecordVideo.CheckedChanged += new System.EventHandler(this.chkRecordVideo_CheckedChanged);
@@ -970,7 +970,7 @@
             this.cmbPixelThreshold.Location = new System.Drawing.Point(534, 57);
             this.cmbPixelThreshold.Name = "cmbPixelThreshold";
             this.cmbPixelThreshold.Size = new System.Drawing.Size(54, 21);
-            this.cmbPixelThreshold.TabIndex = 34;
+            this.cmbPixelThreshold.TabIndex = 4;
             this.cmbPixelThreshold.SelectedIndexChanged += new System.EventHandler(this.cmbPixelThreshold_SelectedIndexChanged);
             // 
             // cmbPixelsInARow
@@ -1014,7 +1014,7 @@
             this.cmbPixelsInARow.Location = new System.Drawing.Point(534, 84);
             this.cmbPixelsInARow.Name = "cmbPixelsInARow";
             this.cmbPixelsInARow.Size = new System.Drawing.Size(54, 21);
-            this.cmbPixelsInARow.TabIndex = 278;
+            this.cmbPixelsInARow.TabIndex = 7;
             this.cmbPixelsInARow.SelectedIndexChanged += new System.EventHandler(this.cmbPixelsInARow_SelectedIndexChanged);
             // 
             // txtDeviceURL
@@ -1023,7 +1023,7 @@
             this.txtDeviceURL.Location = new System.Drawing.Point(99, 111);
             this.txtDeviceURL.Name = "txtDeviceURL";
             this.txtDeviceURL.Size = new System.Drawing.Size(145, 21);
-            this.txtDeviceURL.TabIndex = 285;
+            this.txtDeviceURL.TabIndex = 8;
             this.txtDeviceURL.TextChanged += new System.EventHandler(this.txtDeviceURL_TextChanged);
             // 
             // lblDeviceURL
@@ -1041,7 +1041,7 @@
             this.chkTCMP.Location = new System.Drawing.Point(99, 192);
             this.chkTCMP.Name = "chkTCMP";
             this.chkTCMP.Size = new System.Drawing.Size(145, 22);
-            this.chkTCMP.TabIndex = 282;
+            this.chkTCMP.TabIndex = 18;
             this.chkTCMP.Text = "TCMP";
             this.chkTCMP.UseVisualStyleBackColor = true;
             this.chkTCMP.CheckedChanged += new System.EventHandler(this.chkTCMP_CheckedChanged);
@@ -1321,7 +1321,7 @@
             this.cmbSensitivity.Location = new System.Drawing.Point(361, 84);
             this.cmbSensitivity.Name = "cmbSensitivity";
             this.cmbSensitivity.Size = new System.Drawing.Size(54, 21);
-            this.cmbSensitivity.TabIndex = 280;
+            this.cmbSensitivity.TabIndex = 6;
             this.cmbSensitivity.SelectedIndexChanged += new System.EventHandler(this.cmbSensitivity_SelectedIndexChanged);
             // 
             // label9
@@ -1341,7 +1341,7 @@
             this.btnReconnect.Location = new System.Drawing.Point(505, 29);
             this.btnReconnect.Name = "btnReconnect";
             this.btnReconnect.Size = new System.Drawing.Size(83, 23);
-            this.btnReconnect.TabIndex = 277;
+            this.btnReconnect.TabIndex = 1;
             this.btnReconnect.Text = "Connect";
             this.btnReconnect.UseVisualStyleBackColor = true;
             this.btnReconnect.Click += new System.EventHandler(this.btnReconnect_Click);
@@ -1368,7 +1368,7 @@
             this.cmbAlgorithm.Location = new System.Drawing.Point(99, 57);
             this.cmbAlgorithm.Name = "cmbAlgorithm";
             this.cmbAlgorithm.Size = new System.Drawing.Size(145, 21);
-            this.cmbAlgorithm.TabIndex = 275;
+            this.cmbAlgorithm.TabIndex = 2;
             this.cmbAlgorithm.SelectedIndexChanged += new System.EventHandler(this.cmbAlgorithm_SelectedIndexChanged);
             // 
             // label7
@@ -1491,7 +1491,7 @@
             this.cmbFrameThreshold.Location = new System.Drawing.Point(361, 57);
             this.cmbFrameThreshold.Name = "cmbFrameThreshold";
             this.cmbFrameThreshold.Size = new System.Drawing.Size(54, 21);
-            this.cmbFrameThreshold.TabIndex = 273;
+            this.cmbFrameThreshold.TabIndex = 3;
             this.cmbFrameThreshold.SelectedIndexChanged += new System.EventHandler(this.cmbFrameThreshold_SelectedIndexChanged);
             // 
             // label5
