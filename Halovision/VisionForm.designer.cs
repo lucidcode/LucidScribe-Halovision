@@ -45,6 +45,7 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.chkCopyFromScreen = new System.Windows.Forms.CheckBox();
             this.dotThresholdInput = new System.Windows.Forms.NumericUpDown();
             this.dashThresholdInput = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
@@ -262,6 +263,7 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.chkCopyFromScreen);
             this.panel3D3.Controls.Add(this.dotThresholdInput);
             this.panel3D3.Controls.Add(this.dashThresholdInput);
             this.panel3D3.Controls.Add(this.label17);
@@ -303,6 +305,16 @@
             this.panel3D3.Name = "panel3D3";
             this.panel3D3.Size = new System.Drawing.Size(594, 220);
             this.panel3D3.TabIndex = 36;
+            // 
+            // chkCopyFromScreen
+            // 
+            this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 139);
+            this.chkCopyFromScreen.Name = "chkCopyFromScreen";
+            this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
+            this.chkCopyFromScreen.TabIndex = 312;
+            this.chkCopyFromScreen.Text = "Copy From Screen";
+            this.chkCopyFromScreen.UseVisualStyleBackColor = true;
+            this.chkCopyFromScreen.CheckedChanged += new System.EventHandler(this.chkCopyFromScreen_CheckedChanged);
             // 
             // dotThresholdInput
             // 
@@ -423,9 +435,9 @@
             // 
             // chkTopMost
             // 
-            this.chkTopMost.Location = new System.Drawing.Point(99, 139);
+            this.chkTopMost.Location = new System.Drawing.Point(9, 190);
             this.chkTopMost.Name = "chkTopMost";
-            this.chkTopMost.Size = new System.Drawing.Size(145, 22);
+            this.chkTopMost.Size = new System.Drawing.Size(84, 22);
             this.chkTopMost.TabIndex = 302;
             this.chkTopMost.Text = "Top Most";
             this.chkTopMost.UseVisualStyleBackColor = true;
@@ -563,7 +575,7 @@
             // 
             // chkRecordVideo
             // 
-            this.chkRecordVideo.Location = new System.Drawing.Point(99, 167);
+            this.chkRecordVideo.Location = new System.Drawing.Point(99, 166);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(145, 22);
             this.chkRecordVideo.TabIndex = 286;
@@ -1631,5 +1643,6 @@
         private System.Windows.Forms.NumericUpDown dashThresholdInput;
         internal System.Windows.Forms.Label label17;
         internal System.Windows.Forms.Label label18;
+        private System.Windows.Forms.CheckBox chkCopyFromScreen;
     }
 }

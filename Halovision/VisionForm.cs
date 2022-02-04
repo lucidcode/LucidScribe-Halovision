@@ -44,6 +44,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private int PixelSize = 4;
 
         private bool RecordVideo = false;
+        private bool CopyFromScreen = false;
         private bool feedChanged = true;
 
         public bool TCMP = false;
@@ -126,6 +127,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void LoadClassifiers()
         {
             cmbClassifier.Items.Add("None");
+            
+            if (!Directory.Exists($"{lucidScribeDataPath}\\Classifiers"))
+            {
+                return;
+            }
+
             foreach (string filename in Directory.EnumerateFiles($"{lucidScribeDataPath}\\Classifiers", "haarcascade*.xml", SearchOption.AllDirectories))
             {
                 string classifierName = new FileInfo(filename).Name.Replace(".xml", "");
@@ -213,6 +220,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<EyeMoveMax>200</EyeMoveMax>";
                 defaultSettings += "<IdleTicks>8</IdleTicks>";
                 defaultSettings += "<IgnorePercentage>100</IgnorePercentage>";
+                defaultSettings += "<CopyFromScreen>0</CopyFromScreen>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
                 defaultSettings += "<DotThreshold>200</DotThreshold>";
@@ -248,6 +256,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//DeviceURL") != null)
             {
                 txtDeviceURL.Text = xmlSettings.DocumentElement.SelectSingleNode("//DeviceURL").InnerText;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//CopyFromScreen") != null && xmlSettings.DocumentElement.SelectSingleNode("//CopyFromScreen").InnerText == "1")
+            {
+                chkCopyFromScreen.Checked = true;
+                CopyFromScreen = true;
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//RecordVideo") != null && xmlSettings.DocumentElement.SelectSingleNode("//RecordVideo").InnerText == "1")
@@ -464,13 +478,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
 
-            pbDisplay.DrawToBitmap(bmp, new Rectangle(0, 0, pbDisplay.Width, pbDisplay.Height));
-
-            //using (Graphics graphics = Graphics.FromImage(bmp))
-            //{
-            //    graphics.CopyFromScreen(this.Location.X + Screen.PrimaryScreen.Bounds.X + 26, this.Location.Y + Screen.PrimaryScreen.Bounds.Y + 71, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
-            //    graphics.Dispose();
-            //}
+            if (CopyFromScreen)
+            {
+                using (Graphics graphics = Graphics.FromImage(bmp))
+                {
+                    graphics.CopyFromScreen(this.Location.X + 26, this.Location.Y + 71, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                    graphics.Dispose();
+                }
+            }
+            else
+            {
+                pbDisplay.DrawToBitmap(bmp, new Rectangle(0, 0, pbDisplay.Width, pbDisplay.Height));
+            }
         }
 
         private void CreateDirectories()
@@ -771,6 +790,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             settings += "<IdleTicks>" + idleTicksInput.Value + "</IdleTicks>";
             settings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
+            if (chkCopyFromScreen.Checked)
+            {
+                settings += "<CopyFromScreen>1</CopyFromScreen>";
+            }
+            else
+            {
+                settings += "<CopyFromScreen>0</CopyFromScreen>";
+            }
+
             if (chkRecordVideo.Checked)
             {
                 settings += "<RecordVideo>1</RecordVideo>";
@@ -903,6 +931,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void dashThresholdInput_ValueChanged(object sender, EventArgs e)
         {
             DashThreshold = (int)dashThresholdInput.Value;
+            SaveSettings();
+        }
+
+        private void chkCopyFromScreen_CheckedChanged(object sender, EventArgs e)
+        {
+            CopyFromScreen = chkCopyFromScreen.Checked;
             SaveSettings();
         }
     }
