@@ -207,9 +207,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="haarcascade.xml">
+    <Content Include="Classifiers\haarcascade.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Classifiers\haarcascade_eye.xml" />
     <Content Include="License-LGPL.txt" />
     <Content Include="x64\concrt140.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

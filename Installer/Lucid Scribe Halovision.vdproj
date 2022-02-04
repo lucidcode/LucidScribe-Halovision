@@ -201,6 +201,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1AAA4C739E1940DD9B9CF302F819A7FB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1ABF5DCD7A55C263B98807EA20190955"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
@@ -1071,12 +1077,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_91FAEA02118143EB84017FD78D6C22F8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_92509360717C43BDB26E428B245A6605"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1559,6 +1559,12 @@
         {
         "MsmKey" = "8:_CCC608C5C2D29BE43FE6DE58FE9D6A33"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CCF14FCDFBC0480A99E0CBE33BA8CD00"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2828,7 +2834,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729                  "
+                "FrameworkVersion" = "8:3.5.30729                   "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -3545,6 +3551,26 @@
             "TargetName" = "8:libbluray-j2se-1.3.0.jar"
             "Tag" = "8:"
             "Folder" = "8:_7FBB73D81DF2438B9D3504C7CD09CE0D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1AAA4C739E1940DD9B9CF302F819A7FB"
+            {
+            "SourcePath" = "8:..\\Halovision\\Classifiers\\haarcascade_eye.xml"
+            "TargetName" = "8:haarcascade_eye.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_87842E1CD28D4B2F930B6865C90B7932"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -6962,26 +6988,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_91FAEA02118143EB84017FD78D6C22F8"
-            {
-            "SourcePath" = "8:..\\Halovision\\haarcascade.xml"
-            "TargetName" = "8:haarcascade.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_92509360717C43BDB26E428B245A6605"
             {
             "SourcePath" = "8:..\\Halovision\\Dependencies\\libvlc\\win-x86\\plugins\\demux\\libaiff_plugin.dll"
@@ -8832,6 +8838,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CCF14FCDFBC0480A99E0CBE33BA8CD00"
+            {
+            "SourcePath" = "8:..\\Halovision\\Classifiers\\haarcascade.xml"
+            "TargetName" = "8:haarcascade.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_87842E1CD28D4B2F930B6865C90B7932"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CD176A4D255243E89069C107472D2B73"
             {
             "SourcePath" = "8:..\\Halovision\\Dependencies\\libvlc\\win-x86\\plugins\\demux\\libnuv_plugin.dll"
@@ -10626,6 +10652,17 @@
                             "Property" = "8:_F26DF3D2739F429FB95A7E29BB8FE74F"
                                 "Folders"
                                 {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_87842E1CD28D4B2F930B6865C90B7932"
+                                    {
+                                    "Name" = "8:Classifiers"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_D17FFA95BC4D45578EF06E545E16A7F3"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                     "{9EF0B969-E518-4E46-987F-47570745A589}:_9E198405DFC4490EAE4D55BF71C51E43"
                                     {
                                     "Name" = "8:Plugins"
@@ -11213,7 +11250,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_395AC690E5F04358B866710FD743FFE4"
             {
-            "SourcePath" = "8:..\\Halovision\\obj\\x86\\Release\\lucidcode.LucidScribe.Plugin.Halovision.dll"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"

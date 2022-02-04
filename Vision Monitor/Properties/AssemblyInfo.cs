@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Vision Monitor")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard")]
-[assembly: AssemblyProduct("Halovision")]
-[assembly: AssemblyCopyright("Copyright © lucidcode 2013 - 2016")]
+[assembly: AssemblyCompany("lucidcode")]
+[assembly: AssemblyProduct("Vision Monitor")]
+[assembly: AssemblyCopyright("Copyright © lucidcode 2013 - 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

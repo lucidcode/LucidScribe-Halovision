@@ -45,6 +45,8 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cmbClassifier = new System.Windows.Forms.ComboBox();
             this.idleTicksInput = new System.Windows.Forms.NumericUpDown();
             this.label15 = new System.Windows.Forms.Label();
             this.chkTopMost = new System.Windows.Forms.CheckBox();
@@ -255,6 +257,8 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.label16);
+            this.panel3D3.Controls.Add(this.cmbClassifier);
             this.panel3D3.Controls.Add(this.idleTicksInput);
             this.panel3D3.Controls.Add(this.label15);
             this.panel3D3.Controls.Add(this.chkTopMost);
@@ -292,6 +296,28 @@
             this.panel3D3.Size = new System.Drawing.Size(600, 199);
             this.panel3D3.TabIndex = 36;
             // 
+            // label16
+            // 
+            this.label16.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label16.Location = new System.Drawing.Point(6, 84);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(87, 21);
+            this.label16.TabIndex = 306;
+            this.label16.Text = "Classifier";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cmbClassifier
+            // 
+            this.cmbClassifier.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbClassifier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbClassifier.FormattingEnabled = true;
+            this.cmbClassifier.Location = new System.Drawing.Point(99, 84);
+            this.cmbClassifier.Name = "cmbClassifier";
+            this.cmbClassifier.Size = new System.Drawing.Size(154, 21);
+            this.cmbClassifier.TabIndex = 305;
+            this.cmbClassifier.SelectedIndexChanged += new System.EventHandler(this.cmbClassifier_SelectedIndexChanged);
+            // 
             // idleTicksInput
             // 
             this.idleTicksInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -324,13 +350,11 @@
             // 
             // chkTopMost
             // 
-            this.chkTopMost.Checked = true;
-            this.chkTopMost.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkTopMost.Location = new System.Drawing.Point(99, 167);
+            this.chkTopMost.Location = new System.Drawing.Point(9, 167);
             this.chkTopMost.Name = "chkTopMost";
-            this.chkTopMost.Size = new System.Drawing.Size(154, 22);
+            this.chkTopMost.Size = new System.Drawing.Size(84, 22);
             this.chkTopMost.TabIndex = 302;
-            this.chkTopMost.Text = "Top Most Window";
+            this.chkTopMost.Text = "Top Most";
             this.chkTopMost.UseVisualStyleBackColor = true;
             this.chkTopMost.CheckedChanged += new System.EventHandler(this.chkTopMost_CheckedChanged);
             // 
@@ -466,7 +490,7 @@
             // 
             // chkRecordVideo
             // 
-            this.chkRecordVideo.Location = new System.Drawing.Point(99, 111);
+            this.chkRecordVideo.Location = new System.Drawing.Point(99, 167);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(125, 22);
             this.chkRecordVideo.TabIndex = 286;
@@ -921,7 +945,7 @@
             // txtDeviceURL
             // 
             this.txtDeviceURL.Enabled = false;
-            this.txtDeviceURL.Location = new System.Drawing.Point(99, 84);
+            this.txtDeviceURL.Location = new System.Drawing.Point(99, 111);
             this.txtDeviceURL.Name = "txtDeviceURL";
             this.txtDeviceURL.Size = new System.Drawing.Size(154, 21);
             this.txtDeviceURL.TabIndex = 285;
@@ -930,16 +954,16 @@
             // lblDeviceURL
             // 
             this.lblDeviceURL.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.lblDeviceURL.Location = new System.Drawing.Point(6, 84);
+            this.lblDeviceURL.Location = new System.Drawing.Point(6, 111);
             this.lblDeviceURL.Name = "lblDeviceURL";
-            this.lblDeviceURL.Size = new System.Drawing.Size(85, 21);
+            this.lblDeviceURL.Size = new System.Drawing.Size(87, 21);
             this.lblDeviceURL.TabIndex = 284;
             this.lblDeviceURL.Text = "Device URL";
             this.lblDeviceURL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkTCMP
             // 
-            this.chkTCMP.Location = new System.Drawing.Point(9, 167);
+            this.chkTCMP.Location = new System.Drawing.Point(9, 139);
             this.chkTCMP.Name = "chkTCMP";
             this.chkTCMP.Size = new System.Drawing.Size(84, 22);
             this.chkTCMP.TabIndex = 282;
@@ -1253,7 +1277,7 @@
             this.label8.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label8.Location = new System.Drawing.Point(6, 57);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(85, 21);
+            this.label8.Size = new System.Drawing.Size(87, 21);
             this.label8.TabIndex = 276;
             this.label8.Text = "Algorithm";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1538,5 +1562,7 @@
         private System.Windows.Forms.CheckBox chkTopMost;
         private System.Windows.Forms.NumericUpDown idleTicksInput;
         internal System.Windows.Forms.Label label15;
+        internal System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox cmbClassifier;
     }
 }
