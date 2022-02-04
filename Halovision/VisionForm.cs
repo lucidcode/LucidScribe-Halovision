@@ -42,13 +42,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public int EyeMoveMin = 4;
         public int EyeMoveMax = 200;
         public int IdleTicks = 8;
-
         private int PixelSize = 4;
-        private bool TCMP = false;
+
         private bool RecordVideo = false;
         private bool feedChanged = true;
+
+        private bool TCMP = false;
+        public int DotThreshold = 100;
+        public int DashThreshold = 500;
+
         private VideoCaptureDevice videoSource;
-        private bool DetectFace = false;
         private Rectangle[] faceRegions;
         private CascadeClassifier cascadeClassifier;
 
@@ -123,6 +126,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
         private void LoadClassifiers()
         {
+            cmbClassifier.Items.Add("None");
             foreach (string filename in Directory.EnumerateFiles($"{lucidScribeDataPath}\\Classifiers", "haarcascade*.xml", SearchOption.AllDirectories))
             {
                 string classifierName = new FileInfo(filename).Name.Replace(".xml", "");
@@ -136,9 +140,17 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private void LoadClassifier()
         {
-            if (cmbClassifier.Text != "")
+            try
             {
-                cascadeClassifier = new CascadeClassifier($"{lucidScribeDataPath}\\Classifiers\\{cmbClassifier.Text}.xml");
+                cascadeClassifier = null;
+                if (cmbClassifier.Text != "" && cmbClassifier.Text != "None")
+                {
+                    cascadeClassifier = new CascadeClassifier($"{lucidScribeDataPath}\\Classifiers\\{cmbClassifier.Text}.xml");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "LucidScribe.LoadClassifier()", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -204,8 +216,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<IgnorePercentage>16</IgnorePercentage>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
-                defaultSettings += "<DetectFace>0</DetectFace>";
-                defaultSettings += "<Classifier>haarcascade</Classifier>";
+                defaultSettings += "<DotThreshold>100</DotThreshold>";
+                defaultSettings += "<DashThreshold>500</DashThreshold>";
+                defaultSettings += "<Classifier>None</Classifier>";
                 defaultSettings += "</Plugin>";
                 defaultSettings += "</LucidScribeData>";
                 File.WriteAllText(settingsFilePath, defaultSettings);
@@ -242,12 +255,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 chkRecordVideo.Checked = true;
                 RecordVideo = true;
-            }
-
-            if (xmlSettings.DocumentElement.SelectSingleNode("//DetectFace") != null && xmlSettings.DocumentElement.SelectSingleNode("//DetectFace").InnerText == "1")
-            {
-                chkDetectFace.Checked = true;
-                DetectFace = true;
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//Classifier") != null)
@@ -314,6 +321,24 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 chkTCMP.Checked = true;
                 TCMP = true;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//DotThreshold") != null)
+            {
+                dotThresholdInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//DotThreshold").InnerText);
+            }
+            else
+            {
+                dotThresholdInput.Value = DotThreshold;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//DashThreshold") != null)
+            {
+                dashThresholdInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//DashThreshold").InnerText);
+            }
+            else
+            {
+                dashThresholdInput.Value = DashThreshold;
             }
         }
 
@@ -490,16 +515,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 int diff = 0;
                 CaptureControl(ref currentBitmap, pbDisplay.Width, pbDisplay.Height);
 
-                if (DetectFace && cascadeClassifier != null && currentBitmap != null)
+                if (cascadeClassifier != null && currentBitmap != null)
                 {
                     Image<Bgr, byte> imageFrame = new Image<Bgr, Byte>(currentBitmap);
                     Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
-                    var detectedFaces = cascadeClassifier.DetectMultiScale(grayFrame);
-
-                    if (detectedFaces.Length > 0)
-                    {
-                        faceRegions = detectedFaces;
-                    }
+                    faceRegions = cascadeClassifier.DetectMultiScale(grayFrame);
                 }
 
                 Difference(ref previousBitmap, ref currentBitmap, out diff);
@@ -549,7 +569,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             processing = false;
         }
-        List<int> m_arrHistory = new List<int>();
 
         Random random = new Random();
         String effect = "White";
@@ -580,7 +599,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             Rectangle[] regions = new Rectangle[] { new Rectangle(0, 0, bitmap1.Width, bitmap1.Height) };
 
-            if (DetectFace && faceRegions != null && faceRegions.Length > 0)
+            if (faceRegions != null && faceRegions.Length > 0)
             {
                 regions = faceRegions;
             }
@@ -667,7 +686,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         }
                     }
 
-                    if (DetectFace)
+                    if (cascadeClassifier != null)
                     {
                         byte* row2 = (byte*)bmd2.Scan0 + (region.Y * bmd2.Stride);
                         for (int x = region.X; x <= region.X + region.Width; x++)
@@ -753,15 +772,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             settings += "<IdleTicks>" + idleTicksInput.Value + "</IdleTicks>";
             settings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
-            if (chkTCMP.Checked)
-            {
-                settings += "<TCMP>1</TCMP>";
-            }
-            else
-            {
-                settings += "<TCMP>0</TCMP>";
-            }
-
             if (chkRecordVideo.Checked)
             {
                 settings += "<RecordVideo>1</RecordVideo>";
@@ -769,15 +779,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             else
             {
                 settings += "<RecordVideo>0</RecordVideo>";
-            }
-
-            if (chkDetectFace.Checked)
-            {
-                settings += "<DetectFace>1</DetectFace>";
-            }
-            else
-            {
-                settings += "<DetectFace>0</DetectFace>";
             }
             
             settings += "<Classifier>" + cmbClassifier.Text + "</Classifier>";
@@ -790,6 +791,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 settings += "<TopMost>0</TopMost>";
             }
+
+            if (chkTCMP.Checked)
+            {
+                settings += "<TCMP>1</TCMP>";
+            }
+            else
+            {
+                settings += "<TCMP>0</TCMP>";
+            }
+
+            settings += "<DotThreshold>" + dotThresholdInput.Value + "</DotThreshold>";
+            settings += "<DashThreshold>" + dashThresholdInput.Value + "</DashThreshold>";
 
             settings += "</Plugin>";
             settings += "</LucidScribeData>";
@@ -840,12 +853,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             SaveSettings();
         }
 
-        private void chkDetectFace_CheckedChanged(object sender, EventArgs e)
-        {
-            DetectFace = chkDetectFace.Checked;
-            SaveSettings();
-        }
-
         private void chkTopMost_CheckedChanged(object sender, EventArgs e)
         {
             TopMost = chkTopMost.Checked;
@@ -885,6 +892,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void cmbClassifier_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadClassifier();
+            SaveSettings();
+        }
+
+        private void dotThresholdInput_ValueChanged(object sender, EventArgs e)
+        {
+            DotThreshold = (int)dotThresholdInput.Value;
+            SaveSettings();
+        }
+
+        private void dashThresholdInput_ValueChanged(object sender, EventArgs e)
+        {
+            DashThreshold = (int)dashThresholdInput.Value;
             SaveSettings();
         }
     }

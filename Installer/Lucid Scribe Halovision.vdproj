@@ -303,6 +303,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2785ABCD05EE46A38F4D8B09728C8418"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_27B830B2932342B3B9E65DF387109739"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -418,6 +424,12 @@
         "Entry"
         {
         "MsmKey" = "8:_379BB0845B7743D082DF46886A6C4291"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_38A9D8EB2A5E44978B918C80723AB6AD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3971,6 +3983,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2785ABCD05EE46A38F4D8B09728C8418"
+            {
+            "SourcePath" = "8:Plugins\\Dash.lsd"
+            "TargetName" = "8:Dash.lsd"
+            "Tag" = "8:"
+            "Folder" = "8:_9E198405DFC4490EAE4D55BF71C51E43"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_27B830B2932342B3B9E65DF387109739"
             {
             "SourcePath" = "8:..\\Halovision\\Dependencies\\libvlc\\win-x86\\plugins\\demux\\librawaud_plugin.dll"
@@ -4423,6 +4455,26 @@
             "TargetName" = "8:libimem_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_7FBB73D81DF2438B9D3504C7CD09CE0D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_38A9D8EB2A5E44978B918C80723AB6AD"
+            {
+            "SourcePath" = "8:Plugins\\Dot.lsd"
+            "TargetName" = "8:Dot.lsd"
+            "Tag" = "8:"
+            "Folder" = "8:_9E198405DFC4490EAE4D55BF71C51E43"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10719,7 +10771,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Lucid Scribe Halovision"
         "ProductCode" = "8:{AD0D6DBD-0D2F-460E-900A-50A93612FB94}"
-        "PackageCode" = "8:{C667AB35-C84E-4690-A215-4CDDEDF98E7B}"
+        "PackageCode" = "8:{0A32BC3B-5BDD-4E05-BED5-5708A5BE969A}"
         "UpgradeCode" = "8:{CAAB2187-AD23-435C-A3DB-568744247625}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

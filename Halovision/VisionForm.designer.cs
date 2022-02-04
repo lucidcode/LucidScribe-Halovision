@@ -45,6 +45,10 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.dotThresholdInput = new System.Windows.Forms.NumericUpDown();
+            this.dashThresholdInput = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.cmbClassifier = new System.Windows.Forms.ComboBox();
             this.idleTicksInput = new System.Windows.Forms.NumericUpDown();
@@ -59,7 +63,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.chkRecordVideo = new System.Windows.Forms.CheckBox();
-            this.chkDetectFace = new System.Windows.Forms.CheckBox();
             this.cmbIgnorePercentage = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbPixelThreshold = new System.Windows.Forms.ComboBox();
@@ -89,6 +92,8 @@
             this.panel3D1.SuspendLayout();
             this.panel3D2.SuspendLayout();
             this.panel3D3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dotThresholdInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dashThresholdInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).BeginInit();
@@ -176,7 +181,7 @@
             this.cmbDevices.FormattingEnabled = true;
             this.cmbDevices.Location = new System.Drawing.Point(99, 30);
             this.cmbDevices.Name = "cmbDevices";
-            this.cmbDevices.Size = new System.Drawing.Size(406, 21);
+            this.cmbDevices.Size = new System.Drawing.Size(400, 21);
             this.cmbDevices.TabIndex = 33;
             this.cmbDevices.SelectedIndexChanged += new System.EventHandler(this.cmbDevices_SelectedIndexChanged);
             // 
@@ -257,6 +262,10 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.dotThresholdInput);
+            this.panel3D3.Controls.Add(this.dashThresholdInput);
+            this.panel3D3.Controls.Add(this.label17);
+            this.panel3D3.Controls.Add(this.label18);
             this.panel3D3.Controls.Add(this.label16);
             this.panel3D3.Controls.Add(this.cmbClassifier);
             this.panel3D3.Controls.Add(this.idleTicksInput);
@@ -271,7 +280,6 @@
             this.panel3D3.Controls.Add(this.label12);
             this.panel3D3.Controls.Add(this.label11);
             this.panel3D3.Controls.Add(this.chkRecordVideo);
-            this.panel3D3.Controls.Add(this.chkDetectFace);
             this.panel3D3.Controls.Add(this.cmbIgnorePercentage);
             this.panel3D3.Controls.Add(this.label2);
             this.panel3D3.Controls.Add(this.cmbPixelThreshold);
@@ -291,10 +299,75 @@
             this.panel3D3.Controls.Add(this.label1);
             this.panel3D3.Controls.Add(this.panel3D5);
             this.panel3D3.Controls.Add(this.cmbDevices);
-            this.panel3D3.Location = new System.Drawing.Point(9, 214);
+            this.panel3D3.Location = new System.Drawing.Point(12, 214);
             this.panel3D3.Name = "panel3D3";
-            this.panel3D3.Size = new System.Drawing.Size(600, 199);
+            this.panel3D3.Size = new System.Drawing.Size(594, 220);
             this.panel3D3.TabIndex = 36;
+            // 
+            // dotThresholdInput
+            // 
+            this.dotThresholdInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dotThresholdInput.Location = new System.Drawing.Point(361, 192);
+            this.dotThresholdInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.dotThresholdInput.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.dotThresholdInput.Name = "dotThresholdInput";
+            this.dotThresholdInput.Size = new System.Drawing.Size(54, 21);
+            this.dotThresholdInput.TabIndex = 310;
+            this.dotThresholdInput.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.dotThresholdInput.ValueChanged += new System.EventHandler(this.dotThresholdInput_ValueChanged);
+            // 
+            // dashThresholdInput
+            // 
+            this.dashThresholdInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.dashThresholdInput.Location = new System.Drawing.Point(534, 192);
+            this.dashThresholdInput.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.dashThresholdInput.Name = "dashThresholdInput";
+            this.dashThresholdInput.Size = new System.Drawing.Size(54, 21);
+            this.dashThresholdInput.TabIndex = 309;
+            this.dashThresholdInput.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.dashThresholdInput.ValueChanged += new System.EventHandler(this.dashThresholdInput_ValueChanged);
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label17.Location = new System.Drawing.Point(250, 193);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(105, 21);
+            this.label17.TabIndex = 308;
+            this.label17.Text = "Dot Threshold";
+            this.label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label18
+            // 
+            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label18.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label18.Location = new System.Drawing.Point(427, 193);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(101, 21);
+            this.label18.TabIndex = 307;
+            this.label18.Text = "Dash Threshold";
+            this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label16
             // 
@@ -314,14 +387,14 @@
             this.cmbClassifier.FormattingEnabled = true;
             this.cmbClassifier.Location = new System.Drawing.Point(99, 84);
             this.cmbClassifier.Name = "cmbClassifier";
-            this.cmbClassifier.Size = new System.Drawing.Size(154, 21);
+            this.cmbClassifier.Size = new System.Drawing.Size(145, 21);
             this.cmbClassifier.TabIndex = 305;
             this.cmbClassifier.SelectedIndexChanged += new System.EventHandler(this.cmbClassifier_SelectedIndexChanged);
             // 
             // idleTicksInput
             // 
             this.idleTicksInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.idleTicksInput.Location = new System.Drawing.Point(540, 165);
+            this.idleTicksInput.Location = new System.Drawing.Point(534, 165);
             this.idleTicksInput.Maximum = new decimal(new int[] {
             999,
             0,
@@ -343,16 +416,16 @@
             this.label15.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label15.Location = new System.Drawing.Point(427, 166);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(122, 21);
+            this.label15.Size = new System.Drawing.Size(101, 21);
             this.label15.TabIndex = 303;
             this.label15.Text = "Idle Ticks";
             this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkTopMost
             // 
-            this.chkTopMost.Location = new System.Drawing.Point(9, 167);
+            this.chkTopMost.Location = new System.Drawing.Point(99, 139);
             this.chkTopMost.Name = "chkTopMost";
-            this.chkTopMost.Size = new System.Drawing.Size(84, 22);
+            this.chkTopMost.Size = new System.Drawing.Size(145, 22);
             this.chkTopMost.TabIndex = 302;
             this.chkTopMost.Text = "Top Most";
             this.chkTopMost.UseVisualStyleBackColor = true;
@@ -361,7 +434,7 @@
             // eyeMoveMaxInput
             // 
             this.eyeMoveMaxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.eyeMoveMaxInput.Location = new System.Drawing.Point(540, 111);
+            this.eyeMoveMaxInput.Location = new System.Drawing.Point(534, 111);
             this.eyeMoveMaxInput.Maximum = new decimal(new int[] {
             999,
             0,
@@ -407,7 +480,7 @@
             this.label13.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label13.Location = new System.Drawing.Point(427, 112);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(122, 21);
+            this.label13.Size = new System.Drawing.Size(101, 21);
             this.label13.TabIndex = 299;
             this.label13.Text = "Eye Move Max";
             this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -416,9 +489,9 @@
             // 
             this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label14.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label14.Location = new System.Drawing.Point(256, 112);
+            this.label14.Location = new System.Drawing.Point(250, 112);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(122, 21);
+            this.label14.Size = new System.Drawing.Size(105, 21);
             this.label14.TabIndex = 298;
             this.label14.Text = "Eye Move Min";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -426,7 +499,7 @@
             // tossHalfLifeInput
             // 
             this.tossHalfLifeInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.tossHalfLifeInput.Location = new System.Drawing.Point(540, 138);
+            this.tossHalfLifeInput.Location = new System.Drawing.Point(534, 138);
             this.tossHalfLifeInput.Maximum = new decimal(new int[] {
             999,
             0,
@@ -472,7 +545,7 @@
             this.label12.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label12.Location = new System.Drawing.Point(427, 139);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(122, 21);
+            this.label12.Size = new System.Drawing.Size(101, 21);
             this.label12.TabIndex = 295;
             this.label12.Text = "Toss Half-life";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -481,9 +554,9 @@
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label11.Location = new System.Drawing.Point(256, 139);
+            this.label11.Location = new System.Drawing.Point(250, 139);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(122, 21);
+            this.label11.Size = new System.Drawing.Size(105, 21);
             this.label11.TabIndex = 293;
             this.label11.Text = "Toss Threshold";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -492,21 +565,11 @@
             // 
             this.chkRecordVideo.Location = new System.Drawing.Point(99, 167);
             this.chkRecordVideo.Name = "chkRecordVideo";
-            this.chkRecordVideo.Size = new System.Drawing.Size(125, 22);
+            this.chkRecordVideo.Size = new System.Drawing.Size(145, 22);
             this.chkRecordVideo.TabIndex = 286;
             this.chkRecordVideo.Text = "Record Video";
             this.chkRecordVideo.UseVisualStyleBackColor = true;
             this.chkRecordVideo.CheckedChanged += new System.EventHandler(this.chkRecordVideo_CheckedChanged);
-            // 
-            // chkDetectFace
-            // 
-            this.chkDetectFace.Location = new System.Drawing.Point(99, 139);
-            this.chkDetectFace.Name = "chkDetectFace";
-            this.chkDetectFace.Size = new System.Drawing.Size(122, 22);
-            this.chkDetectFace.TabIndex = 291;
-            this.chkDetectFace.Text = "Detect Face";
-            this.chkDetectFace.UseVisualStyleBackColor = true;
-            this.chkDetectFace.CheckedChanged += new System.EventHandler(this.chkDetectFace_CheckedChanged);
             // 
             // cmbIgnorePercentage
             // 
@@ -624,9 +687,9 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label2.Location = new System.Drawing.Point(259, 165);
+            this.label2.Location = new System.Drawing.Point(250, 165);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(104, 21);
+            this.label2.Size = new System.Drawing.Size(105, 21);
             this.label2.TabIndex = 288;
             this.label2.Text = "Ignore %";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -892,7 +955,7 @@
             "253",
             "254",
             "255"});
-            this.cmbPixelThreshold.Location = new System.Drawing.Point(540, 57);
+            this.cmbPixelThreshold.Location = new System.Drawing.Point(534, 57);
             this.cmbPixelThreshold.Name = "cmbPixelThreshold";
             this.cmbPixelThreshold.Size = new System.Drawing.Size(54, 21);
             this.cmbPixelThreshold.TabIndex = 34;
@@ -936,7 +999,7 @@
             "30",
             "31",
             "32"});
-            this.cmbPixelsInARow.Location = new System.Drawing.Point(540, 84);
+            this.cmbPixelsInARow.Location = new System.Drawing.Point(534, 84);
             this.cmbPixelsInARow.Name = "cmbPixelsInARow";
             this.cmbPixelsInARow.Size = new System.Drawing.Size(54, 21);
             this.cmbPixelsInARow.TabIndex = 278;
@@ -947,7 +1010,7 @@
             this.txtDeviceURL.Enabled = false;
             this.txtDeviceURL.Location = new System.Drawing.Point(99, 111);
             this.txtDeviceURL.Name = "txtDeviceURL";
-            this.txtDeviceURL.Size = new System.Drawing.Size(154, 21);
+            this.txtDeviceURL.Size = new System.Drawing.Size(145, 21);
             this.txtDeviceURL.TabIndex = 285;
             this.txtDeviceURL.TextChanged += new System.EventHandler(this.txtDeviceURL_TextChanged);
             // 
@@ -963,9 +1026,9 @@
             // 
             // chkTCMP
             // 
-            this.chkTCMP.Location = new System.Drawing.Point(9, 139);
+            this.chkTCMP.Location = new System.Drawing.Point(99, 192);
             this.chkTCMP.Name = "chkTCMP";
-            this.chkTCMP.Size = new System.Drawing.Size(84, 22);
+            this.chkTCMP.Size = new System.Drawing.Size(145, 22);
             this.chkTCMP.TabIndex = 282;
             this.chkTCMP.Text = "TCMP";
             this.chkTCMP.UseVisualStyleBackColor = true;
@@ -976,9 +1039,9 @@
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label10.Location = new System.Drawing.Point(256, 84);
+            this.label10.Location = new System.Drawing.Point(250, 84);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(100, 21);
+            this.label10.Size = new System.Drawing.Size(105, 21);
             this.label10.TabIndex = 281;
             this.label10.Text = "Amplification";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1256,7 +1319,7 @@
             this.label9.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label9.Location = new System.Drawing.Point(427, 85);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(122, 21);
+            this.label9.Size = new System.Drawing.Size(101, 21);
             this.label9.TabIndex = 279;
             this.label9.Text = "Pixels in a Row";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1264,7 +1327,7 @@
             // btnReconnect
             // 
             this.btnReconnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReconnect.Location = new System.Drawing.Point(511, 29);
+            this.btnReconnect.Location = new System.Drawing.Point(505, 29);
             this.btnReconnect.Name = "btnReconnect";
             this.btnReconnect.Size = new System.Drawing.Size(83, 23);
             this.btnReconnect.TabIndex = 277;
@@ -1293,7 +1356,7 @@
             "REM Detector"});
             this.cmbAlgorithm.Location = new System.Drawing.Point(99, 57);
             this.cmbAlgorithm.Name = "cmbAlgorithm";
-            this.cmbAlgorithm.Size = new System.Drawing.Size(154, 21);
+            this.cmbAlgorithm.Size = new System.Drawing.Size(145, 21);
             this.cmbAlgorithm.TabIndex = 275;
             this.cmbAlgorithm.SelectedIndexChanged += new System.EventHandler(this.cmbAlgorithm_SelectedIndexChanged);
             // 
@@ -1301,9 +1364,9 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label7.Location = new System.Drawing.Point(256, 57);
+            this.label7.Location = new System.Drawing.Point(250, 57);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(107, 21);
+            this.label7.Size = new System.Drawing.Size(105, 21);
             this.label7.TabIndex = 274;
             this.label7.Text = "Frame Threshold";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1426,7 +1489,7 @@
             this.label5.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label5.Location = new System.Drawing.Point(427, 58);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(104, 21);
+            this.label5.Size = new System.Drawing.Size(101, 21);
             this.label5.TabIndex = 272;
             this.label5.Text = "Pixel Threshold";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1450,7 +1513,7 @@
             this.panel3D5.Controls.Add(this.label4);
             this.panel3D5.Location = new System.Drawing.Point(0, 0);
             this.panel3D5.Name = "panel3D5";
-            this.panel3D5.Size = new System.Drawing.Size(600, 24);
+            this.panel3D5.Size = new System.Drawing.Size(594, 24);
             this.panel3D5.TabIndex = 4;
             // 
             // label3
@@ -1482,7 +1545,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(624, 425);
+            this.ClientSize = new System.Drawing.Size(624, 449);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel3D3);
             this.Font = new System.Drawing.Font("Verdana", 8.25F);
@@ -1502,6 +1565,8 @@
             this.panel3D2.ResumeLayout(false);
             this.panel3D3.ResumeLayout(false);
             this.panel3D3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dotThresholdInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dashThresholdInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMaxInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eyeMoveMinInput)).EndInit();
@@ -1550,7 +1615,6 @@
     private System.Windows.Forms.CheckBox chkRecordVideo;
     private System.Windows.Forms.ComboBox cmbIgnorePercentage;
     internal System.Windows.Forms.Label label2;
-    private System.Windows.Forms.CheckBox chkDetectFace;
         internal System.Windows.Forms.Label label12;
         internal System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown tossHalfLifeInput;
@@ -1564,5 +1628,9 @@
         internal System.Windows.Forms.Label label15;
         internal System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox cmbClassifier;
+        private System.Windows.Forms.NumericUpDown dotThresholdInput;
+        private System.Windows.Forms.NumericUpDown dashThresholdInput;
+        internal System.Windows.Forms.Label label17;
+        internal System.Windows.Forms.Label label18;
     }
 }
