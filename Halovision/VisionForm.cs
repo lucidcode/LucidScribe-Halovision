@@ -590,6 +590,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         Random random = new Random();
         String effect = "White";
+        byte highlight = 200;
         private void Difference(ref Bitmap bitmap1, ref Bitmap bitmap2, out int diff)
         {
             diff = 0;
@@ -614,6 +615,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             int yEnd = bmd2.Height;
             int xStart = 0;
             int xEnd = bmd2.Width;
+            bool staticBorders = true;
 
             Rectangle[] regions = new Rectangle[] { new Rectangle(0, 0, bitmap1.Width, bitmap1.Height) };
 
@@ -706,21 +708,108 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     if (cascadeClassifier != null)
                     {
+                        // top
                         byte* row2 = (byte*)bmd2.Scan0 + (region.Y * bmd2.Stride);
                         for (int x = region.X; x <= region.X + region.Width; x++)
                         {
-                            row2[x * PixelSize + 1] = (byte)255;
+                            if (!staticBorders || staticBorders && random.Next(2) == 1)
+                            {
+                                row2[x * PixelSize] = highlight;
+                                row2[x * PixelSize + 1] = highlight;
+                                row2[x * PixelSize + 2] = highlight;
+                            }
                         }
-                        row2 = (byte*)bmd2.Scan0 + ((region.Y + region.Height) * bmd2.Stride);
-                        for (int x = region.X; x <= region.X + region.Width; x++)
+
+                        // top highlight
+                        if (region.Y > 0)
                         {
-                            row2[x * PixelSize + 1] = (byte)255;
+                            byte* row2Highlight = (byte*)bmd2.Scan0 + ((region.Y - 1) * bmd2.Stride);
+                            for (int x = region.X + 1; x <= region.X + region.Width - 1; x++)
+                            {
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[x * PixelSize] = highlight;
+                                    row2[x * PixelSize + 1] = highlight;
+                                    row2[x * PixelSize + 2] = highlight;
+                                }
+                            }
                         }
+
+                        // bottom
+                        if (region.Y + region.Height < bitmap2.Height)
+                        {
+                            row2 = (byte*)bmd2.Scan0 + ((region.Y + region.Height) * bmd2.Stride);
+                            for (int x = region.X; x <= region.X + region.Width; x++)
+                            {
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[x * PixelSize] = highlight;
+                                    row2[x * PixelSize + 1] = highlight;
+                                    row2[x * PixelSize + 2] = highlight;
+                                }
+                            }
+                        }
+
+                        // bottom highlight
+                        if (region.Y + region.Height + 1 < bitmap2.Height)
+                        {
+                            row2 = (byte*)bmd2.Scan0 + ((region.Y + region.Height + 1) * bmd2.Stride);
+                            for (int x = region.X + 1; x <= region.X + region.Width - 1; x++)
+                            {
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[x * PixelSize] = highlight;
+                                    row2[x * PixelSize + 1] = highlight;
+                                    row2[x * PixelSize + 2] = highlight;
+                                }
+                            }
+                        }
+
+
                         for (int y = region.Y; y <= region.Y + region.Height; y++)
                         {
-                            row2 = (byte*)bmd2.Scan0 + ((y) * bmd2.Stride);
-                            row2[region.X * PixelSize + 1] = (byte)255;
-                            row2[(region.X + region.Width) * PixelSize + 1] = (byte)255;
+                            if (y < bitmap2.Height)
+                            {
+                                row2 = (byte*)bmd2.Scan0 + ((y) * bmd2.Stride);
+
+                                // left
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[region.X * PixelSize] = highlight;
+                                    row2[region.X * PixelSize + 1] = highlight;
+                                    row2[region.X * PixelSize + 2] = highlight;
+                                }
+
+                                // left highlight
+                                if (y > region.Y && y < region.Y + region.Height)
+                                {
+                                    if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                    {
+                                        row2[(region.X - 1) * PixelSize] = highlight;
+                                        row2[(region.X - 1) * PixelSize + 1] = highlight;
+                                        row2[(region.X - 1) * PixelSize + 2] = highlight;
+                                    }
+                                }
+
+                                // right
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[(region.X + region.Width) * PixelSize] = highlight;
+                                    row2[(region.X + region.Width) * PixelSize + 1] = highlight;
+                                    row2[(region.X + region.Width) * PixelSize + 2] = highlight;
+                                }
+
+                                // right highlight
+                                if (y > region.Y && y < region.Y + region.Height)
+                                {
+                                    if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                    {
+                                        row2[(region.X + region.Width) * PixelSize + 1] = highlight;
+                                        row2[(region.X + region.Width + 1) * PixelSize + 2] = highlight;
+                                        row2[(region.X + region.Width + 2) * PixelSize + 3] = highlight;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
