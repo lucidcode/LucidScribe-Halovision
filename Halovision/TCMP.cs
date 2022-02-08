@@ -116,7 +116,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (!SpaceSent & history.Count == 0)
                     {
                         TicksSinceSpace++;
-                        if (TicksSinceSpace > 32)
+                        if (TicksSinceSpace > 40)
                         {
                             // Send the space key
                             Morse = " ";
@@ -126,7 +126,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         }
                     }
 
-                    if (!FirstTick && history.Count > 32)
+                    if (!FirstTick && history.Count > 40)
                     {
                         int nextOffset = 0;
                         do
