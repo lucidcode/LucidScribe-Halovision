@@ -178,6 +178,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PluginHandler.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TCMP.cs" />
     <Compile Include="VisionForm.cs">
       <SubType>Form</SubType>
@@ -189,6 +194,10 @@
     <Compile Include="VLC.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="VisionForm.resx">
       <DependentUpon>VisionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -216,6 +225,8 @@
     </Content>
     <Content Include="Classifiers\haarcascade_eye.xml" />
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\dash.wav" />
+    <None Include="Resources\dot.wav" />
     <Content Include="x64\concrt140.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

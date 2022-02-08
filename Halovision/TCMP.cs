@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
@@ -10,6 +11,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase, lucidcode.LucidScribe.TCMP.ITransConsciousnessPlugin
         {
+            SoundPlayer dotSoundPlayer;
+            SoundPlayer dashSoundPlayer;
+
             public override string Name
             {
                 get
@@ -20,6 +24,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
+                dotSoundPlayer = new SoundPlayer(Properties.Resources.dot);
+                dashSoundPlayer = new SoundPlayer(Properties.Resources.dash);
+
                 return Device.Initialize();
             }
 
@@ -65,6 +72,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             };
 
             List<int> history = new List<int>();
+            List<int> soundHistory = new List<int>();
             Boolean FirstTick = false;
             Boolean SpaceSent = true;
             int TicksSinceSpace = 0;
@@ -77,9 +85,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 {
                     if (!Device.TCMP) { return 0; }
 
-                    double tempValue = Device.GetVision();
-                    if (tempValue > 999) { tempValue = 999; }
-                    if (tempValue < 0) { tempValue = 0; }
+                    int visionValue = Device.GetVision();
+                    if (visionValue > 999) { visionValue = 999; }
+                    if (visionValue < 0) { visionValue = 0; }
 
                     if (!Started)
                     {
@@ -98,19 +106,47 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     String signal = "";
 
-                    if (!FirstTick && (tempValue > dotHeight))
+                    if (!FirstTick && (visionValue >= dotHeight))
                     {
-                        history.Add(Convert.ToInt32(tempValue));
+                        history.Add(Convert.ToInt32(visionValue));
                     }
 
                     if (!FirstTick && history.Count > 0)
                     {
-                        history.Add(Convert.ToInt32(tempValue));
+                        history.Add(Convert.ToInt32(visionValue));
                     }
 
-                    if (FirstTick && (tempValue > dotHeight))
+                    if (FirstTick && (visionValue > dotHeight))
                     {
                         FirstTick = false;
+                    }
+
+                    soundHistory.Add(visionValue);
+                    if (soundHistory.Count > 6)
+                    {
+                        int peakValue = 0;
+
+                        for (int i = 0; i < soundHistory.Count; i++)
+                        {
+                            if (soundHistory[i] > peakValue)
+                            {
+                                peakValue = soundHistory[i];
+                            }
+                        }
+
+                        if (soundHistory[soundHistory.Count - 1] < dotHeight / 4)
+                        {
+                            if (peakValue >= dashHeight)
+                            {
+                                dashSoundPlayer.Play();
+                                soundHistory.Clear();
+                            }
+                            else if (peakValue >= dotHeight)
+                            {
+                                dotSoundPlayer.Play();
+                                soundHistory.Clear();
+                            }
+                        }
                     }
 
                     if (!SpaceSent & history.Count == 0)
