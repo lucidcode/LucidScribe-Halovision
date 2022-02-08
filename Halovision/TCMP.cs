@@ -73,7 +73,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             List<int> history = new List<int>();
             List<int> soundHistory = new List<int>();
-            Boolean FirstTick = false;
             Boolean SpaceSent = true;
             int TicksSinceSpace = 0;
             Boolean Started = false;
@@ -91,6 +90,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     if (!Started)
                     {
+                        // Ignore any spike during startup
                         PreliminaryTicks++;
                         if (PreliminaryTicks > 10)
                         {
@@ -105,21 +105,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     int dashHeight = Device.GetDashThreshold();
 
                     String signal = "";
-
-                    if (!FirstTick && (visionValue >= dotHeight))
-                    {
-                        history.Add(Convert.ToInt32(visionValue));
-                    }
-
-                    if (!FirstTick && history.Count > 0)
-                    {
-                        history.Add(Convert.ToInt32(visionValue));
-                    }
-
-                    if (FirstTick && (visionValue > dotHeight))
-                    {
-                        FirstTick = false;
-                    }
 
                     soundHistory.Add(visionValue);
                     if (soundHistory.Count > 6)
@@ -149,20 +134,26 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         }
                     }
 
+                    if ((visionValue >= dotHeight) || history.Count > 0)
+                    {
+                        history.Add(visionValue);
+                    }
+
                     if (!SpaceSent & history.Count == 0)
                     {
                         TicksSinceSpace++;
-                        if (TicksSinceSpace > 40)
+                        if (TicksSinceSpace > 36)
                         {
                             // Send the space key
                             Morse = " ";
                             SendKeys.Send(" ");
                             SpaceSent = true;
                             TicksSinceSpace = 0;
+                            history.Clear();
                         }
                     }
 
-                    if (!FirstTick && history.Count > 40)
+                    if (history.Count > 36)
                     {
                         int nextOffset = 0;
                         do
