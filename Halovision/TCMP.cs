@@ -119,7 +119,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                             }
                         }
 
-                        if (soundHistory[soundHistory.Count - 1] < dotHeight / 4)
+                        if (soundHistory[soundHistory.Count - 1] < dotHeight / 4 && soundHistory[soundHistory.Count - 2] < dotHeight / 4)
                         {
                             if (peakValue >= dashHeight)
                             {
@@ -142,7 +142,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (!SpaceSent & history.Count == 0)
                     {
                         TicksSinceSpace++;
-                        if (TicksSinceSpace > 36)
+                        if (TicksSinceSpace > 34)
                         {
                             // Send the space key
                             Morse = " ";
@@ -153,7 +153,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         }
                     }
 
-                    if (history.Count > 36)
+                    if (history.Count > 34)
                     {
                         int nextOffset = 0;
                         do
@@ -168,7 +168,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                                         peakValue = history[x];
                                     }
 
-                                    if (history[x] < dotHeight / 4)
+                                    if (history[x] < dotHeight / 4 && history[x - 1] < dotHeight / 4)
                                     {
                                         nextOffset = x + 1;
                                         break;
@@ -231,7 +231,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     }
 
                     if (history.Count > 0)
-                    { return 888; }
+                    { return 820; }
 
                     return 0;
                 }
