@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
@@ -20,7 +19,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 {
     public partial class VisionForm : Form
     {
-        private string m_strPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\lucidcode\\Lucid Scribe\\";
+        private string lucidScribeDataPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\lucidcode\\Lucid Scribe";
 
         public delegate void ReconnectHanlder();
         public event ReconnectHanlder Reconnect;
@@ -42,14 +41,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public int EyeMoveMin = 4;
         public int EyeMoveMax = 200;
         public int IdleTicks = 8;
-
         private int PixelSize = 4;
-        private bool TCMP = false;
+
         private bool RecordVideo = false;
+        private bool CopyFromScreen = false;
         private bool feedChanged = true;
+
+        public bool TCMP = false;
+        public int DotThreshold = 200;
+        public int DashThreshold = 600;
+
         private VideoCaptureDevice videoSource;
-        private bool DetectFace = false;
-        private Rectangle lastFaceRegion;
+        private Rectangle[] faceRegions;
         private CascadeClassifier cascadeClassifier;
 
         private bool processing = false;
@@ -68,27 +71,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             try
             {
-                // enumerate video devices
-                FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-                cmbDevices.Items.Clear();
-                foreach (FilterInfo filterInfo in videoDevices)
-                {
-                    cmbDevices.Items.Add(filterInfo.Name);
-                }
-                cmbDevices.Items.Add("lucidcode Halovision Device");
-
+                LoadVideoDevices();
+                LoadClassifiers();
                 LoadSettings();
                 loadingDevices = false;
 
-                int deviceId = 0;
-                if (videoDevices.Count > 1)
-                {
-                    deviceId = 1;
-                }
-
-                if (cmbDevices.Text == "") cmbDevices.Text = videoDevices[deviceId].Name;
-
-                cascadeClassifier = new CascadeClassifier("haarcascade.xml");
+                if (cmbDevices.Text == "") cmbDevices.Text = cmbDevices.Items[0].ToString();
 
                 if (cmbDevices.Text == "lucidcode Halovision Device")
                 {
@@ -97,20 +85,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     return;
                 }
 
-                foreach (FilterInfo filterInfo in videoDevices)
-                {
-                    if (cmbDevices.Text == filterInfo.Name)
-                    {
-                        // create video source
-                        videoSource = new VideoCaptureDevice(filterInfo.MonikerString);
-                        // set NewFrame event handler
-                        videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-                        // start the video source
-                        videoSource.Start();
-                        loaded = true;
-                        return;
-                    }
-                }
+                OpenVideoDevice();
 
                 loaded = true;
                 return;
@@ -118,6 +93,70 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "LucidScribe.InitializePlugin()", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadVideoDevices()
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            cmbDevices.Items.Clear();
+            foreach (FilterInfo filterInfo in videoDevices)
+            {
+                cmbDevices.Items.Add(filterInfo.Name);
+            }
+            cmbDevices.Items.Add("lucidcode Halovision Device");
+        }
+
+        private void OpenVideoDevice()
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo filterInfo in videoDevices)
+            {
+                if (cmbDevices.Text == filterInfo.Name)
+                {
+                    // create video source
+                    videoSource = new VideoCaptureDevice(filterInfo.MonikerString);
+                    // set NewFrame event handler
+                    videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+                    // start the video source
+                    videoSource.Start();
+                    return;
+                }
+            }
+        }
+        private void LoadClassifiers()
+        {
+            cmbClassifier.Items.Add("None");
+            
+            if (!Directory.Exists($"{lucidScribeDataPath}\\Classifiers"))
+            {
+                return;
+            }
+
+            foreach (string filename in Directory.EnumerateFiles($"{lucidScribeDataPath}\\Classifiers", "haarcascade*.xml", SearchOption.AllDirectories))
+            {
+                string classifierName = new FileInfo(filename).Name.Replace(".xml", "");
+                cmbClassifier.Items.Add(classifierName);
+            }
+            if (cmbClassifier.Items.Count > 0)
+            {
+                cmbClassifier.Text = cmbClassifier.Items[0].ToString();
+            }
+        }
+
+        private void LoadClassifier()
+        {
+            try
+            {
+                cascadeClassifier = null;
+                if (cmbClassifier.Text != "" && cmbClassifier.Text != "None")
+                {
+                    cascadeClassifier = new CascadeClassifier($"{lucidScribeDataPath}\\Classifiers\\{cmbClassifier.Text}.xml");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "LucidScribe.LoadClassifier()", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -164,7 +203,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             XmlDocument xmlSettings = new XmlDocument();
 
-            if (!File.Exists(m_strPath + "Plugins\\Halovision.User.lsd"))
+            var settingsFilePath = $"{lucidScribeDataPath}\\Plugins\\Halovision.User.lsd";
+
+            if (!File.Exists(settingsFilePath))
             {
                 String defaultSettings = "<LucidScribeData>";
                 defaultSettings += "<Plugin>";
@@ -178,16 +219,19 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<EyeMoveMin>4</EyeMoveMin>";
                 defaultSettings += "<EyeMoveMax>200</EyeMoveMax>";
                 defaultSettings += "<IdleTicks>8</IdleTicks>";
-                defaultSettings += "<IgnorePercentage>16</IgnorePercentage>";
+                defaultSettings += "<IgnorePercentage>100</IgnorePercentage>";
+                defaultSettings += "<CopyFromScreen>0</CopyFromScreen>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
-                defaultSettings += "<DetectFace>0</DetectFace>";
+                defaultSettings += "<DotThreshold>200</DotThreshold>";
+                defaultSettings += "<DashThreshold>600</DashThreshold>";
+                defaultSettings += "<Classifier>None</Classifier>";
                 defaultSettings += "</Plugin>";
                 defaultSettings += "</LucidScribeData>";
-                File.WriteAllText(m_strPath + "Plugins\\Halovision.User.lsd", defaultSettings);
+                File.WriteAllText(settingsFilePath, defaultSettings);
             }
 
-            xmlSettings.Load(m_strPath + "Plugins\\Halovision.User.lsd");
+            xmlSettings.Load(settingsFilePath);
 
             cmbAlgorithm.Text = xmlSettings.DocumentElement.SelectSingleNode("//Algorithm").InnerText;
             cmbPixelThreshold.Text = xmlSettings.DocumentElement.SelectSingleNode("//PixelThreshold").InnerText;
@@ -214,16 +258,21 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 txtDeviceURL.Text = xmlSettings.DocumentElement.SelectSingleNode("//DeviceURL").InnerText;
             }
 
+            if (xmlSettings.DocumentElement.SelectSingleNode("//CopyFromScreen") != null && xmlSettings.DocumentElement.SelectSingleNode("//CopyFromScreen").InnerText == "1")
+            {
+                chkCopyFromScreen.Checked = true;
+                CopyFromScreen = true;
+            }
+
             if (xmlSettings.DocumentElement.SelectSingleNode("//RecordVideo") != null && xmlSettings.DocumentElement.SelectSingleNode("//RecordVideo").InnerText == "1")
             {
                 chkRecordVideo.Checked = true;
                 RecordVideo = true;
             }
 
-            if (xmlSettings.DocumentElement.SelectSingleNode("//DetectFace") != null && xmlSettings.DocumentElement.SelectSingleNode("//DetectFace").InnerText == "1")
+            if (xmlSettings.DocumentElement.SelectSingleNode("//Classifier") != null)
             {
-                chkDetectFace.Checked = true;
-                DetectFace = true;
+                cmbClassifier.Text = xmlSettings.DocumentElement.SelectSingleNode("//Classifier").InnerText;
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//TopMost") != null && xmlSettings.DocumentElement.SelectSingleNode("//TopMost").InnerText == "0")
@@ -286,6 +335,24 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 chkTCMP.Checked = true;
                 TCMP = true;
             }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//DotThreshold") != null)
+            {
+                dotThresholdInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//DotThreshold").InnerText);
+            }
+            else
+            {
+                dotThresholdInput.Value = DotThreshold;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//DashThreshold") != null)
+            {
+                dashThresholdInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//DashThreshold").InnerText);
+            }
+            else
+            {
+                dashThresholdInput.Value = DashThreshold;
+            }
         }
 
         private void cmbDevices_SelectedIndexChanged(object sender, EventArgs e)
@@ -310,21 +377,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 ConnectHalovisionDevice();
                 return;
             }
-            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-            foreach (FilterInfo filterInfo in videoDevices)
-            {
-                if (cmbDevices.Text == filterInfo.Name)
-                {
-                    // create video source
-                    videoSource = new VideoCaptureDevice(filterInfo.MonikerString);
-                    // set NewFrame event handler
-                    videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-                    // start the video source
-                    videoSource.Start();
-                    return;
-                }
-            }
-            //}
+            OpenVideoDevice();
         }
 
         // VLC will read video from the named pipe.
@@ -342,7 +395,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 if (txtDeviceURL.Text.Contains("://"))
                 {
                     libvlc = new LibVLC(enableDebugLogs: true);
-                    libvlc.SetLogFile(m_strPath + "vlc.log");
+                    libvlc.SetLogFile($"{lucidScribeDataPath}\\vlc.log");
 
                     using (Media media = new Media(libvlc, txtDeviceURL.Text, FromType.FromLocation))
                     {
@@ -424,38 +477,46 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public void CaptureControl(ref Bitmap bmp, int width, int height)
         {
             bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            using (Graphics graphics = Graphics.FromImage(bmp))
+
+            if (CopyFromScreen)
             {
-                graphics.CopyFromScreen(this.Location.X + 26, this.Location.Y + 71, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
-                graphics.Dispose();
+                using (Graphics graphics = Graphics.FromImage(bmp))
+                {
+                    graphics.CopyFromScreen(this.Location.X + 26, this.Location.Y + 71, 0, 0, new Size(width, height), CopyPixelOperation.SourceCopy);
+                    graphics.Dispose();
+                }
+            }
+            else
+            {
+                pbDisplay.DrawToBitmap(bmp, new Rectangle(0, 0, pbDisplay.Width, pbDisplay.Height));
             }
         }
 
         private void CreateDirectories()
         {
-            if (!Directory.Exists(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy")))
+            if (!Directory.Exists($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}"))
             {
-                Directory.CreateDirectory(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy"));
+                Directory.CreateDirectory($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}");
             }
 
-            if (!Directory.Exists(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM")))
+            if (!Directory.Exists($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}"))
             {
-                Directory.CreateDirectory(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM"));
+                Directory.CreateDirectory($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}");
             }
 
-            if (!Directory.Exists(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd")))
+            if (!Directory.Exists($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}"))
             {
-                Directory.CreateDirectory(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd"));
+                Directory.CreateDirectory($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}");
             }
 
-            if (!Directory.Exists(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH")))
+            if (!Directory.Exists($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}\\{Strings.Format(DateTime.Now, "HH")}"))
             {
-                Directory.CreateDirectory(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH"));
+                Directory.CreateDirectory($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}\\{Strings.Format(DateTime.Now, "HH")}");
             }
 
-            if (!Directory.Exists(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm")))
+            if (!Directory.Exists($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}\\{Strings.Format(DateTime.Now, "HH")}\\{Strings.Format(DateTime.Now, "mm")}"))
             {
-                Directory.CreateDirectory(m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm"));
+                Directory.CreateDirectory($"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}\\{Strings.Format(DateTime.Now, "HH")}\\{Strings.Format(DateTime.Now, "mm")}");
             }
         }
         private void tmrDiff_Tick(object sender, EventArgs e)
@@ -472,16 +533,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 int diff = 0;
                 CaptureControl(ref currentBitmap, pbDisplay.Width, pbDisplay.Height);
 
-                if (DetectFace && currentBitmap != null)
+                if (cascadeClassifier != null && currentBitmap != null)
                 {
                     Image<Bgr, byte> imageFrame = new Image<Bgr, Byte>(currentBitmap);
                     Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
-                    var detectedFaces = cascadeClassifier.DetectMultiScale(grayFrame);
-
-                    if (detectedFaces.Length > 0)
-                    {
-                        lastFaceRegion = detectedFaces[0];
-                    }
+                    faceRegions = cascadeClassifier.DetectMultiScale(grayFrame);
                 }
 
                 Difference(ref previousBitmap, ref currentBitmap, out diff);
@@ -505,7 +561,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (feedChanged || diff > 0)
                     {
                         CreateDirectories();
-                        String secondFile = m_strPath + "Days\\" + Strings.Format(DateTime.Now, "yyyy") + "\\" + Strings.Format(DateTime.Now, "MM") + "\\" + Strings.Format(DateTime.Now, "dd") + "\\" + Strings.Format(DateTime.Now, "HH") + "\\" + Strings.Format(DateTime.Now, "mm") + "\\" + Strings.Format(DateTime.Now, "ss.") + DateTime.Now.Millisecond + ".jpg";
+                        String secondFile = $"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}\\{Strings.Format(DateTime.Now, "HH")}\\{Strings.Format(DateTime.Now, "mm")}\\{Strings.Format(DateTime.Now, "ss.")}{DateTime.Now.Millisecond}.jpg";
                         pbDifference.Image.Save(secondFile, System.Drawing.Imaging.ImageFormat.Jpeg);
                         if (diff == 0)
                         {
@@ -519,7 +575,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     feedChanged = true;
                 }
 
-                //Value = diff;
                 if (ValueChanged != null)
                 {
                     ValueChanged(diff);
@@ -532,10 +587,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             processing = false;
         }
-        List<int> m_arrHistory = new List<int>();
 
         Random random = new Random();
         String effect = "White";
+        byte highlight = 200;
         private void Difference(ref Bitmap bitmap1, ref Bitmap bitmap2, out int diff)
         {
             diff = 0;
@@ -560,118 +615,202 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             int yEnd = bmd2.Height;
             int xStart = 0;
             int xEnd = bmd2.Width;
+            bool staticBorders = true;
 
-            if (DetectFace && lastFaceRegion != null)
+            Rectangle[] regions = new Rectangle[] { new Rectangle(0, 0, bitmap1.Width, bitmap1.Height) };
+
+            if (faceRegions != null && faceRegions.Length > 0)
             {
-                yStart = lastFaceRegion.Y;
-                yEnd = lastFaceRegion.Y + lastFaceRegion.Height;
-                xStart = lastFaceRegion.X;
-                xEnd = lastFaceRegion.X + lastFaceRegion.Width;
+                regions = faceRegions;
             }
 
             unsafe
             {
-
-                for (int y = yStart; y < yEnd; y++)
+                foreach (Rectangle region in regions)
                 {
-                    byte* row1 = (byte*)bmd1.Scan0 + (y * bmd1.Stride);
-                    byte* row2 = (byte*)bmd2.Scan0 + (y * bmd2.Stride);
+                    yStart = region.Y;
+                    yEnd = region.Y + region.Height;
+                    xStart = region.X;
+                    xEnd = region.X + region.Width;
 
-                    int rowDifferences = 0;
-
-                    for (int x = xStart; x < xEnd; x++)
+                    for (int y = yStart; y < yEnd; y++)
                     {
-                        int bDiff = Math.Abs(row1[x * PixelSize] - row2[x * PixelSize]);
-                        int gDiff = Math.Abs(row1[x * PixelSize + 1] - row2[x * PixelSize + 1]);
-                        int rDiff = Math.Abs(row1[x * PixelSize + 2] - row2[x * PixelSize + 2]);
+                        byte* row1 = (byte*)bmd1.Scan0 + (y * bmd1.Stride);
+                        byte* row2 = (byte*)bmd2.Scan0 + (y * bmd2.Stride);
 
-                        int pixelDiff = rDiff + gDiff + bDiff;
+                        int rowDifferences = 0;
 
-                        if (pixelDiff >= PixelThreshold)
+                        for (int x = xStart; x < xEnd; x++)
                         {
-                            rowDifferences++;
-                            changedPixels++;
-                        }
-                        else
-                        {
-                            rowDifferences = 0;
-                        }
+                            int bDiff = Math.Abs(row1[x * PixelSize] - row2[x * PixelSize]);
+                            int gDiff = Math.Abs(row1[x * PixelSize + 1] - row2[x * PixelSize + 1]);
+                            int rDiff = Math.Abs(row1[x * PixelSize + 2] - row2[x * PixelSize + 2]);
 
-                        totalPixels++;
-                        if (rowDifferences >= PixelsInARow)
-                        {
-                            differences += (Sensitivity);
-                            int r = row2[x * PixelSize + 2];
-                            int g = row2[x * PixelSize + 1];
-                            int b = row2[x * PixelSize];
+                            int pixelDiff = rDiff + gDiff + bDiff;
 
-                            if (effect == "Psychedelic")
+                            if (pixelDiff >= PixelThreshold)
                             {
-                                int ran = random.Next(1, 4);
-                                if (ran == 1)
-                                {
-                                    r = r + (pixelDiff * 2);
-                                }
-                                else if (ran == 2)
-                                {
-                                    g = g + (pixelDiff * 2);
-                                }
-                                else if (ran == 3)
-                                {
-                                    b = b + (pixelDiff * 2);
-                                }
-                                else
-                                {
-                                    r = r + (pixelDiff * 2);
-                                    g = g + (pixelDiff * 2);
-                                    b = b + (pixelDiff * 2);
-                                }
+                                rowDifferences++;
+                                changedPixels++;
                             }
                             else
                             {
-                                r = r + (pixelDiff);
-                                g = g + (pixelDiff);
-                                b = b + (pixelDiff);
+                                rowDifferences = 0;
                             }
 
-                            if (r > 255) r = 255;
-                            if (g > 255) g = 255;
-                            if (b > 255) b = 255;
+                            totalPixels++;
+                            if (rowDifferences >= PixelsInARow)
+                            {
+                                differences += (Sensitivity);
+                                int r = row2[x * PixelSize + 2];
+                                int g = row2[x * PixelSize + 1];
+                                int b = row2[x * PixelSize];
 
-                            row2[x * PixelSize + 2] = (byte)r;
-                            row2[x * PixelSize + 1] = (byte)g;
-                            row2[x * PixelSize] = (byte)b;
+                                if (effect == "Psychedelic")
+                                {
+                                    int ran = random.Next(1, 4);
+                                    if (ran == 1)
+                                    {
+                                        r = r + (pixelDiff * 2);
+                                    }
+                                    else if (ran == 2)
+                                    {
+                                        g = g + (pixelDiff * 2);
+                                    }
+                                    else if (ran == 3)
+                                    {
+                                        b = b + (pixelDiff * 2);
+                                    }
+                                    else
+                                    {
+                                        r = r + (pixelDiff * 2);
+                                        g = g + (pixelDiff * 2);
+                                        b = b + (pixelDiff * 2);
+                                    }
+                                }
+                                else
+                                {
+                                    r = r + (pixelDiff);
+                                    g = g + (pixelDiff);
+                                    b = b + (pixelDiff);
+                                }
+
+                                if (r > 255) r = 255;
+                                if (g > 255) g = 255;
+                                if (b > 255) b = 255;
+
+                                row2[x * PixelSize + 2] = (byte)r;
+                                row2[x * PixelSize + 1] = (byte)g;
+                                row2[x * PixelSize] = (byte)b;
+                            }
                         }
                     }
-                }
 
-                if (DetectFace && lastFaceRegion != null)
-                {
-                    byte* row2 = (byte*)bmd2.Scan0 + (lastFaceRegion.Y * bmd2.Stride);
-                    for (int x = lastFaceRegion.X; x <= lastFaceRegion.X + lastFaceRegion.Width; x++)
+                    if (cascadeClassifier != null)
                     {
-                        row2[x * PixelSize + 2] = (byte)255;
-                        row2[x * PixelSize + 1] = (byte)255;
-                        row2[x * PixelSize] = (byte)225;
-                    }
-                    row2 = (byte*)bmd2.Scan0 + ((lastFaceRegion.Y + lastFaceRegion.Height) * bmd2.Stride);
-                    for (int x = lastFaceRegion.X; x <= lastFaceRegion.X + lastFaceRegion.Width; x++)
-                    {
-                        row2[x * PixelSize + 2] = (byte)255;
-                        row2[x * PixelSize + 1] = (byte)255;
-                        row2[x * PixelSize] = (byte)225;
-                    }
+                        // top
+                        byte* row2 = (byte*)bmd2.Scan0 + (region.Y * bmd2.Stride);
+                        for (int x = region.X; x <= region.X + region.Width; x++)
+                        {
+                            if (!staticBorders || staticBorders && random.Next(2) == 1)
+                            {
+                                row2[x * PixelSize] = highlight;
+                                row2[x * PixelSize + 1] = highlight;
+                                row2[x * PixelSize + 2] = highlight;
+                            }
+                        }
 
-                    for (int y = lastFaceRegion.Y; y <= lastFaceRegion.Y + lastFaceRegion.Height; y++)
-                    {
-                        row2 = (byte*)bmd2.Scan0 + ((y) * bmd2.Stride);
-                        row2[lastFaceRegion.X * PixelSize + 2] = (byte)255;
-                        row2[lastFaceRegion.X * PixelSize + 1] = (byte)255;
-                        row2[lastFaceRegion.X * PixelSize] = (byte)225;
+                        // top highlight
+                        if (region.Y > 0)
+                        {
+                            byte* row2Highlight = (byte*)bmd2.Scan0 + ((region.Y - 1) * bmd2.Stride);
+                            for (int x = region.X + 1; x <= region.X + region.Width - 1; x++)
+                            {
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[x * PixelSize] = highlight;
+                                    row2[x * PixelSize + 1] = highlight;
+                                    row2[x * PixelSize + 2] = highlight;
+                                }
+                            }
+                        }
 
-                        row2[(lastFaceRegion.X + lastFaceRegion.Width) * PixelSize + 2] = (byte)255;
-                        row2[(lastFaceRegion.X + lastFaceRegion.Width) * PixelSize + 1] = (byte)255;
-                        row2[(lastFaceRegion.X + lastFaceRegion.Width) * PixelSize] = (byte)225;
+                        // bottom
+                        if (region.Y + region.Height < bitmap2.Height)
+                        {
+                            row2 = (byte*)bmd2.Scan0 + ((region.Y + region.Height) * bmd2.Stride);
+                            for (int x = region.X; x <= region.X + region.Width; x++)
+                            {
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[x * PixelSize] = highlight;
+                                    row2[x * PixelSize + 1] = highlight;
+                                    row2[x * PixelSize + 2] = highlight;
+                                }
+                            }
+                        }
+
+                        // bottom highlight
+                        if (region.Y + region.Height + 1 < bitmap2.Height)
+                        {
+                            row2 = (byte*)bmd2.Scan0 + ((region.Y + region.Height + 1) * bmd2.Stride);
+                            for (int x = region.X + 1; x <= region.X + region.Width - 1; x++)
+                            {
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[x * PixelSize] = highlight;
+                                    row2[x * PixelSize + 1] = highlight;
+                                    row2[x * PixelSize + 2] = highlight;
+                                }
+                            }
+                        }
+
+
+                        for (int y = region.Y; y <= region.Y + region.Height; y++)
+                        {
+                            if (y < bitmap2.Height)
+                            {
+                                row2 = (byte*)bmd2.Scan0 + ((y) * bmd2.Stride);
+
+                                // left
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[region.X * PixelSize] = highlight;
+                                    row2[region.X * PixelSize + 1] = highlight;
+                                    row2[region.X * PixelSize + 2] = highlight;
+                                }
+
+                                // left highlight
+                                if (y > region.Y && y < region.Y + region.Height)
+                                {
+                                    if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                    {
+                                        row2[(region.X - 1) * PixelSize] = highlight;
+                                        row2[(region.X - 1) * PixelSize + 1] = highlight;
+                                        row2[(region.X - 1) * PixelSize + 2] = highlight;
+                                    }
+                                }
+
+                                // right
+                                if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                {
+                                    row2[(region.X + region.Width) * PixelSize] = highlight;
+                                    row2[(region.X + region.Width) * PixelSize + 1] = highlight;
+                                    row2[(region.X + region.Width) * PixelSize + 2] = highlight;
+                                }
+
+                                // right highlight
+                                if (y > region.Y && y < region.Y + region.Height)
+                                {
+                                    if (!staticBorders || staticBorders && random.Next(2) == 1)
+                                    {
+                                        row2[(region.X + region.Width) * PixelSize + 1] = highlight;
+                                        row2[(region.X + region.Width + 1) * PixelSize + 2] = highlight;
+                                        row2[(region.X + region.Width + 2) * PixelSize + 3] = highlight;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -724,61 +863,66 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             if (!loaded) return;
 
-            String defaultSettings = "<LucidScribeData>";
-            defaultSettings += "<Plugin>";
-            defaultSettings += "<Algorithm>" + cmbAlgorithm.Text + "</Algorithm>";
-            defaultSettings += "<Camera>" + cmbDevices.Text + "</Camera>";
-            defaultSettings += "<DeviceURL>" + txtDeviceURL.Text + "</DeviceURL>";
-            defaultSettings += "<PixelThreshold>" + cmbPixelThreshold.Text + "</PixelThreshold>";
-            defaultSettings += "<PixelsInARow>" + cmbPixelsInARow.Text + "</PixelsInARow>";
-            defaultSettings += "<FrameThreshold>" + cmbFrameThreshold.Text + "</FrameThreshold>";
-            defaultSettings += "<Sensitivity>" + cmbSensitivity.Text + "</Sensitivity>";
-            defaultSettings += "<TossThreshold>" + tossThresholdInput.Value + "</TossThreshold>";
-            defaultSettings += "<TossHalfLife>" + tossHalfLifeInput.Value + "</TossHalfLife>";
-            defaultSettings += "<EyeMoveMin>" + eyeMoveMinInput.Value + "</EyeMoveMin>";
-            defaultSettings += "<EyeMoveMax>" + eyeMoveMaxInput.Value + "</EyeMoveMax>";
-            defaultSettings += "<IdleTicks>" + idleTicksInput.Value + "</IdleTicks>";
-            defaultSettings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
+            String settings = "<LucidScribeData>";
+            settings += "<Plugin>";
+            settings += "<Algorithm>" + cmbAlgorithm.Text + "</Algorithm>";
+            settings += "<Camera>" + cmbDevices.Text + "</Camera>";
+            settings += "<DeviceURL>" + txtDeviceURL.Text + "</DeviceURL>";
+            settings += "<PixelThreshold>" + cmbPixelThreshold.Text + "</PixelThreshold>";
+            settings += "<PixelsInARow>" + cmbPixelsInARow.Text + "</PixelsInARow>";
+            settings += "<FrameThreshold>" + cmbFrameThreshold.Text + "</FrameThreshold>";
+            settings += "<Sensitivity>" + cmbSensitivity.Text + "</Sensitivity>";
+            settings += "<TossThreshold>" + tossThresholdInput.Value + "</TossThreshold>";
+            settings += "<TossHalfLife>" + tossHalfLifeInput.Value + "</TossHalfLife>";
+            settings += "<EyeMoveMin>" + eyeMoveMinInput.Value + "</EyeMoveMin>";
+            settings += "<EyeMoveMax>" + eyeMoveMaxInput.Value + "</EyeMoveMax>";
+            settings += "<IdleTicks>" + idleTicksInput.Value + "</IdleTicks>";
+            settings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
-            if (chkTCMP.Checked)
+            if (chkCopyFromScreen.Checked)
             {
-                defaultSettings += "<TCMP>1</TCMP>";
+                settings += "<CopyFromScreen>1</CopyFromScreen>";
             }
             else
             {
-                defaultSettings += "<TCMP>0</TCMP>";
+                settings += "<CopyFromScreen>0</CopyFromScreen>";
             }
 
             if (chkRecordVideo.Checked)
             {
-                defaultSettings += "<RecordVideo>1</RecordVideo>";
+                settings += "<RecordVideo>1</RecordVideo>";
             }
             else
             {
-                defaultSettings += "<RecordVideo>0</RecordVideo>";
+                settings += "<RecordVideo>0</RecordVideo>";
             }
-
-            if (chkDetectFace.Checked)
-            {
-                defaultSettings += "<DetectFace>1</DetectFace>";
-            }
-            else
-            {
-                defaultSettings += "<DetectFace>0</DetectFace>";
-            }
+            
+            settings += "<Classifier>" + cmbClassifier.Text + "</Classifier>";
 
             if (chkTopMost.Checked)
             {
-                defaultSettings += "<TopMost>1</TopMost>";
+                settings += "<TopMost>1</TopMost>";
             }
             else
             {
-                defaultSettings += "<TopMost>0</TopMost>";
+                settings += "<TopMost>0</TopMost>";
             }
 
-            defaultSettings += "</Plugin>";
-            defaultSettings += "</LucidScribeData>";
-            File.WriteAllText(m_strPath + "Plugins\\Halovision.User.lsd", defaultSettings);
+            if (chkTCMP.Checked)
+            {
+                settings += "<TCMP>1</TCMP>";
+            }
+            else
+            {
+                settings += "<TCMP>0</TCMP>";
+            }
+
+            settings += "<DotThreshold>" + dotThresholdInput.Value + "</DotThreshold>";
+            settings += "<DashThreshold>" + dashThresholdInput.Value + "</DashThreshold>";
+
+            settings += "</Plugin>";
+            settings += "</LucidScribeData>";
+            File.WriteAllText($"{lucidScribeDataPath}\\Plugins\\Halovision.User.lsd", settings);
         }
 
         private void mnuReconnectCamera_Click(object sender, EventArgs e)
@@ -825,12 +969,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             SaveSettings();
         }
 
-        private void chkDetectFace_CheckedChanged(object sender, EventArgs e)
-        {
-            DetectFace = chkDetectFace.Checked;
-            SaveSettings();
-        }
-
         private void chkTopMost_CheckedChanged(object sender, EventArgs e)
         {
             TopMost = chkTopMost.Checked;
@@ -864,6 +1002,30 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void idleTicksInput_ValueChanged(object sender, EventArgs e)
         {
             IdleTicks = (int)idleTicksInput.Value;
+            SaveSettings();
+        }
+
+        private void cmbClassifier_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadClassifier();
+            SaveSettings();
+        }
+
+        private void dotThresholdInput_ValueChanged(object sender, EventArgs e)
+        {
+            DotThreshold = (int)dotThresholdInput.Value;
+            SaveSettings();
+        }
+
+        private void dashThresholdInput_ValueChanged(object sender, EventArgs e)
+        {
+            DashThreshold = (int)dashThresholdInput.Value;
+            SaveSettings();
+        }
+
+        private void chkCopyFromScreen_CheckedChanged(object sender, EventArgs e)
+        {
+            CopyFromScreen = chkCopyFromScreen.Checked;
             SaveSettings();
         }
     }

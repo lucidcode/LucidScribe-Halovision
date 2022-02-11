@@ -108,6 +108,24 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             return visionForm.IdleTicks;
         }
+
+        public static int GetDashThreshold()
+        {
+            return visionForm.DashThreshold;
+        }
+
+        public static int GetDotThreshold()
+        {
+            return visionForm.DotThreshold;
+        }
+
+        public static bool TCMP
+        {
+            get
+            {
+                return visionForm.TCMP;
+            }
+        }
     }
 
     namespace EyeMin
@@ -124,14 +142,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
-                try
-                {
-                    return Device.Initialize();
-                }
-                catch (Exception ex)
-                {
-                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
-                }
+                return Device.Initialize();
             }
 
             public override double Value
@@ -163,14 +174,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
-                try
-                {
-                    return Device.Initialize();
-                }
-                catch (Exception ex)
-                {
-                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
-                }
+                return Device.Initialize();
             }
 
             public override double Value
@@ -204,14 +208,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
-                try
-                {
-                    return Device.Initialize();
-                }
-                catch (Exception ex)
-                {
-                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
-                }
+                return Device.Initialize();
             }
 
             public override double Value
@@ -264,14 +261,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
-                try
-                {
-                    return Device.Initialize();
-                }
-                catch (Exception ex)
-                {
-                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
-                }
+                return Device.Initialize();
             }
 
             List<int> history = new List<int>();
@@ -420,14 +410,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
-                try
-                {
-                    return Device.Initialize();
-                }
-                catch (Exception ex)
-                {
-                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
-                }
+                return Device.Initialize();
             }
 
             public override double Value
@@ -438,6 +421,70 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (tempValue > 999) { tempValue = 999; }
                     if (tempValue < 0) { tempValue = 0; }
                     return tempValue;
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
+    namespace Dot
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            public override string Name
+            {
+                get
+                {
+                    return "Dot";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                return Device.Initialize();
+            }
+
+            public override double Value
+            {
+                get
+                {
+                    return Device.GetDotThreshold();
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
+    namespace Dash
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            public override string Name
+            {
+                get
+                {
+                    return "Dash";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                return Device.Initialize();
+            }
+
+            public override double Value
+            {
+                get
+                {
+                    return Device.GetDashThreshold();
                 }
             }
 
