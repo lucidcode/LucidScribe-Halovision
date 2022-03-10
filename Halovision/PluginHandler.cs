@@ -247,6 +247,41 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
     }
 
+    namespace Vision
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
+        {
+            public override string Name
+            {
+                get
+                {
+                    return "Halovision";
+                }
+            }
+
+            public override bool Initialize()
+            {
+                return Device.Initialize();
+            }
+
+            public override double Value
+            {
+                get
+                {
+                    double tempValue = Device.GetVision();
+                    if (tempValue > 999) { tempValue = 999; }
+                    if (tempValue < 0) { tempValue = 0; }
+                    return tempValue;
+                }
+            }
+
+            public override void Dispose()
+            {
+                Device.Dispose();
+            }
+        }
+    }
+
     namespace REM
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
@@ -386,41 +421,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     if (intBlinks > 10) { intBlinks = 10; }
                     return intBlinks * 100;
-                }
-            }
-
-            public override void Dispose()
-            {
-                Device.Dispose();
-            }
-        }
-    }
-
-    namespace Vision
-    {
-        public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
-        {
-            public override string Name
-            {
-                get
-                {
-                    return "Halovision";
-                }
-            }
-
-            public override bool Initialize()
-            {
-                return Device.Initialize();
-            }
-
-            public override double Value
-            {
-                get
-                {
-                    double tempValue = Device.GetVision();
-                    if (tempValue > 999) { tempValue = 999; }
-                    if (tempValue < 0) { tempValue = 0; }
-                    return tempValue;
                 }
             }
 
