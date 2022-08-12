@@ -45,6 +45,7 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.chkAuralize = new System.Windows.Forms.CheckBox();
             this.chkCopyFromScreen = new System.Windows.Forms.CheckBox();
             this.dotThresholdInput = new System.Windows.Forms.NumericUpDown();
             this.dashThresholdInput = new System.Windows.Forms.NumericUpDown();
@@ -263,6 +264,7 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.chkAuralize);
             this.panel3D3.Controls.Add(this.chkCopyFromScreen);
             this.panel3D3.Controls.Add(this.dotThresholdInput);
             this.panel3D3.Controls.Add(this.dashThresholdInput);
@@ -306,12 +308,22 @@
             this.panel3D3.Size = new System.Drawing.Size(594, 220);
             this.panel3D3.TabIndex = 36;
             // 
+            // chkAuralize
+            // 
+            this.chkAuralize.Location = new System.Drawing.Point(9, 167);
+            this.chkAuralize.Name = "chkAuralize";
+            this.chkAuralize.Size = new System.Drawing.Size(84, 22);
+            this.chkAuralize.TabIndex = 15;
+            this.chkAuralize.Text = "Auralize";
+            this.chkAuralize.UseVisualStyleBackColor = true;
+            this.chkAuralize.CheckedChanged += new System.EventHandler(this.chkAuralize_CheckedChanged);
+            // 
             // chkCopyFromScreen
             // 
             this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 139);
             this.chkCopyFromScreen.Name = "chkCopyFromScreen";
             this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
-            this.chkCopyFromScreen.TabIndex = 11;
+            this.chkCopyFromScreen.TabIndex = 12;
             this.chkCopyFromScreen.Text = "Copy From Screen";
             this.chkCopyFromScreen.UseVisualStyleBackColor = true;
             this.chkCopyFromScreen.CheckedChanged += new System.EventHandler(this.chkCopyFromScreen_CheckedChanged);
@@ -416,7 +428,7 @@
             this.idleTicksInput.Size = new System.Drawing.Size(54, 21);
             this.idleTicksInput.TabIndex = 304;
             this.idleTicksInput.Value = new decimal(new int[] {
-            16,
+            18,
             0,
             0,
             0});
@@ -435,10 +447,10 @@
             // 
             // chkTopMost
             // 
-            this.chkTopMost.Location = new System.Drawing.Point(9, 190);
+            this.chkTopMost.Location = new System.Drawing.Point(9, 139);
             this.chkTopMost.Name = "chkTopMost";
             this.chkTopMost.Size = new System.Drawing.Size(84, 22);
-            this.chkTopMost.TabIndex = 17;
+            this.chkTopMost.TabIndex = 11;
             this.chkTopMost.Text = "Top Most";
             this.chkTopMost.UseVisualStyleBackColor = true;
             this.chkTopMost.CheckedChanged += new System.EventHandler(this.chkTopMost_CheckedChanged);
@@ -524,7 +536,7 @@
             0});
             this.tossHalfLifeInput.Name = "tossHalfLifeInput";
             this.tossHalfLifeInput.Size = new System.Drawing.Size(54, 21);
-            this.tossHalfLifeInput.TabIndex = 13;
+            this.tossHalfLifeInput.TabIndex = 14;
             this.tossHalfLifeInput.Value = new decimal(new int[] {
             10,
             0,
@@ -543,7 +555,7 @@
             0});
             this.tossThresholdInput.Name = "tossThresholdInput";
             this.tossThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.tossThresholdInput.TabIndex = 12;
+            this.tossThresholdInput.TabIndex = 13;
             this.tossThresholdInput.Value = new decimal(new int[] {
             800,
             0,
@@ -578,7 +590,7 @@
             this.chkRecordVideo.Location = new System.Drawing.Point(99, 166);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(145, 22);
-            this.chkRecordVideo.TabIndex = 14;
+            this.chkRecordVideo.TabIndex = 16;
             this.chkRecordVideo.Text = "Record Video";
             this.chkRecordVideo.UseVisualStyleBackColor = true;
             this.chkRecordVideo.CheckedChanged += new System.EventHandler(this.chkRecordVideo_CheckedChanged);
@@ -692,7 +704,7 @@
             this.cmbIgnorePercentage.Location = new System.Drawing.Point(361, 165);
             this.cmbIgnorePercentage.Name = "cmbIgnorePercentage";
             this.cmbIgnorePercentage.Size = new System.Drawing.Size(54, 21);
-            this.cmbIgnorePercentage.TabIndex = 287;
+            this.cmbIgnorePercentage.TabIndex = 17;
             this.cmbIgnorePercentage.SelectedIndexChanged += new System.EventHandler(this.cmbIgnorePercentage_SelectedIndexChanged);
             // 
             // label2
@@ -1038,7 +1050,7 @@
             // 
             // chkTCMP
             // 
-            this.chkTCMP.Location = new System.Drawing.Point(99, 192);
+            this.chkTCMP.Location = new System.Drawing.Point(9, 195);
             this.chkTCMP.Name = "chkTCMP";
             this.chkTCMP.Size = new System.Drawing.Size(145, 22);
             this.chkTCMP.TabIndex = 18;
@@ -1644,5 +1656,6 @@
         internal System.Windows.Forms.Label label17;
         internal System.Windows.Forms.Label label18;
         private System.Windows.Forms.CheckBox chkCopyFromScreen;
+        private System.Windows.Forms.CheckBox chkAuralize;
     }
 }

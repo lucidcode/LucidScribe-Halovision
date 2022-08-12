@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Media;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -124,6 +126,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             get
             {
                 return visionForm.TCMP;
+            }
+        }
+
+        public static bool Auralize
+        {
+            get
+            {
+                return visionForm.Auralize;
             }
         }
     }
@@ -251,6 +261,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
+            SoundPlayer sound = new SoundPlayer();
+
             public override string Name
             {
                 get
@@ -268,11 +280,35 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    double tempValue = Device.GetVision();
-                    if (tempValue > 999) { tempValue = 999; }
-                    if (tempValue < 0) { tempValue = 0; }
-                    return tempValue;
+                    double vision = Device.GetVision();
+                    if (vision > 999) { vision = 999; }
+                    if (vision < 0) { vision = 0; }
+
+                    if (Device.Auralize && vision > 0) {
+                        Auralize(vision);
+                    }
+                    
+                    return vision;
                 }
+            }
+
+            private void Auralize(double frequency)
+            {
+                var header = new WaveHeader();
+                var format = new FormatChunk();
+                var austioChunk = new DataChunk();
+                var sineData = new SineGenerator(frequency);
+
+                austioChunk.AddSampleData(sineData.Data, sineData.Data);
+                header.FileLength += format.Length() + austioChunk.Length();
+
+                var soundBytes = new List<byte>();
+                soundBytes.AddRange(header.GetBytes());
+                soundBytes.AddRange(format.GetBytes());
+                soundBytes.AddRange(austioChunk.GetBytes());
+
+                sound.Stream = new MemoryStream(soundBytes.ToArray());
+                sound.Play();
             }
 
             public override void Dispose()
