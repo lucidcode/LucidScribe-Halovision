@@ -51,6 +51,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public int DotThreshold = 200;
         public int DashThreshold = 600;
 
+        public bool Auralize = false;
+
         private VideoCaptureDevice videoSource;
         private Rectangle[] faceRegions;
         private CascadeClassifier cascadeClassifier;
@@ -223,6 +225,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<CopyFromScreen>0</CopyFromScreen>";
                 defaultSettings += "<RecordVideo>0</RecordVideo>";
                 defaultSettings += "<TCMP>0</TCMP>";
+                defaultSettings += "<Auralize>0</Auralize>";
                 defaultSettings += "<DotThreshold>200</DotThreshold>";
                 defaultSettings += "<DashThreshold>600</DashThreshold>";
                 defaultSettings += "<Classifier>None</Classifier>";
@@ -352,6 +355,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             else
             {
                 dashThresholdInput.Value = DashThreshold;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//Auralize") != null && xmlSettings.DocumentElement.SelectSingleNode("//Auralize").InnerText == "1")
+            {
+                chkAuralize.Checked = true;
             }
         }
 
@@ -917,6 +925,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 settings += "<TCMP>0</TCMP>";
             }
 
+            if (chkAuralize.Checked)
+            {
+                settings += "<Auralize>1</Auralize>";
+            }
+            else
+            {
+                settings += "<Auralize>0</Auralize>";
+            }
+
             settings += "<DotThreshold>" + dotThresholdInput.Value + "</DotThreshold>";
             settings += "<DashThreshold>" + dashThresholdInput.Value + "</DashThreshold>";
 
@@ -949,6 +966,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void chkTCMP_CheckedChanged(object sender, EventArgs e)
         {
             TCMP = chkTCMP.Checked;
+            SaveSettings();
+        }
+
+        private void chkAuralize_CheckedChanged(object sender, EventArgs e)
+        {
+            Auralize = chkAuralize.Checked;
             SaveSettings();
         }
 
