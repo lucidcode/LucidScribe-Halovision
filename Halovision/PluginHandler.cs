@@ -1,7 +1,9 @@
-﻿using System;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Media;
+using System.Drawing;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -11,7 +13,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         static bool Initialized;
         static bool InitError;
-        static int Value = 0;
+        static List<int> Readings = new List<int>() { 0 };
+
+        public static EventHandler<EventArgs> VisionChanged;
 
         static VisionForm visionForm;
         public static bool Initialize()
@@ -38,7 +42,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private static void VisionForm_ValueChanged(int value)
         {
-            Value = value;
+            Readings.Add(value);
+
+            if (Readings.Count > 8) Readings.RemoveAt(0);
+
+            if (VisionChanged != null)
+            {
+                VisionChanged((object)value, null);
+            }
         }
 
         static void loadVisionForm()
@@ -72,8 +83,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
 
         public static int GetVision()
-        {
-            return Value;
+        {            
+            int value = Readings.Sum() / Readings.Count;
+            if (value > 999) return 999;
+            return value;
         }
 
         public static int GetTossThreshold()
@@ -261,8 +274,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
-            SoundPlayer sound = new SoundPlayer();
-
             public override string Name
             {
                 get
@@ -287,33 +298,153 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (Device.Auralize && vision > 0) {
                         Auralize(vision);
                     }
-                    
+
                     return vision;
                 }
             }
 
             private void Auralize(double frequency)
             {
-                var header = new WaveHeader();
-                var format = new FormatChunk();
-                var austioChunk = new DataChunk();
-                var sineData = new SineGenerator(frequency);
+                var sineWave = new NAudio.Wave.SampleProviders.SignalGenerator()
+                {
+                    Gain = 0.1,
+                    Frequency = 256 + frequency,
+                    Type = SignalGeneratorType.Sin
+                }.Take(TimeSpan.FromMilliseconds(256));
 
-                austioChunk.AddSampleData(sineData.Data, sineData.Data);
-                header.FileLength += format.Length() + austioChunk.Length();
-
-                var soundBytes = new List<byte>();
-                soundBytes.AddRange(header.GetBytes());
-                soundBytes.AddRange(format.GetBytes());
-                soundBytes.AddRange(austioChunk.GetBytes());
-
-                sound.Stream = new MemoryStream(soundBytes.ToArray());
-                sound.Play();
+                var waveOutEvent = new WaveOutEvent();
+                waveOutEvent.Pause();
+                waveOutEvent.Init(sineWave);
+                waveOutEvent.Play();
             }
 
             public override void Dispose()
             {
                 Device.Dispose();
+            }
+        }
+    }
+
+    namespace RAW
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.ILluminatedPlugin
+        {
+
+            public string Name
+            {
+                get
+                {
+                    return "Halovision RAW";
+                }
+            }
+
+            public bool Initialize()
+            {
+                try
+                {
+                    bool initialized = Device.Initialize();
+                    Device.VisionChanged += VisionChanged;
+                    return initialized;
+                }
+                catch (Exception ex)
+                {
+                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
+                }
+            }
+
+            public event Interface.SenseHandler Sensed;
+            public void VisionChanged(object sender, EventArgs e)
+            {
+                if (ClearTicks)
+                {
+                    ClearTicks = false;
+                    TickCount = "";
+                }
+                int value = (int)sender;
+                if (value > 999) value = 999;
+                TickCount += value + ",";
+
+                if (ClearBuffer)
+                {
+                    ClearBuffer = false;
+                    BufferData = "";
+                }
+                BufferData += value + ",";
+            }
+
+            public void Dispose()
+            {
+                Device.VisionChanged -= VisionChanged;
+                Device.Dispose();
+            }
+
+            public Boolean isEnabled = false;
+            public Boolean Enabled
+            {
+                get
+                {
+                    return isEnabled;
+                }
+                set
+                {
+                    isEnabled = value;
+                }
+            }
+
+            public Color PluginColor = Color.White;
+            public Color Color
+            {
+                get
+                {
+                    return Color;
+                }
+                set
+                {
+                    Color = value;
+                }
+            }
+
+            private Boolean ClearTicks = false;
+            public String TickCount = "";
+            public String Ticks
+            {
+                get
+                {
+                    ClearTicks = true;
+                    return TickCount;
+                }
+                set
+                {
+                    TickCount = value;
+                }
+            }
+
+            private Boolean ClearBuffer = false;
+            public String BufferData = "";
+            public String Buffer
+            {
+                get
+                {
+                    ClearBuffer = true;
+                    return BufferData;
+                }
+                set
+                {
+                    BufferData = value;
+                }
+            }
+
+            int lastHour;
+            public int LastHour
+            {
+                get
+                {
+                    return lastHour;
+                }
+                set
+                {
+                    lastHour = value;
+                }
             }
         }
     }

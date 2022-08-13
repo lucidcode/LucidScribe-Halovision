@@ -633,6 +633,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5294BB40EE33B2C3602EF328FF25AADE"
+        "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_53FD229DEDBBC6B6C38C5D53D2512E09"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
@@ -1997,6 +2003,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5294BB40EE33B2C3602EF328FF25AADE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -5271,6 +5283,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5294BB40EE33B2C3602EF328FF25AADE"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:lucidcode.LucidScribe.Interface.Illuminated, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5294BB40EE33B2C3602EF328FF25AADE"
+                    {
+                    "Name" = "8:lucidcode.LucidScribe.Interface.Illuminated.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:lucidcode.LucidScribe.Interface.Illuminated.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_53FD229DEDBBC6B6C38C5D53D2512E09"
@@ -10813,15 +10856,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Lucid Scribe Halovision"
-        "ProductCode" = "8:{411774F8-3E0E-4CF2-9192-C614B596B336}"
-        "PackageCode" = "8:{29D970C5-AC16-4945-8EE1-803FDC2C989D}"
+        "ProductCode" = "8:{FCF5ED54-C369-448F-A2D6-782AF1035F52}"
+        "PackageCode" = "8:{07E5B406-9260-4E65-A99C-60379EA87339}"
         "UpgradeCode" = "8:{CAAB2187-AD23-435C-A3DB-568744247625}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.6"
+        "ProductVersion" = "8:1.1.7"
         "Manufacturer" = "8:lucidcode"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.lucidcode.com/Contact"
