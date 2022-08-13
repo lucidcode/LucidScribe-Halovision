@@ -190,6 +190,7 @@
             // tmrDiff
             // 
             this.tmrDiff.Enabled = true;
+            this.tmrDiff.Interval = 20;
             this.tmrDiff.Tick += new System.EventHandler(this.tmrDiff_Tick);
             // 
             // pbDifference

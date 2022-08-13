@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Media;
 using System.Threading;
@@ -12,6 +13,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         static bool Initialized;
         static bool InitError;
         static int Value = 0;
+        static int Readings = 0;
+
+        private static bool clearValue;
+
+        public static EventHandler<EventArgs> VisionChanged;
 
         static VisionForm visionForm;
         public static bool Initialize()
@@ -38,7 +44,20 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private static void VisionForm_ValueChanged(int value)
         {
-            Value = value;
+            Value = Value + value;
+            Readings = Readings + 1;
+
+            if (clearValue)
+            {
+                clearValue = false;
+                Readings = 0;
+                Value = 0;
+            }
+
+            if (VisionChanged != null)
+            {
+                VisionChanged((object)value, null);
+            }
         }
 
         static void loadVisionForm()
@@ -73,7 +92,13 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         public static int GetVision()
         {
-            return Value;
+            //if (Readings == 0) return 0;
+
+            int value = Value; //
+                               // Readings;
+            //if (Readings > 0) value = value / Readings;
+            clearValue = true;
+            return value;
         }
 
         public static int GetTossThreshold()
@@ -261,8 +286,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
-            SoundPlayer sound = new SoundPlayer();
-
             public override string Name
             {
                 get
@@ -273,6 +296,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
+
+                if (Device.Auralize) {
+                    System.Media.SystemSounds.Asterisk.Play();
+                }
                 return Device.Initialize();
             }
 
@@ -307,6 +334,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 soundBytes.AddRange(format.GetBytes());
                 soundBytes.AddRange(austioChunk.GetBytes());
 
+                var sound = new SoundPlayer();
                 sound.Stream = new MemoryStream(soundBytes.ToArray());
                 sound.Play();
             }
@@ -314,6 +342,128 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             public override void Dispose()
             {
                 Device.Dispose();
+            }
+        }
+    }
+
+    namespace RAW
+    {
+        public class PluginHandler : lucidcode.LucidScribe.Interface.ILluminatedPlugin
+        {
+
+            public string Name
+            {
+                get
+                {
+                    return "Halovision RAW";
+                }
+            }
+
+            public bool Initialize()
+            {
+                try
+                {
+                    bool initialized = Device.Initialize();
+                    Device.VisionChanged += VisionChanged;
+                    return initialized;
+                }
+                catch (Exception ex)
+                {
+                    throw (new Exception("The '" + Name + "' plugin failed to initialize: " + ex.Message));
+                }
+            }
+
+            public event Interface.SenseHandler Sensed;
+            public void VisionChanged(object sender, EventArgs e)
+            {
+                if (ClearTicks)
+                {
+                    ClearTicks = false;
+                    TickCount = "";
+                }
+                TickCount += sender + ",";
+
+                if (ClearBuffer)
+                {
+                    ClearBuffer = false;
+                    BufferData = "";
+                }
+                BufferData += sender + ",";
+            }
+
+            public void Dispose()
+            {
+                Device.VisionChanged -= VisionChanged;
+                Device.Dispose();
+            }
+
+            public Boolean isEnabled = false;
+            public Boolean Enabled
+            {
+                get
+                {
+                    return isEnabled;
+                }
+                set
+                {
+                    isEnabled = value;
+                }
+            }
+
+            public Color PluginColor = Color.White;
+            public Color Color
+            {
+                get
+                {
+                    return Color;
+                }
+                set
+                {
+                    Color = value;
+                }
+            }
+
+            private Boolean ClearTicks = false;
+            public String TickCount = "";
+            public String Ticks
+            {
+                get
+                {
+                    ClearTicks = true;
+                    return TickCount;
+                }
+                set
+                {
+                    TickCount = value;
+                }
+            }
+
+            private Boolean ClearBuffer = false;
+            public String BufferData = "";
+            public String Buffer
+            {
+                get
+                {
+                    ClearBuffer = true;
+                    return BufferData;
+                }
+                set
+                {
+                    BufferData = value;
+                }
+            }
+
+            int lastHour;
+            public int LastHour
+            {
+                get
+                {
+                    return lastHour;
+                }
+                set
+                {
+                    lastHour = value;
+                }
             }
         }
     }

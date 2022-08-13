@@ -121,6 +121,9 @@
       <HintPath>Dependencies\lucidcode.LucidScribe.Interface.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="lucidcode.LucidScribe.Interface.Illuminated">
+      <HintPath>Dependencies\lucidcode.LucidScribe.Interface.Illuminated.dll</HintPath>
+    </Reference>
     <Reference Include="lucidcode.LucidScribe.TCMP">
       <HintPath>Dependencies\lucidcode.LucidScribe.TCMP.dll</HintPath>
     </Reference>
