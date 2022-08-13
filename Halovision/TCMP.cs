@@ -1,6 +1,8 @@
 ﻿using lucidcode.LucidScribe.TCMP;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
@@ -217,11 +219,21 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                             {
                                 var myValue = Code.First(x => x.Value == signal);
                                 Morse = myValue.Key.ToString();
-                                SendKeys.Send(myValue.Key.ToString());
+                                var letter = myValue.Key.ToString();
+                                SendKeys.Send(letter);
                                 signal = "";
                                 history.Clear();
                                 SpaceSent = false;
                                 TicksSinceSpace = 0;
+
+                                if (Device.Auralize)
+                                {
+                                    MemoryStream mp3file = GetResourceStream(letter);
+                                    Mp3FileReader mp3reader = new Mp3FileReader(mp3file);
+                                    var waveOut = new WaveOutEvent(); 
+                                    waveOut.Init(mp3reader);
+                                    waveOut.Play();
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -234,6 +246,40 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     { return 820; }
 
                     return 0;
+                }
+            }
+
+            private MemoryStream GetResourceStream(String letter)
+            {
+                switch (letter.ToLower())
+                {
+                    case "a": return new MemoryStream(Properties.Resources.a);
+                    case "b": return new MemoryStream(Properties.Resources.b);
+                    case "c": return new MemoryStream(Properties.Resources.c);
+                    case "d": return new MemoryStream(Properties.Resources.d);
+                    case "e": return new MemoryStream(Properties.Resources.e);
+                    case "f": return new MemoryStream(Properties.Resources.f);
+                    case "g": return new MemoryStream(Properties.Resources.g);
+                    case "h": return new MemoryStream(Properties.Resources.h);
+                    case "i": return new MemoryStream(Properties.Resources.i);
+                    case "j": return new MemoryStream(Properties.Resources.j);
+                    case "k": return new MemoryStream(Properties.Resources.k);
+                    case "l": return new MemoryStream(Properties.Resources.l);
+                    case "m": return new MemoryStream(Properties.Resources.m);
+                    case "n": return new MemoryStream(Properties.Resources.n);
+                    case "o": return new MemoryStream(Properties.Resources.o);
+                    case "p": return new MemoryStream(Properties.Resources.p);
+                    case "q": return new MemoryStream(Properties.Resources.q);
+                    case "r": return new MemoryStream(Properties.Resources.r);
+                    case "s": return new MemoryStream(Properties.Resources.s);
+                    case "t": return new MemoryStream(Properties.Resources.t);
+                    case "u": return new MemoryStream(Properties.Resources.u);
+                    case "v": return new MemoryStream(Properties.Resources.v);
+                    case "w": return new MemoryStream(Properties.Resources.w);
+                    case "x": return new MemoryStream(Properties.Resources.x);
+                    case "y": return new MemoryStream(Properties.Resources.y);
+                    case "z": return new MemoryStream(Properties.Resources.z);
+                    default: return new MemoryStream(Properties.Resources.a);
                 }
             }
 

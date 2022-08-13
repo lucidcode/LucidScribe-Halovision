@@ -177,6 +177,7 @@
             // 
             // cmbDevices
             // 
+            this.cmbDevices.AccessibleName = "Device";
             this.cmbDevices.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbDevices.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -331,6 +332,7 @@
             // 
             // dotThresholdInput
             // 
+            this.dotThresholdInput.AccessibleName = "Dot Threshold";
             this.dotThresholdInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dotThresholdInput.Location = new System.Drawing.Point(361, 192);
             this.dotThresholdInput.Maximum = new decimal(new int[] {
@@ -355,6 +357,7 @@
             // 
             // dashThresholdInput
             // 
+            this.dashThresholdInput.AccessibleName = "Dash Threshold";
             this.dashThresholdInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dashThresholdInput.Location = new System.Drawing.Point(534, 192);
             this.dashThresholdInput.Maximum = new decimal(new int[] {
@@ -406,6 +409,7 @@
             // 
             // cmbClassifier
             // 
+            this.cmbClassifier.AccessibleName = "Classifier";
             this.cmbClassifier.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbClassifier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -418,6 +422,7 @@
             // 
             // idleTicksInput
             // 
+            this.idleTicksInput.AccessibleName = "Idle Ticks";
             this.idleTicksInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.idleTicksInput.Location = new System.Drawing.Point(534, 165);
             this.idleTicksInput.Maximum = new decimal(new int[] {
@@ -458,6 +463,7 @@
             // 
             // eyeMoveMaxInput
             // 
+            this.eyeMoveMaxInput.AccessibleName = "Eye Move Maximum";
             this.eyeMoveMaxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.eyeMoveMaxInput.Location = new System.Drawing.Point(534, 111);
             this.eyeMoveMaxInput.Maximum = new decimal(new int[] {
@@ -482,6 +488,7 @@
             // 
             // eyeMoveMinInput
             // 
+            this.eyeMoveMinInput.AccessibleName = "Eye Move Minimum";
             this.eyeMoveMinInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.eyeMoveMinInput.Location = new System.Drawing.Point(361, 111);
             this.eyeMoveMinInput.Maximum = new decimal(new int[] {
@@ -523,6 +530,7 @@
             // 
             // tossHalfLifeInput
             // 
+            this.tossHalfLifeInput.AccessibleName = "Toss Half-life";
             this.tossHalfLifeInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tossHalfLifeInput.Location = new System.Drawing.Point(534, 138);
             this.tossHalfLifeInput.Maximum = new decimal(new int[] {
@@ -547,6 +555,7 @@
             // 
             // tossThresholdInput
             // 
+            this.tossThresholdInput.AccessibleName = "Toss Threshold";
             this.tossThresholdInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tossThresholdInput.Location = new System.Drawing.Point(361, 138);
             this.tossThresholdInput.Maximum = new decimal(new int[] {
@@ -598,6 +607,7 @@
             // 
             // cmbIgnorePercentage
             // 
+            this.cmbIgnorePercentage.AccessibleName = "Ignore Percentage";
             this.cmbIgnorePercentage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbIgnorePercentage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbIgnorePercentage.FormattingEnabled = true;
@@ -721,6 +731,7 @@
             // 
             // cmbPixelThreshold
             // 
+            this.cmbPixelThreshold.AccessibleName = "Pixel Threshold";
             this.cmbPixelThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbPixelThreshold.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPixelThreshold.FormattingEnabled = true;
@@ -988,6 +999,7 @@
             // 
             // cmbPixelsInARow
             // 
+            this.cmbPixelsInARow.AccessibleName = "Pixels in a Row";
             this.cmbPixelsInARow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbPixelsInARow.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbPixelsInARow.FormattingEnabled = true;
@@ -1032,6 +1044,7 @@
             // 
             // txtDeviceURL
             // 
+            this.txtDeviceURL.AccessibleName = "Device URL";
             this.txtDeviceURL.Enabled = false;
             this.txtDeviceURL.Location = new System.Drawing.Point(99, 111);
             this.txtDeviceURL.Name = "txtDeviceURL";
@@ -1072,6 +1085,7 @@
             // 
             // cmbSensitivity
             // 
+            this.cmbSensitivity.AccessibleName = "Amplification";
             this.cmbSensitivity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbSensitivity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSensitivity.FormattingEnabled = true;
@@ -1371,6 +1385,7 @@
             // 
             // cmbAlgorithm
             // 
+            this.cmbAlgorithm.AccessibleName = "Algorithm";
             this.cmbAlgorithm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -1386,6 +1401,7 @@
             // 
             // label7
             // 
+            this.label7.AccessibleDescription = "Frame Threshold";
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label7.Location = new System.Drawing.Point(250, 57);
@@ -1397,6 +1413,7 @@
             // 
             // cmbFrameThreshold
             // 
+            this.cmbFrameThreshold.AccessibleName = "Frame Threshold";
             this.cmbFrameThreshold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbFrameThreshold.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFrameThreshold.FormattingEnabled = true;
@@ -1520,6 +1537,7 @@
             // 
             // label1
             // 
+            this.label1.AccessibleName = "Device";
             this.label1.ForeColor = System.Drawing.Color.MidnightBlue;
             this.label1.Location = new System.Drawing.Point(6, 29);
             this.label1.Name = "label1";
