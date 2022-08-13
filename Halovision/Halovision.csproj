@@ -268,6 +268,32 @@
     <Content Include="License-LGPL.txt" />
     <None Include="Resources\dash.wav" />
     <None Include="Resources\dot.wav" />
+    <None Include="Resources\z.mp3" />
+    <None Include="Resources\a.mp3" />
+    <None Include="Resources\b.mp3" />
+    <None Include="Resources\c.mp3" />
+    <None Include="Resources\d.mp3" />
+    <None Include="Resources\e.mp3" />
+    <None Include="Resources\f.mp3" />
+    <None Include="Resources\g.mp3" />
+    <None Include="Resources\h.mp3" />
+    <None Include="Resources\i.mp3" />
+    <None Include="Resources\j.mp3" />
+    <None Include="Resources\k.mp3" />
+    <None Include="Resources\l.mp3" />
+    <None Include="Resources\m.mp3" />
+    <None Include="Resources\n.mp3" />
+    <None Include="Resources\o.mp3" />
+    <None Include="Resources\p.mp3" />
+    <None Include="Resources\q.mp3" />
+    <None Include="Resources\r.mp3" />
+    <None Include="Resources\s.mp3" />
+    <None Include="Resources\t.mp3" />
+    <None Include="Resources\u.mp3" />
+    <None Include="Resources\v.mp3" />
+    <None Include="Resources\w.mp3" />
+    <None Include="Resources\x.mp3" />
+    <None Include="Resources\y.mp3" />
     <Content Include="x64\concrt140.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -44,7 +44,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             Readings.Add(value);
 
-            if (Readings.Count > 8) Readings.RemoveAt(0);
+            if (Readings.Count > 10) Readings.RemoveAt(0);
 
             if (VisionChanged != null)
             {
@@ -84,7 +84,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         public static int GetVision()
         {            
-            int value = Readings.Sum() / Readings.Count;
+            int value = Readings.Sum() / (Readings.Count  / 2);
             if (value > 999) return 999;
             return value;
         }
@@ -310,7 +310,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     Gain = 0.1,
                     Frequency = 256 + frequency,
                     Type = SignalGeneratorType.Sin
-                }.Take(TimeSpan.FromMilliseconds(256));
+                }.Take(TimeSpan.FromMilliseconds(128));
 
                 var waveOutEvent = new WaveOutEvent();
                 waveOutEvent.Pause();
