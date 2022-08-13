@@ -1,8 +1,9 @@
-﻿using System;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Media;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -12,10 +13,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         static bool Initialized;
         static bool InitError;
-        static int Value = 0;
-        static int Readings = 0;
-
-        private static bool clearValue;
+        static List<int> Readings = new List<int>() { 0 };
 
         public static EventHandler<EventArgs> VisionChanged;
 
@@ -44,15 +42,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private static void VisionForm_ValueChanged(int value)
         {
-            Value = Value + value;
-            Readings = Readings + 1;
+            Readings.Add(value);
 
-            if (clearValue)
-            {
-                clearValue = false;
-                Readings = 0;
-                Value = 0;
-            }
+            if (Readings.Count > 8) Readings.RemoveAt(0);
 
             if (VisionChanged != null)
             {
@@ -91,13 +83,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
 
         public static int GetVision()
-        {
-            //if (Readings == 0) return 0;
-
-            int value = Value; //
-                               // Readings;
-            //if (Readings > 0) value = value / Readings;
-            clearValue = true;
+        {            
+            int value = Readings.Sum() / Readings.Count;
+            if (value > 999) return 999;
             return value;
         }
 
@@ -296,10 +284,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
-
-                if (Device.Auralize) {
-                    System.Media.SystemSounds.Asterisk.Play();
-                }
                 return Device.Initialize();
             }
 
@@ -314,29 +298,24 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (Device.Auralize && vision > 0) {
                         Auralize(vision);
                     }
-                    
+
                     return vision;
                 }
             }
 
             private void Auralize(double frequency)
             {
-                var header = new WaveHeader();
-                var format = new FormatChunk();
-                var austioChunk = new DataChunk();
-                var sineData = new SineGenerator(frequency);
+                var sineWave = new NAudio.Wave.SampleProviders.SignalGenerator()
+                {
+                    Gain = 0.1,
+                    Frequency = 256 + frequency,
+                    Type = SignalGeneratorType.Sin
+                }.Take(TimeSpan.FromMilliseconds(256));
 
-                austioChunk.AddSampleData(sineData.Data, sineData.Data);
-                header.FileLength += format.Length() + austioChunk.Length();
-
-                var soundBytes = new List<byte>();
-                soundBytes.AddRange(header.GetBytes());
-                soundBytes.AddRange(format.GetBytes());
-                soundBytes.AddRange(austioChunk.GetBytes());
-
-                var sound = new SoundPlayer();
-                sound.Stream = new MemoryStream(soundBytes.ToArray());
-                sound.Play();
+                var waveOutEvent = new WaveOutEvent();
+                waveOutEvent.Pause();
+                waveOutEvent.Init(sineWave);
+                waveOutEvent.Play();
             }
 
             public override void Dispose()
@@ -381,14 +360,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     ClearTicks = false;
                     TickCount = "";
                 }
-                TickCount += sender + ",";
+                int value = (int)sender;
+                if (value > 999) value = 999;
+                TickCount += value + ",";
 
                 if (ClearBuffer)
                 {
                     ClearBuffer = false;
                     BufferData = "";
                 }
-                BufferData += sender + ",";
+                BufferData += value + ",";
             }
 
             public void Dispose()
