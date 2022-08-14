@@ -71,6 +71,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 {'7' , "--..."},
                 {'8' , "---.."},
                 {'9' , "----."},
+                {'⌫' , "----"},
+                {'⏎' , ".-.-"},
             };
 
             List<int> history = new List<int>();
@@ -84,162 +86,184 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    if (!Device.TCMP) { return 0; }
-
-                    int visionValue = Device.GetVision();
-                    if (visionValue > 999) { visionValue = 999; }
-                    if (visionValue < 0) { visionValue = 0; }
-
-                    if (!Started)
+                    try
                     {
-                        // Ignore any spike during startup
-                        PreliminaryTicks++;
-                        if (PreliminaryTicks > 10)
+                        if (!Device.TCMP) { return 0; }
+
+                        int visionValue = Device.GetVision();
+                        if (visionValue > 999) { visionValue = 999; }
+                        if (visionValue < 0) { visionValue = 0; }
+
+                        if (!Started)
                         {
-                            Started = true;
-                        }
-
-                        return 0;
-                    }
-
-                    int signalLength = 0;
-                    int dotHeight = Device.GetDotThreshold();
-                    int dashHeight = Device.GetDashThreshold();
-
-                    String signal = "";
-
-                    soundHistory.Add(visionValue);
-                    if (soundHistory.Count > 6)
-                    {
-                        int peakValue = 0;
-
-                        for (int i = 0; i < soundHistory.Count; i++)
-                        {
-                            if (soundHistory[i] > peakValue)
+                            // Ignore any spike during startup
+                            PreliminaryTicks++;
+                            if (PreliminaryTicks > 10)
                             {
-                                peakValue = soundHistory[i];
+                                Started = true;
                             }
+
+                            return 0;
                         }
 
-                        if (soundHistory[soundHistory.Count - 1] < dotHeight / 4 && soundHistory[soundHistory.Count - 2] < dotHeight / 4)
-                        {
-                            if (peakValue >= dashHeight)
-                            {
-                                dashSoundPlayer.Play();
-                                soundHistory.Clear();
-                            }
-                            else if (peakValue >= dotHeight)
-                            {
-                                dotSoundPlayer.Play();
-                                soundHistory.Clear();
-                            }
-                        }
-                    }
+                        int signalLength = 0;
+                        int dotHeight = Device.GetDotThreshold();
+                        int dashHeight = Device.GetDashThreshold();
 
-                    if ((visionValue >= dotHeight) || history.Count > 0)
-                    {
-                        history.Add(visionValue);
-                    }
+                        String signal = "";
 
-                    if (!SpaceSent & history.Count == 0)
-                    {
-                        TicksSinceSpace++;
-                        if (TicksSinceSpace > 34)
-                        {
-                            // Send the space key
-                            Morse = " ";
-                            SendKeys.Send(" ");
-                            SpaceSent = true;
-                            TicksSinceSpace = 0;
-                            history.Clear();
-                        }
-                    }
-
-                    if (history.Count > 34)
-                    {
-                        int nextOffset = 0;
-                        do
+                        soundHistory.Add(visionValue);
+                        if (soundHistory.Count > 6)
                         {
                             int peakValue = 0;
-                            for (int i = nextOffset; i < history.Count; i++)
+
+                            for (int i = 0; i < soundHistory.Count; i++)
                             {
-                                for (int x = i; x < history.Count; x++)
+                                if (soundHistory[i] > peakValue)
                                 {
-                                    if (history[x] > peakValue)
-                                    {
-                                        peakValue = history[x];
-                                    }
-
-                                    if (history[x] < dotHeight / 4 && history[x - 1] < dotHeight / 4)
-                                    {
-                                        nextOffset = x + 1;
-                                        break;
-                                    }
-
-                                    if (x == history.Count - 1)
-                                    {
-                                        nextOffset = -1;
-                                    }
+                                    peakValue = soundHistory[i];
                                 }
+                            }
 
+                            if (soundHistory[soundHistory.Count - 1] < dotHeight / 4 && soundHistory[soundHistory.Count - 2] < dotHeight / 4)
+                            {
                                 if (peakValue >= dashHeight)
                                 {
-                                    signal += "-";
-                                    signalLength++;
-                                    break;
+                                    dashSoundPlayer.Play();
+                                    soundHistory.Clear();
                                 }
                                 else if (peakValue >= dotHeight)
                                 {
-                                    signal += ".";
-                                    signalLength++;
+                                    dotSoundPlayer.Play();
+                                    soundHistory.Clear();
+                                }
+                            }
+                        }
+
+                        if ((visionValue >= dotHeight) || history.Count > 0)
+                        {
+                            history.Add(visionValue);
+                        }
+
+                        if (!SpaceSent & history.Count == 0)
+                        {
+                            TicksSinceSpace++;
+                            if (TicksSinceSpace > 34)
+                            {
+                                // Send the space key
+                                Morse = " ";
+                                SendKeys.Send(" ");
+                                SpaceSent = true;
+                                TicksSinceSpace = 0;
+                                history.Clear();
+                            }
+                        }
+
+                        if (history.Count > 42)
+                        {
+                            int nextOffset = 0;
+                            do
+                            {
+                                int peakValue = 0;
+                                for (int i = nextOffset; i < history.Count; i++)
+                                {
+                                    for (int x = i; x < history.Count; x++)
+                                    {
+                                        if (history[x] > peakValue)
+                                        {
+                                            peakValue = history[x];
+                                        }
+
+                                        if (history[x] < dotHeight / 4 && history[x - 1] < dotHeight / 4)
+                                        {
+                                            nextOffset = x + 1;
+                                            break;
+                                        }
+
+                                        if (x == history.Count - 1)
+                                        {
+                                            nextOffset = -1;
+                                        }
+                                    }
+
+                                    if (peakValue >= dashHeight)
+                                    {
+                                        signal += "-";
+                                        signalLength++;
+                                        break;
+                                    }
+                                    else if (peakValue >= dotHeight)
+                                    {
+                                        signal += ".";
+                                        signalLength++;
+                                        break;
+                                    }
+
+                                    if (i >= history.Count - 1)
+                                    {
+                                        nextOffset = -1;
+                                    }
+
+                                }
+
+                                if (nextOffset < 0 | nextOffset == history.Count)
+                                {
                                     break;
                                 }
 
-                                if (i >= history.Count - 1)
-                                {
-                                    nextOffset = -1;
-                                }
+                            } while (true);
 
-                            }
+                            history.RemoveAt(0);
 
-                            if (nextOffset < 0 | nextOffset == history.Count)
+                            // Check if the signal is morse
+                            try
                             {
-                                break;
-                            }
-
-                        } while (true);
-
-                        history.RemoveAt(0);
-
-                        // Check if the signal is morse
-                        try
-                        {
-                            // Make sure that we have a signal
-                            if (signal != "")
-                            {
-                                var myValue = Code.First(x => x.Value == signal);
-                                Morse = myValue.Key.ToString();
-                                var letter = myValue.Key.ToString();
-                                SendKeys.Send(letter);
-                                signal = "";
-                                history.Clear();
-                                SpaceSent = false;
-                                TicksSinceSpace = 0;
-
-                                if (Device.Auralize)
+                                // Make sure that we have a signal
+                                if (signal != "")
                                 {
-                                    SpeakLetter(letter);
+                                    var myValue = Code.First(x => x.Value == signal);
+                                    Morse = myValue.Key.ToString();
+                                    var letter = myValue.Key.ToString();
+
+                                    if (letter == "⌫")
+                                    {
+                                        SendKeys.Send("{BKSP}");
+                                    }
+                                    else if (letter == "⏎")
+                                    {
+                                        SendKeys.Send("{ENTER}");
+                                    }
+                                    else
+                                    {
+                                        SendKeys.Send(letter);
+                                    }
+
+                                    signal = "";
+                                    history.Clear();
+                                    SpaceSent = false;
+                                    TicksSinceSpace = 0;
+
+                                    if (Device.Auralize)
+                                    {
+                                        SpeakLetter(letter);
+                                    }
                                 }
+                            }
+                            catch (Exception ex)
+                            {
+                                String err = ex.Message;
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            String err = ex.Message;
-                        }
+
+                        if (history.Count > 0)
+                        { return 820; }
+
                     }
-
-                    if (history.Count > 0)
-                    { return 820; }
+                    catch (Exception ex)
+                    {
+                        history = new List<int>();
+                        soundHistory = new List<int>();
+                    }
 
                     return 0;
                 }
@@ -291,6 +315,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     case "x": return new MemoryStream(Properties.Resources.x);
                     case "y": return new MemoryStream(Properties.Resources.y);
                     case "z": return new MemoryStream(Properties.Resources.z);
+                    case "0": return new MemoryStream(Properties.Resources.o);
+                    case "1": return new MemoryStream(Properties.Resources._1);
+                    case "2": return new MemoryStream(Properties.Resources._2);
+                    case "3": return new MemoryStream(Properties.Resources._3);
+                    case "4": return new MemoryStream(Properties.Resources._4);
+                    case "5": return new MemoryStream(Properties.Resources._5);
+                    case "6": return new MemoryStream(Properties.Resources._6);
+                    case "7": return new MemoryStream(Properties.Resources._7);
+                    case "8": return new MemoryStream(Properties.Resources._8);
+                    case "9": return new MemoryStream(Properties.Resources._9);
+                    case "⌫": return new MemoryStream(Properties.Resources.rewind);
+                    case "⏎": return new MemoryStream(Properties.Resources.enter);
                     default: return new MemoryStream(Properties.Resources.a);
                 }
             }

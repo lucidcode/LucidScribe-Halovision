@@ -2164,6 +2164,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9768C46742605F22AB604239F03E17DD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D4D9A343EA19181E29E71FAFA4331A7F"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2171,6 +2177,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_476F2A159866458BDE29C4FEDF54200E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CBBBF4A3AED1DCF53F0D5FD2361F0AC0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2189,24 +2201,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2357E062E20D2135C519BA979BCEF26D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5294BB40EE33B2C3602EF328FF25AADE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9768C46742605F22AB604239F03E17DD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CBBBF4A3AED1DCF53F0D5FD2361F0AC0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2297,6 +2291,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_4D573E2A7378958B07F04729C64058BD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5294BB40EE33B2C3602EF328FF25AADE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -3056,7 +3056,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729                       "
+                "FrameworkVersion" = "8:3.5.30729                        "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -11352,15 +11352,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Lucid Scribe Halovision"
-        "ProductCode" = "8:{C8C5CCA0-7210-48C0-B8C8-B339B7632404}"
-        "PackageCode" = "8:{2A394A9A-198E-45B0-A407-E092BFCA8F28}"
+        "ProductCode" = "8:{B7093B1D-97EB-4A9A-9CAC-495C167DF879}"
+        "PackageCode" = "8:{D7C8450B-59CE-4FF0-BF59-7F606FD98BE9}"
         "UpgradeCode" = "8:{CAAB2187-AD23-435C-A3DB-568744247625}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.9"
+        "ProductVersion" = "8:1.2.2"
         "Manufacturer" = "8:lucidcode"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.lucidcode.com/Contact"
