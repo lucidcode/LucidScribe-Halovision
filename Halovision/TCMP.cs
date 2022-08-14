@@ -228,11 +228,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                                 if (Device.Auralize)
                                 {
-                                    MemoryStream mp3file = GetResourceStream(letter);
-                                    Mp3FileReader mp3reader = new Mp3FileReader(mp3file);
-                                    var waveOut = new WaveOutEvent(); 
-                                    waveOut.Init(mp3reader);
-                                    waveOut.Play();
+                                    SpeakLetter(letter);
                                 }
                             }
                         }
@@ -246,6 +242,22 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     { return 820; }
 
                     return 0;
+                }
+            }
+
+            private void SpeakLetter(String letter)
+            {
+                try
+                {
+                    MemoryStream mp3file = GetResourceStream(letter);
+                    Mp3FileReader mp3reader = new Mp3FileReader(mp3file);
+                    var waveOut = new WaveOutEvent();
+                    waveOut.Init(mp3reader);
+                    waveOut.Play();
+                }
+                catch (Exception ex)
+                {
+
                 }
             }
 
