@@ -294,6 +294,18 @@
     <None Include="Resources\w.mp3" />
     <None Include="Resources\x.mp3" />
     <None Include="Resources\y.mp3" />
+    <None Include="Resources\9.mp3" />
+    <None Include="Resources\8.mp3" />
+    <None Include="Resources\7.mp3" />
+    <None Include="Resources\6.mp3" />
+    <None Include="Resources\5.mp3" />
+    <None Include="Resources\4.mp3" />
+    <None Include="Resources\3.mp3" />
+    <None Include="Resources\2.mp3" />
+    <None Include="Resources\1.mp3" />
+    <None Include="Resources\rewind.mp3" />
+    <None Include="Resources\return.mp3" />
+    <None Include="Resources\enter.mp3" />
     <Content Include="x64\concrt140.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

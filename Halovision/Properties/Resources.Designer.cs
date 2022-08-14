@@ -63,6 +63,96 @@ namespace lucidcode.LucidScribe.Plugin.Halovision.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] _1 {
+            get {
+                object obj = ResourceManager.GetObject("_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _2 {
+            get {
+                object obj = ResourceManager.GetObject("_2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _3 {
+            get {
+                object obj = ResourceManager.GetObject("_3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _4 {
+            get {
+                object obj = ResourceManager.GetObject("_4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _5 {
+            get {
+                object obj = ResourceManager.GetObject("_5", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _6 {
+            get {
+                object obj = ResourceManager.GetObject("_6", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _7 {
+            get {
+                object obj = ResourceManager.GetObject("_7", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _8 {
+            get {
+                object obj = ResourceManager.GetObject("_8", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] _9 {
+            get {
+                object obj = ResourceManager.GetObject("_9", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] a {
             get {
                 object obj = ResourceManager.GetObject("a", resourceCulture);
@@ -124,6 +214,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision.Properties {
         internal static byte[] e {
             get {
                 object obj = ResourceManager.GetObject("e", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] enter {
+            get {
+                object obj = ResourceManager.GetObject("enter", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -254,6 +354,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision.Properties {
         internal static byte[] r {
             get {
                 object obj = ResourceManager.GetObject("r", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] rewind {
+            get {
+                object obj = ResourceManager.GetObject("rewind", resourceCulture);
                 return ((byte[])(obj));
             }
         }
