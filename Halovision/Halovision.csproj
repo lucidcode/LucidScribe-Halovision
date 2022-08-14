@@ -210,17 +210,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataChunk.cs" />
-    <Compile Include="FifoStream.cs" />
-    <Compile Include="FormatChunk.cs" />
     <Compile Include="PluginHandler.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SignalGenerator.cs" />
-    <Compile Include="SineGenerator.cs" />
+    <Compile Include="SineWaveProvider.cs" />
     <Compile Include="TCMP.cs" />
     <Compile Include="VisionForm.cs">
       <SubType>Form</SubType>

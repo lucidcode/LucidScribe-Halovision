@@ -274,6 +274,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
     {
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
+            private IWavePlayer player;
+            private SineWaveProvider sineProvider;
+
             public override string Name
             {
                 get
@@ -284,6 +287,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
+                sineProvider = new SineWaveProvider();
+
+                var waveOutEvent = new WaveOutEvent();
+                waveOutEvent.NumberOfBuffers = 2;
+                waveOutEvent.DesiredLatency = 100;
+                player = waveOutEvent;
+                player.Init(new SampleToWaveProvider(sineProvider));
+
                 return Device.Initialize();
             }
 
@@ -295,8 +306,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     if (vision > 999) { vision = 999; }
                     if (vision < 0) { vision = 0; }
 
-                    if (Device.Auralize && vision > 0) {
+                    if (Device.Auralize) {
+                        if (player.PlaybackState != PlaybackState.Playing)
+                        {
+                            player.Play();
+                        }
                         Auralize(vision);
+                    } else
+                    {
+                        if (player.PlaybackState == PlaybackState.Playing)
+                        {
+                            player.Pause();
+                        }
                     }
 
                     return vision;
@@ -305,27 +326,17 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             private void Auralize(double frequency)
             {
-                try
-                {
-                    var sineWave = new NAudio.Wave.SampleProviders.SignalGenerator()
-                    {
-                        Gain = 0.1,
-                        Frequency = 256 + frequency,
-                        Type = SignalGeneratorType.Sin
-                    }.Take(TimeSpan.FromMilliseconds(128));
-
-                    var waveOutEvent = new WaveOutEvent();
-                    waveOutEvent.Pause();
-                    waveOutEvent.Init(sineWave);
-                    waveOutEvent.Play();
-                } catch (Exception ex)
-                {
-
-                }
+                if (frequency > 0) frequency += 128;
+                sineProvider.Frequency = frequency;
             }
 
             public override void Dispose()
             {
+                if (player != null)
+                {
+                    player.Dispose();
+                    player = null;
+                }
                 Device.Dispose();
             }
         }
