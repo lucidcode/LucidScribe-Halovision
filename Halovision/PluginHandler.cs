@@ -305,17 +305,23 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             private void Auralize(double frequency)
             {
-                var sineWave = new NAudio.Wave.SampleProviders.SignalGenerator()
+                try
                 {
-                    Gain = 0.1,
-                    Frequency = 256 + frequency,
-                    Type = SignalGeneratorType.Sin
-                }.Take(TimeSpan.FromMilliseconds(128));
+                    var sineWave = new NAudio.Wave.SampleProviders.SignalGenerator()
+                    {
+                        Gain = 0.1,
+                        Frequency = 256 + frequency,
+                        Type = SignalGeneratorType.Sin
+                    }.Take(TimeSpan.FromMilliseconds(128));
 
-                var waveOutEvent = new WaveOutEvent();
-                waveOutEvent.Pause();
-                waveOutEvent.Init(sineWave);
-                waveOutEvent.Play();
+                    var waveOutEvent = new WaveOutEvent();
+                    waveOutEvent.Pause();
+                    waveOutEvent.Init(sineWave);
+                    waveOutEvent.Play();
+                } catch (Exception ex)
+                {
+
+                }
             }
 
             public override void Dispose()
