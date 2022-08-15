@@ -302,6 +302,8 @@
     <None Include="Resources\rewind.mp3" />
     <None Include="Resources\return.mp3" />
     <None Include="Resources\enter.mp3" />
+    <None Include="Resources\guitar.mp3" />
+    <None Include="Resources\glitch.mp3" />
     <Content Include="x64\concrt140.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

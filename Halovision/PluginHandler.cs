@@ -3,6 +3,7 @@ using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -238,7 +239,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 get
                 {
-                    history.Add(Convert.ToInt32(Device.GetVision()));
+                    history.Add(Device.GetVision());
                     if (history.Count > 1000) { history.RemoveAt(0); }
 
                     int tossValue = 0;
@@ -258,6 +259,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         tossValue = 0;
                     }
 
+                    if (tossValue == 999 - tossHalfLife)
+                    {
+                        PlayGlitch();
+                    }
+
                     Device.SetTossValue(tossValue);
                     return tossValue;
                 }
@@ -266,6 +272,22 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             public override void Dispose()
             {
                 Device.Dispose();
+            }
+
+            private void PlayGlitch()
+            {
+                try
+                {
+                    MemoryStream mp3file = new MemoryStream(Properties.Resources.glitch);
+                    Mp3FileReader mp3reader = new Mp3FileReader(mp3file);
+                    var waveOut = new WaveOutEvent();
+                    waveOut.Init(mp3reader);
+                    waveOut.Play();
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
     }
@@ -484,6 +506,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
 
             List<int> history = new List<int>();
+            int previousValue = 0;
 
             public override double Value
             {
@@ -500,7 +523,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     int eyeMoveMax = Device.GetEyeMoveMax();
                     int idleTicks = Device.GetIdleTicks();
 
-                    history.Add(Convert.ToInt32(Device.GetVision()));
+                    history.Add(Device.GetVision());
                     if (history.Count > 768) { history.RemoveAt(0); }
 
                     // Check for blinks
@@ -604,6 +627,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     { return 888; }
 
                     if (intBlinks > 10) { intBlinks = 10; }
+
+                    if (previousValue != intBlinks)
+                    {
+                        if (previousValue < intBlinks)
+                        {
+                            if (Device.Auralize) PluckString();
+                        }
+                        previousValue = intBlinks;
+                    }
+
                     return intBlinks * 100;
                 }
             }
@@ -611,6 +644,22 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             public override void Dispose()
             {
                 Device.Dispose();
+            }
+
+            private void PluckString()
+            {
+                try
+                {
+                    MemoryStream mp3file = new MemoryStream(Properties.Resources.guitar);
+                    Mp3FileReader mp3reader = new Mp3FileReader(mp3file);
+                    var waveOut = new WaveOutEvent();
+                    waveOut.Init(mp3reader);
+                    waveOut.Play();
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
     }

@@ -251,6 +251,26 @@ namespace lucidcode.LucidScribe.Plugin.Halovision.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] glitch {
+            get {
+                object obj = ResourceManager.GetObject("glitch", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] guitar {
+            get {
+                object obj = ResourceManager.GetObject("guitar", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] h {
             get {
                 object obj = ResourceManager.GetObject("h", resourceCulture);
