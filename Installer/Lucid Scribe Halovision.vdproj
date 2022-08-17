@@ -3056,7 +3056,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729                        "
+                "FrameworkVersion" = "8:3.5.30729                         "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -11352,15 +11352,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Lucid Scribe Halovision"
-        "ProductCode" = "8:{0D9CC507-CE76-4FD9-99D0-774734E8C965}"
-        "PackageCode" = "8:{B2C9CCE1-2D02-44FC-96D5-D34D5898A95A}"
+        "ProductCode" = "8:{ABC56BE3-FB17-44DB-AD5C-401721AD5623}"
+        "PackageCode" = "8:{A90843F2-091D-4DAA-B5D3-814734A16D07}"
         "UpgradeCode" = "8:{CAAB2187-AD23-435C-A3DB-568744247625}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.2.5"
+        "ProductVersion" = "8:1.2.6"
         "Manufacturer" = "8:lucidcode"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.lucidcode.com/Contact"

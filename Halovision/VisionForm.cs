@@ -52,6 +52,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public int DashThreshold = 600;
 
         public bool Auralize = false;
+        public WaveType WaveForm = WaveType.Square;
 
         private VideoCaptureDevice videoSource;
         private Rectangle[] faceRegions;
@@ -229,6 +230,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<DotThreshold>200</DotThreshold>";
                 defaultSettings += "<DashThreshold>600</DashThreshold>";
                 defaultSettings += "<Classifier>None</Classifier>";
+                defaultSettings += "<WaveForm>Sqaure</WaveForm>";
                 defaultSettings += "</Plugin>";
                 defaultSettings += "</LucidScribeData>";
                 File.WriteAllText(settingsFilePath, defaultSettings);
@@ -276,6 +278,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//Classifier") != null)
             {
                 cmbClassifier.Text = xmlSettings.DocumentElement.SelectSingleNode("//Classifier").InnerText;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//WaveForm") != null)
+            {
+                cmbWaveForm.Text = xmlSettings.DocumentElement.SelectSingleNode("//WaveForm").InnerText;
+            }
+            else
+            {
+                cmbWaveForm.Text = "Triangle";
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//TopMost") != null && xmlSettings.DocumentElement.SelectSingleNode("//TopMost").InnerText == "0")
@@ -906,6 +917,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             
             settings += "<Classifier>" + cmbClassifier.Text + "</Classifier>";
+            settings += "<WaveForm>" + cmbWaveForm.Text + "</WaveForm>";
 
             if (chkTopMost.Checked)
             {
@@ -1049,6 +1061,35 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void chkCopyFromScreen_CheckedChanged(object sender, EventArgs e)
         {
             CopyFromScreen = chkCopyFromScreen.Checked;
+            SaveSettings();
+        }
+
+        private void cmbWaveForm_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cmbWaveForm.Text)
+            {
+                case "Sin":
+                    WaveForm = WaveType.Sin;
+                    break;
+                case "SawTooth":
+                    WaveForm = WaveType.SawTooth;
+                    break;
+                case "Sqaure":
+                    WaveForm = WaveType.Square;
+                    break;
+                case "Triangle":
+                    WaveForm = WaveType.Triangle;
+                    break;
+                case "Sweep":
+                    WaveForm = WaveType.Sweep;
+                    break;
+                case "Pink":
+                    WaveForm = WaveType.Pink;
+                    break;
+                default:
+                    WaveForm = WaveType.Square;
+                    break;
+            }
             SaveSettings();
         }
     }

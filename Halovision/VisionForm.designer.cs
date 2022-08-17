@@ -85,6 +85,7 @@
             this.panel3D5 = new lucidcode.Controls.Panel3D();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.cmbWaveForm = new System.Windows.Forms.ComboBox();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -266,6 +267,7 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.cmbWaveForm);
             this.panel3D3.Controls.Add(this.chkAuralize);
             this.panel3D3.Controls.Add(this.chkCopyFromScreen);
             this.panel3D3.Controls.Add(this.dotThresholdInput);
@@ -312,20 +314,20 @@
             // 
             // chkAuralize
             // 
-            this.chkAuralize.Location = new System.Drawing.Point(9, 167);
+            this.chkAuralize.Location = new System.Drawing.Point(9, 139);
             this.chkAuralize.Name = "chkAuralize";
             this.chkAuralize.Size = new System.Drawing.Size(84, 22);
-            this.chkAuralize.TabIndex = 15;
+            this.chkAuralize.TabIndex = 11;
             this.chkAuralize.Text = "Auralize";
             this.chkAuralize.UseVisualStyleBackColor = true;
             this.chkAuralize.CheckedChanged += new System.EventHandler(this.chkAuralize_CheckedChanged);
             // 
             // chkCopyFromScreen
             // 
-            this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 139);
+            this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 167);
             this.chkCopyFromScreen.Name = "chkCopyFromScreen";
             this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
-            this.chkCopyFromScreen.TabIndex = 12;
+            this.chkCopyFromScreen.TabIndex = 16;
             this.chkCopyFromScreen.Text = "Copy From Screen";
             this.chkCopyFromScreen.UseVisualStyleBackColor = true;
             this.chkCopyFromScreen.CheckedChanged += new System.EventHandler(this.chkCopyFromScreen_CheckedChanged);
@@ -347,7 +349,7 @@
             0});
             this.dotThresholdInput.Name = "dotThresholdInput";
             this.dotThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.dotThresholdInput.TabIndex = 19;
+            this.dotThresholdInput.TabIndex = 21;
             this.dotThresholdInput.Value = new decimal(new int[] {
             200,
             0,
@@ -367,7 +369,7 @@
             0});
             this.dashThresholdInput.Name = "dashThresholdInput";
             this.dashThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.dashThresholdInput.TabIndex = 20;
+            this.dashThresholdInput.TabIndex = 22;
             this.dashThresholdInput.Value = new decimal(new int[] {
             600,
             0,
@@ -432,9 +434,9 @@
             0});
             this.idleTicksInput.Name = "idleTicksInput";
             this.idleTicksInput.Size = new System.Drawing.Size(54, 21);
-            this.idleTicksInput.TabIndex = 304;
+            this.idleTicksInput.TabIndex = 18;
             this.idleTicksInput.Value = new decimal(new int[] {
-            18,
+            8,
             0,
             0,
             0});
@@ -453,10 +455,10 @@
             // 
             // chkTopMost
             // 
-            this.chkTopMost.Location = new System.Drawing.Point(9, 139);
+            this.chkTopMost.Location = new System.Drawing.Point(9, 167);
             this.chkTopMost.Name = "chkTopMost";
             this.chkTopMost.Size = new System.Drawing.Size(84, 22);
-            this.chkTopMost.TabIndex = 11;
+            this.chkTopMost.TabIndex = 15;
             this.chkTopMost.Text = "Top Most";
             this.chkTopMost.UseVisualStyleBackColor = true;
             this.chkTopMost.CheckedChanged += new System.EventHandler(this.chkTopMost_CheckedChanged);
@@ -597,10 +599,10 @@
             // 
             // chkRecordVideo
             // 
-            this.chkRecordVideo.Location = new System.Drawing.Point(99, 166);
+            this.chkRecordVideo.Location = new System.Drawing.Point(99, 193);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(145, 22);
-            this.chkRecordVideo.TabIndex = 16;
+            this.chkRecordVideo.TabIndex = 20;
             this.chkRecordVideo.Text = "Record Video";
             this.chkRecordVideo.UseVisualStyleBackColor = true;
             this.chkRecordVideo.CheckedChanged += new System.EventHandler(this.chkRecordVideo_CheckedChanged);
@@ -1064,10 +1066,10 @@
             // 
             // chkTCMP
             // 
-            this.chkTCMP.Location = new System.Drawing.Point(9, 195);
+            this.chkTCMP.Location = new System.Drawing.Point(9, 193);
             this.chkTCMP.Name = "chkTCMP";
             this.chkTCMP.Size = new System.Drawing.Size(145, 22);
-            this.chkTCMP.TabIndex = 18;
+            this.chkTCMP.TabIndex = 19;
             this.chkTCMP.Text = "TCMP";
             this.chkTCMP.UseVisualStyleBackColor = true;
             this.chkTCMP.CheckedChanged += new System.EventHandler(this.chkTCMP_CheckedChanged);
@@ -1582,6 +1584,26 @@
             this.label4.Text = "Settings";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // cmbWaveForm
+            // 
+            this.cmbWaveForm.AccessibleName = "Wave Form";
+            this.cmbWaveForm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbWaveForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbWaveForm.FormattingEnabled = true;
+            this.cmbWaveForm.Items.AddRange(new object[] {
+            "Sin",
+            "SawTooth",
+            "Sqaure",
+            "Triangle",
+            "Sweep",
+            "Pink"});
+            this.cmbWaveForm.Location = new System.Drawing.Point(99, 138);
+            this.cmbWaveForm.Name = "cmbWaveForm";
+            this.cmbWaveForm.Size = new System.Drawing.Size(145, 21);
+            this.cmbWaveForm.TabIndex = 12;
+            this.cmbWaveForm.SelectedIndexChanged += new System.EventHandler(this.cmbWaveForm_SelectedIndexChanged);
+            // 
             // VisionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -1676,5 +1698,6 @@
         internal System.Windows.Forms.Label label18;
         private System.Windows.Forms.CheckBox chkCopyFromScreen;
         private System.Windows.Forms.CheckBox chkAuralize;
+        private System.Windows.Forms.ComboBox cmbWaveForm;
     }
 }

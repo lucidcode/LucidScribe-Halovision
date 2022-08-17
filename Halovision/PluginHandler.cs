@@ -150,6 +150,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 return visionForm.Auralize;
             }
         }
+
+        public static WaveType WaveForm
+        {
+            get
+            {
+                return visionForm.WaveForm;
+            }
+        }
     }
 
     namespace EyeMin
@@ -261,7 +269,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     if (tossValue == 999 - tossHalfLife)
                     {
-                        PlayGlitch();
+                        if (Device.Auralize)
+                        {
+                            PlayGlitch();
+                        }
                     }
 
                     Device.SetTossValue(tossValue);
@@ -297,7 +308,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public class PluginHandler : lucidcode.LucidScribe.Interface.LucidPluginBase
         {
             private IWavePlayer player;
-            private SineWaveProvider sineProvider;
+            private WaveProvider waveProvider;
+            private WaveType waveForm;
+            private WaveOutEvent waveOutEvent;
 
             public override string Name
             {
@@ -309,13 +322,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             public override bool Initialize()
             {
-                sineProvider = new SineWaveProvider();
+                waveForm = Device.WaveForm;
+                waveProvider = new WaveProvider(waveForm);
 
-                var waveOutEvent = new WaveOutEvent();
+                waveOutEvent = new WaveOutEvent();
                 waveOutEvent.NumberOfBuffers = 2;
                 waveOutEvent.DesiredLatency = 100;
                 player = waveOutEvent;
-                player.Init(new SampleToWaveProvider(sineProvider));
+                player.Init(new SampleToWaveProvider(waveProvider));
 
                 return Device.Initialize();
             }
@@ -334,7 +348,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                             player.Play();
                         }
                         Auralize(vision);
-                    } else
+                    }
+                    else
                     {
                         if (player.PlaybackState == PlaybackState.Playing)
                         {
@@ -348,8 +363,21 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             private void Auralize(double frequency)
             {
-                if (frequency > 0) frequency += 128;
-                sineProvider.Frequency = frequency;
+                if (waveForm == WaveType.Sin)
+                {
+                    if (frequency > 0) frequency += 256;
+                }
+
+                if (waveForm != Device.WaveForm)
+                {
+                    waveForm = Device.WaveForm;
+                    waveProvider = new WaveProvider(waveForm);
+                    player.Stop();
+                    player = waveOutEvent;
+                    player.Init(new SampleToWaveProvider(waveProvider));
+                    player.Play();
+                }
+                waveProvider.Frequency = frequency / 2;
             }
 
             public override void Dispose()
