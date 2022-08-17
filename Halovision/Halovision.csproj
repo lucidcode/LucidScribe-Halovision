@@ -216,7 +216,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SineWaveProvider.cs" />
+    <Compile Include="WaveProvider.cs" />
     <Compile Include="TCMP.cs" />
     <Compile Include="VisionForm.cs">
       <SubType>Form</SubType>
@@ -229,6 +229,7 @@
     <Compile Include="WaveHeader.cs" />
     <Compile Include="WaveNative.cs" />
     <Compile Include="WaveOut.cs" />
+    <Compile Include="WaveType.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
