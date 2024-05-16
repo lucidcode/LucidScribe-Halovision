@@ -52,7 +52,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public int DashThreshold = 600;
 
         public bool Auralize = false;
-        public WaveType WaveForm = WaveType.Square;
+        public WaveType WaveForm = WaveType.Triangle;
 
         private VideoCaptureDevice videoSource;
         private Rectangle[] faceRegions;
@@ -88,6 +88,13 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     return;
                 }
 
+                if (cmbDevices.Text == "lucidcode INSPEC")
+                {
+                    loaded = true;
+                    ConnectInspecDevice();
+                    return;
+                }
+
                 OpenVideoDevice();
 
                 loaded = true;
@@ -95,7 +102,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "LucidScribe.InitializePlugin()", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message + ex.StackTrace, "LucidScribe.InitializePlugin() 1", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -107,6 +114,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 cmbDevices.Items.Add(filterInfo.Name);
             }
+            cmbDevices.Items.Add("lucidcode INSPEC");
             cmbDevices.Items.Add("lucidcode Halovision Device");
         }
 
@@ -130,7 +138,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void LoadClassifiers()
         {
             cmbClassifier.Items.Add("None");
-            
+
             if (!Directory.Exists($"{lucidScribeDataPath}\\Classifiers"))
             {
                 return;
@@ -171,6 +179,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (cmbDevices.Text == "lucidcode Halovision Device")
             {
                 DisconnectHalovisionDevice();
+            }
+            else if (cmbDevices.Text == "lucidcode INSPEC")
+            {
+                DisconnectInspecDevice();
             }
             else
             {
@@ -230,7 +242,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<DotThreshold>200</DotThreshold>";
                 defaultSettings += "<DashThreshold>600</DashThreshold>";
                 defaultSettings += "<Classifier>None</Classifier>";
-                defaultSettings += "<WaveForm>Sqaure</WaveForm>";
+                defaultSettings += "<WaveForm>Triangle</WaveForm>";
                 defaultSettings += "</Plugin>";
                 defaultSettings += "</LucidScribeData>";
                 File.WriteAllText(settingsFilePath, defaultSettings);
@@ -311,7 +323,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//TossHalfLife") != null)
             {
                 tossHalfLifeInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//TossHalfLife").InnerText);
-            } 
+            }
             else
             {
                 tossHalfLifeInput.Value = TossHalfLife;
@@ -320,7 +332,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMin") != null)
             {
                 eyeMoveMinInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMin").InnerText);
-            } 
+            }
             else
             {
                 eyeMoveMinInput.Value = EyeMoveMin;
@@ -329,7 +341,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMax") != null)
             {
                 eyeMoveMaxInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//EyeMoveMax").InnerText);
-            } 
+            }
             else
             {
                 eyeMoveMaxInput.Value = EyeMoveMax;
@@ -338,7 +350,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//IdleTicks") != null)
             {
                 idleTicksInput.Value = Convert.ToDecimal(xmlSettings.DocumentElement.SelectSingleNode("//IdleTicks").InnerText);
-            } 
+            }
             else
             {
                 idleTicksInput.Value = IdleTicks;
@@ -376,7 +388,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private void cmbDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbDevices.Text == "lucidcode Halovision Device")
+            if (cmbDevices.Text == "lucidcode Halovision Device" ||
+                cmbDevices.Text == "lucidcode INSPEC")
             {
                 txtDeviceURL.Enabled = true;
                 lblDeviceURL.Enabled = true;
@@ -394,6 +407,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (cmbDevices.SelectedText == "lucidcode Halovision Device")
             {
                 ConnectHalovisionDevice();
+                return;
+            }
+            if (cmbDevices.SelectedText == "lucidcode INSPEC")
+            {
+                ConnectInspecDevice();
                 return;
             }
             OpenVideoDevice();
@@ -479,6 +497,37 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 videoChannel.CloseConnection();
                 videoPipe.Close();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void ConnectInspecDevice()
+        {
+            try
+            {
+                Core.Initialize();
+
+                libvlc = new LibVLC(enableDebugLogs: false);
+                using (Media media = new Media(libvlc, txtDeviceURL.Text, FromType.FromLocation))
+                {
+                    player = new MediaPlayer(media);
+                    player.Hwnd = pbDisplay.Handle;
+                    player.Play();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "LucidScribe.InitializePlugin()", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public void DisconnectInspecDevice()
+        {
+            try
+            {
+                player.Stop();
             }
             catch (Exception ex)
             {
@@ -842,7 +891,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
             diff = differences;
 
-            double percentage = (Convert.ToDouble(changedPixels) / Convert.ToDouble(totalPixels)) * 100;
+            double percentage = (changedPixels / totalPixels) * 100;
             if (percentage > IgnorePercentage)
             {
                 diff = 0;
@@ -1087,7 +1136,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     WaveForm = WaveType.Pink;
                     break;
                 default:
-                    WaveForm = WaveType.Square;
+                    WaveForm = WaveType.Triangle;
                     break;
             }
             SaveSettings();
