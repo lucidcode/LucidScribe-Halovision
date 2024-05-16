@@ -45,6 +45,7 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.cmbWaveForm = new System.Windows.Forms.ComboBox();
             this.chkAuralize = new System.Windows.Forms.CheckBox();
             this.chkCopyFromScreen = new System.Windows.Forms.CheckBox();
             this.dotThresholdInput = new System.Windows.Forms.NumericUpDown();
@@ -85,7 +86,8 @@
             this.panel3D5 = new lucidcode.Controls.Panel3D();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.cmbWaveForm = new System.Windows.Forms.ComboBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -103,6 +105,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).BeginInit();
             this.panel3D5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlPlugins
@@ -267,6 +270,8 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.numericUpDown1);
+            this.panel3D3.Controls.Add(this.label19);
             this.panel3D3.Controls.Add(this.cmbWaveForm);
             this.panel3D3.Controls.Add(this.chkAuralize);
             this.panel3D3.Controls.Add(this.chkCopyFromScreen);
@@ -309,8 +314,28 @@
             this.panel3D3.Controls.Add(this.cmbDevices);
             this.panel3D3.Location = new System.Drawing.Point(12, 214);
             this.panel3D3.Name = "panel3D3";
-            this.panel3D3.Size = new System.Drawing.Size(594, 220);
+            this.panel3D3.Size = new System.Drawing.Size(594, 249);
             this.panel3D3.TabIndex = 36;
+            // 
+            // cmbWaveForm
+            // 
+            this.cmbWaveForm.AccessibleName = "Wave Form";
+            this.cmbWaveForm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbWaveForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbWaveForm.FormattingEnabled = true;
+            this.cmbWaveForm.Items.AddRange(new object[] {
+            "Sin",
+            "SawTooth",
+            "Sqaure",
+            "Triangle",
+            "Sweep",
+            "Pink"});
+            this.cmbWaveForm.Location = new System.Drawing.Point(99, 138);
+            this.cmbWaveForm.Name = "cmbWaveForm";
+            this.cmbWaveForm.Size = new System.Drawing.Size(145, 21);
+            this.cmbWaveForm.TabIndex = 12;
+            this.cmbWaveForm.SelectedIndexChanged += new System.EventHandler(this.cmbWaveForm_SelectedIndexChanged);
             // 
             // chkAuralize
             // 
@@ -1584,32 +1609,47 @@
             this.label4.Text = "Settings";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // cmbWaveForm
+            // numericUpDown1
             // 
-            this.cmbWaveForm.AccessibleName = "Wave Form";
-            this.cmbWaveForm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbWaveForm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbWaveForm.FormattingEnabled = true;
-            this.cmbWaveForm.Items.AddRange(new object[] {
-            "Sin",
-            "SawTooth",
-            "Sqaure",
-            "Triangle",
-            "Sweep",
-            "Pink"});
-            this.cmbWaveForm.Location = new System.Drawing.Point(99, 138);
-            this.cmbWaveForm.Name = "cmbWaveForm";
-            this.cmbWaveForm.Size = new System.Drawing.Size(145, 21);
-            this.cmbWaveForm.TabIndex = 12;
-            this.cmbWaveForm.SelectedIndexChanged += new System.EventHandler(this.cmbWaveForm_SelectedIndexChanged);
+            this.numericUpDown1.AccessibleName = "Dot Threshold";
+            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDown1.Location = new System.Drawing.Point(361, 217);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(54, 21);
+            this.numericUpDown1.TabIndex = 309;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            // 
+            // label19
+            // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label19.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label19.Location = new System.Drawing.Point(250, 218);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(105, 21);
+            this.label19.TabIndex = 310;
+            this.label19.Text = "Dot Threshold";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // VisionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(624, 449);
+            this.ClientSize = new System.Drawing.Size(624, 478);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel3D3);
             this.Font = new System.Drawing.Font("Verdana", 8.25F);
@@ -1637,6 +1677,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).EndInit();
             this.panel3D5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
     }
@@ -1699,5 +1740,7 @@
         private System.Windows.Forms.CheckBox chkCopyFromScreen;
         private System.Windows.Forms.CheckBox chkAuralize;
         private System.Windows.Forms.ComboBox cmbWaveForm;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        internal System.Windows.Forms.Label label19;
     }
 }
