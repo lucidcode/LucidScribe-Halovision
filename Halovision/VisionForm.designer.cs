@@ -45,6 +45,8 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
             this.cmbWaveForm = new System.Windows.Forms.ComboBox();
             this.chkAuralize = new System.Windows.Forms.CheckBox();
             this.chkCopyFromScreen = new System.Windows.Forms.CheckBox();
@@ -86,8 +88,6 @@
             this.panel3D5 = new lucidcode.Controls.Panel3D();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label19 = new System.Windows.Forms.Label();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -97,6 +97,7 @@
             this.panel3D1.SuspendLayout();
             this.panel3D2.SuspendLayout();
             this.panel3D3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotThresholdInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dashThresholdInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).BeginInit();
@@ -105,7 +106,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).BeginInit();
             this.panel3D5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlPlugins
@@ -317,6 +317,41 @@
             this.panel3D3.Size = new System.Drawing.Size(594, 249);
             this.panel3D3.TabIndex = 36;
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.AccessibleName = "Dot Threshold";
+            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDown1.Location = new System.Drawing.Point(361, 217);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(54, 21);
+            this.numericUpDown1.TabIndex = 309;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            // 
+            // label19
+            // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label19.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label19.Location = new System.Drawing.Point(250, 218);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(105, 21);
+            this.label19.TabIndex = 310;
+            this.label19.Text = "Dot Threshold";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // cmbWaveForm
             // 
             this.cmbWaveForm.AccessibleName = "Wave Form";
@@ -494,7 +529,7 @@
             this.eyeMoveMaxInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.eyeMoveMaxInput.Location = new System.Drawing.Point(534, 111);
             this.eyeMoveMaxInput.Maximum = new decimal(new int[] {
-            999,
+            99999,
             0,
             0,
             0});
@@ -507,7 +542,7 @@
             this.eyeMoveMaxInput.Size = new System.Drawing.Size(54, 21);
             this.eyeMoveMaxInput.TabIndex = 10;
             this.eyeMoveMaxInput.Value = new decimal(new int[] {
-            200,
+            4000,
             0,
             0,
             0});
@@ -527,7 +562,7 @@
             this.eyeMoveMinInput.Size = new System.Drawing.Size(54, 21);
             this.eyeMoveMinInput.TabIndex = 9;
             this.eyeMoveMinInput.Value = new decimal(new int[] {
-            4,
+            800,
             0,
             0,
             0});
@@ -586,7 +621,7 @@
             this.tossThresholdInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tossThresholdInput.Location = new System.Drawing.Point(361, 138);
             this.tossThresholdInput.Maximum = new decimal(new int[] {
-            999,
+            99999,
             0,
             0,
             0});
@@ -594,7 +629,7 @@
             this.tossThresholdInput.Size = new System.Drawing.Size(54, 21);
             this.tossThresholdInput.TabIndex = 13;
             this.tossThresholdInput.Value = new decimal(new int[] {
-            800,
+            80000,
             0,
             0,
             0});
@@ -1609,41 +1644,6 @@
             this.label4.Text = "Settings";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.AccessibleName = "Dot Threshold";
-            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown1.Location = new System.Drawing.Point(361, 217);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(54, 21);
-            this.numericUpDown1.TabIndex = 309;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            // 
-            // label19
-            // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label19.Location = new System.Drawing.Point(250, 218);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(105, 21);
-            this.label19.TabIndex = 310;
-            this.label19.Text = "Dot Threshold";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // VisionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -1669,6 +1669,7 @@
             this.panel3D2.ResumeLayout(false);
             this.panel3D3.ResumeLayout(false);
             this.panel3D3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotThresholdInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dashThresholdInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).EndInit();
@@ -1677,7 +1678,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).EndInit();
             this.panel3D5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
     }
