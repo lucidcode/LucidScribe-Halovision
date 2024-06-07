@@ -86,7 +86,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public static int GetVision()
         {            
             int value = Readings.Sum() / (Readings.Count  / 2);
-            if (value > 999) return 999;
             return value;
         }
 
@@ -339,8 +338,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 get
                 {
                     double vision = Device.GetVision();
-                    if (vision > 999) { vision = 999; }
-                    if (vision < 0) { vision = 0; }
 
                     if (Device.Auralize) {
                         if (player.PlaybackState != PlaybackState.Playing)
