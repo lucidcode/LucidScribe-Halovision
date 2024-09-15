@@ -438,6 +438,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     {
                         player = new MediaPlayer(media);
                         player.Hwnd = pbDisplay.Handle;
+                        player.Volume = 0;
+                        
                         player.Play();
                     }
                     return;
@@ -471,6 +473,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     player = new MediaPlayer(media);
                     player.Hwnd = pbDisplay.Handle;
+                    player.Volume = 0;
 
                     // Note: This will connect the pipe and read the video.
                     player.Play();
@@ -514,6 +517,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 {
                     player = new MediaPlayer(media);
                     player.Hwnd = pbDisplay.Handle;
+                    player.Volume = 0;
                     player.Play();
                 }
             }
