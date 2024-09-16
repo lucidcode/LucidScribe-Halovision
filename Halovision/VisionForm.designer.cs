@@ -88,6 +88,8 @@
             this.panel3D5 = new lucidcode.Controls.Panel3D();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.VolumeTrackBar = new System.Windows.Forms.TrackBar();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -106,6 +108,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).BeginInit();
             this.panel3D5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlPlugins
@@ -270,6 +273,7 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel3D3.Controls.Add(this.label20);
             this.panel3D3.Controls.Add(this.numericUpDown1);
             this.panel3D3.Controls.Add(this.label19);
             this.panel3D3.Controls.Add(this.cmbWaveForm);
@@ -312,6 +316,7 @@
             this.panel3D3.Controls.Add(this.label1);
             this.panel3D3.Controls.Add(this.panel3D5);
             this.panel3D3.Controls.Add(this.cmbDevices);
+            this.panel3D3.Controls.Add(this.VolumeTrackBar);
             this.panel3D3.Location = new System.Drawing.Point(12, 214);
             this.panel3D3.Name = "panel3D3";
             this.panel3D3.Size = new System.Drawing.Size(594, 249);
@@ -366,7 +371,7 @@
             "Triangle",
             "Sweep",
             "Pink"});
-            this.cmbWaveForm.Location = new System.Drawing.Point(99, 138);
+            this.cmbWaveForm.Location = new System.Drawing.Point(99, 165);
             this.cmbWaveForm.Name = "cmbWaveForm";
             this.cmbWaveForm.Size = new System.Drawing.Size(145, 21);
             this.cmbWaveForm.TabIndex = 12;
@@ -374,7 +379,7 @@
             // 
             // chkAuralize
             // 
-            this.chkAuralize.Location = new System.Drawing.Point(9, 139);
+            this.chkAuralize.Location = new System.Drawing.Point(9, 166);
             this.chkAuralize.Name = "chkAuralize";
             this.chkAuralize.Size = new System.Drawing.Size(84, 22);
             this.chkAuralize.TabIndex = 11;
@@ -384,7 +389,7 @@
             // 
             // chkCopyFromScreen
             // 
-            this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 167);
+            this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 194);
             this.chkCopyFromScreen.Name = "chkCopyFromScreen";
             this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
             this.chkCopyFromScreen.TabIndex = 16;
@@ -515,7 +520,7 @@
             // 
             // chkTopMost
             // 
-            this.chkTopMost.Location = new System.Drawing.Point(9, 167);
+            this.chkTopMost.Location = new System.Drawing.Point(9, 194);
             this.chkTopMost.Name = "chkTopMost";
             this.chkTopMost.Size = new System.Drawing.Size(84, 22);
             this.chkTopMost.TabIndex = 15;
@@ -659,7 +664,7 @@
             // 
             // chkRecordVideo
             // 
-            this.chkRecordVideo.Location = new System.Drawing.Point(99, 193);
+            this.chkRecordVideo.Location = new System.Drawing.Point(99, 220);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(145, 22);
             this.chkRecordVideo.TabIndex = 20;
@@ -1126,7 +1131,7 @@
             // 
             // chkTCMP
             // 
-            this.chkTCMP.Location = new System.Drawing.Point(9, 193);
+            this.chkTCMP.Location = new System.Drawing.Point(9, 220);
             this.chkTCMP.Name = "chkTCMP";
             this.chkTCMP.Size = new System.Drawing.Size(145, 22);
             this.chkTCMP.TabIndex = 19;
@@ -1644,6 +1649,25 @@
             this.label4.Text = "Settings";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label20
+            // 
+            this.label20.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label20.Location = new System.Drawing.Point(6, 139);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(87, 21);
+            this.label20.TabIndex = 312;
+            this.label20.Text = "Volume";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // VolumeTrackBar
+            // 
+            this.VolumeTrackBar.Location = new System.Drawing.Point(99, 138);
+            this.VolumeTrackBar.Maximum = 100;
+            this.VolumeTrackBar.Name = "VolumeTrackBar";
+            this.VolumeTrackBar.Size = new System.Drawing.Size(145, 45);
+            this.VolumeTrackBar.TabIndex = 313;
+            this.VolumeTrackBar.Scroll += new System.EventHandler(this.VolumeTrackBar_Scroll);
+            // 
             // VisionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
@@ -1678,6 +1702,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tossHalfLifeInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tossThresholdInput)).EndInit();
             this.panel3D5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).EndInit();
             this.ResumeLayout(false);
 
     }
@@ -1742,5 +1767,7 @@
         private System.Windows.Forms.ComboBox cmbWaveForm;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         internal System.Windows.Forms.Label label19;
+        internal System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TrackBar VolumeTrackBar;
     }
 }

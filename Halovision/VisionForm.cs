@@ -14,6 +14,7 @@ using Microsoft.VisualBasic;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using LibVLCSharp.Shared;
+using System.Runtime.Remoting.Messaging;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
 {
@@ -243,6 +244,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<DashThreshold>600</DashThreshold>";
                 defaultSettings += "<Classifier>None</Classifier>";
                 defaultSettings += "<WaveForm>Triangle</WaveForm>";
+                defaultSettings += "<Volume>0</Volume>";
                 defaultSettings += "</Plugin>";
                 defaultSettings += "</LucidScribeData>";
                 File.WriteAllText(settingsFilePath, defaultSettings);
@@ -273,6 +275,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//DeviceURL") != null)
             {
                 txtDeviceURL.Text = xmlSettings.DocumentElement.SelectSingleNode("//DeviceURL").InnerText;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//Volume") != null)
+            {
+                VolumeTrackBar.Value = Convert.ToInt32(xmlSettings.DocumentElement.SelectSingleNode("//Volume").InnerText);
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//CopyFromScreen") != null && xmlSettings.DocumentElement.SelectSingleNode("//CopyFromScreen").InnerText == "1")
@@ -438,7 +445,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     {
                         player = new MediaPlayer(media);
                         player.Hwnd = pbDisplay.Handle;
-                        player.Volume = 0;
+                        player.Volume = VolumeTrackBar.Value;
                         
                         player.Play();
                     }
@@ -473,7 +480,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                     player = new MediaPlayer(media);
                     player.Hwnd = pbDisplay.Handle;
-                    player.Volume = 0;
+                    player.Volume = VolumeTrackBar.Value;
 
                     // Note: This will connect the pipe and read the video.
                     player.Play();
@@ -517,7 +524,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 {
                     player = new MediaPlayer(media);
                     player.Hwnd = pbDisplay.Handle;
-                    player.Volume = 0;
+                    player.Volume = VolumeTrackBar.Value;
                     player.Play();
                 }
             }
@@ -949,6 +956,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             settings += "<EyeMoveMin>" + eyeMoveMinInput.Value + "</EyeMoveMin>";
             settings += "<EyeMoveMax>" + eyeMoveMaxInput.Value + "</EyeMoveMax>";
             settings += "<IdleTicks>" + idleTicksInput.Value + "</IdleTicks>";
+            settings += "<Volume>" + VolumeTrackBar.Value + "</Volume>";
             settings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
             if (chkCopyFromScreen.Checked)
@@ -1142,6 +1150,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 default:
                     WaveForm = WaveType.Triangle;
                     break;
+            }
+            SaveSettings();
+        }
+
+        private void VolumeTrackBar_Scroll(object sender, EventArgs e)
+        {
+            if (player != null)
+            {
+                player.Volume = VolumeTrackBar.Value;
             }
             SaveSettings();
         }
