@@ -18,8 +18,12 @@ using System.Runtime.Remoting.Messaging;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
 {
+
     public partial class VisionForm : Form
     {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool SetProcessDPIAware();
+
         private string lucidScribeDataPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\lucidcode\\Lucid Scribe";
 
         public delegate void ReconnectHanlder();
@@ -75,6 +79,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             try
             {
+                SetProcessDPIAware();
                 LoadVideoDevices();
                 LoadClassifiers();
                 LoadSettings();
