@@ -212,6 +212,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                         pbDisplay.Image.Dispose();
                     }
                     videoBitmap = (Bitmap)eventArgs.Frame.Clone();
+                    if (cmbRotateFlip.Text != "RotateNoneFlipNone")
+                    {
+                        RotateFlipType rotateFlipType;
+                        if (Enum.TryParse(cmbRotateFlip.Text, out rotateFlipType))
+                        {
+                            videoBitmap.RotateFlip(rotateFlipType);
+                        }
+                    }
                     pbDisplay.Image = videoBitmap;
                 }));
             }
@@ -250,6 +258,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<Classifier>None</Classifier>";
                 defaultSettings += "<WaveForm>Triangle</WaveForm>";
                 defaultSettings += "<Volume>0</Volume>";
+                defaultSettings += "<RotateFlip>RotateNoneFlipNone</RotateFlip>";
                 defaultSettings += "</Plugin>";
                 defaultSettings += "</LucidScribeData>";
                 File.WriteAllText(settingsFilePath, defaultSettings);
@@ -311,6 +320,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             else
             {
                 cmbWaveForm.Text = "Triangle";
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//RotateFlip") != null)
+            {
+                cmbRotateFlip.Text = xmlSettings.DocumentElement.SelectSingleNode("//RotateFlip").InnerText;
+            }
+            else
+            {
+                cmbRotateFlip.Text = "RotateFlip";
             }
 
             if (xmlSettings.DocumentElement.SelectSingleNode("//TopMost") != null && xmlSettings.DocumentElement.SelectSingleNode("//TopMost").InnerText == "0")
@@ -395,6 +413,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             if (xmlSettings.DocumentElement.SelectSingleNode("//Auralize") != null && xmlSettings.DocumentElement.SelectSingleNode("//Auralize").InnerText == "1")
             {
                 chkAuralize.Checked = true;
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//Width") != null)
+            {
+                this.Width = Convert.ToInt32(xmlSettings.DocumentElement.SelectSingleNode("//Width").InnerText);
+            }
+
+            if (xmlSettings.DocumentElement.SelectSingleNode("//Height") != null)
+            {
+                this.Height = Convert.ToInt32(xmlSettings.DocumentElement.SelectSingleNode("//Height").InnerText);
             }
         }
 
@@ -962,6 +990,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             settings += "<EyeMoveMax>" + eyeMoveMaxInput.Value + "</EyeMoveMax>";
             settings += "<IdleTicks>" + idleTicksInput.Value + "</IdleTicks>";
             settings += "<Volume>" + VolumeTrackBar.Value + "</Volume>";
+            settings += "<Width>" + this.Width + "</Width>";
+            settings += "<Height>" + this.Height + "</Height>";
             settings += "<IgnorePercentage>" + cmbIgnorePercentage.Text + "</IgnorePercentage>";
 
             if (chkCopyFromScreen.Checked)
@@ -984,6 +1014,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             
             settings += "<Classifier>" + cmbClassifier.Text + "</Classifier>";
             settings += "<WaveForm>" + cmbWaveForm.Text + "</WaveForm>";
+            settings += "<RotateFlip>" + cmbRotateFlip.Text + "</RotateFlip>";
 
             if (chkTopMost.Checked)
             {
@@ -1165,6 +1196,16 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 player.Volume = VolumeTrackBar.Value;
             }
+            SaveSettings();
+        }
+
+        private void cmbRotateFlip_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveSettings();
+        }
+
+        private void VisionForm_ResizeEnd(object sender, EventArgs e)
+        {
             SaveSettings();
         }
     }
