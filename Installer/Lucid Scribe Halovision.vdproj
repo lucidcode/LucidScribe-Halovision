@@ -28626,15 +28626,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Lucid Scribe Halovision"
-        "ProductCode" = "8:{A21E5548-9B6C-44DD-9DC9-D35791ADA991}"
-        "PackageCode" = "8:{FD65C752-4C44-4E83-A175-7F7475ADCB49}"
+        "ProductCode" = "8:{36D23BBF-F7BC-4F57-9EB2-5590AFDEDAAE}"
+        "PackageCode" = "8:{A961F9DC-AA06-4903-8974-5A955A416F3E}"
         "UpgradeCode" = "8:{CAAB2187-AD23-435C-A3DB-568744247625}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.3.1"
+        "ProductVersion" = "8:1.3.2"
         "Manufacturer" = "8:lucidcode"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.lucidcode.com/Contact"
@@ -29158,7 +29158,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_395AC690E5F04358B866710FD743FFE4"
             {
-            "SourcePath" = "8:..\\Halovision\\obj\\x86\\Release\\lucidcode.LucidScribe.Plugin.Halovision.dll"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"

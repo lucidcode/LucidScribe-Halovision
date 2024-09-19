@@ -45,8 +45,6 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label19 = new System.Windows.Forms.Label();
             this.cmbWaveForm = new System.Windows.Forms.ComboBox();
             this.chkAuralize = new System.Windows.Forms.CheckBox();
             this.chkCopyFromScreen = new System.Windows.Forms.CheckBox();
@@ -90,6 +88,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.VolumeTrackBar = new System.Windows.Forms.TrackBar();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cmbRotateFlip = new System.Windows.Forms.ComboBox();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -99,7 +99,6 @@
             this.panel3D1.SuspendLayout();
             this.panel3D2.SuspendLayout();
             this.panel3D3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotThresholdInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dashThresholdInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).BeginInit();
@@ -273,12 +272,11 @@
             this.panel3D3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3D3.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.panel3D3.Controls.Add(this.label20);
-            this.panel3D3.Controls.Add(this.numericUpDown1);
             this.panel3D3.Controls.Add(this.label19);
+            this.panel3D3.Controls.Add(this.cmbRotateFlip);
+            this.panel3D3.Controls.Add(this.label20);
             this.panel3D3.Controls.Add(this.cmbWaveForm);
             this.panel3D3.Controls.Add(this.chkAuralize);
-            this.panel3D3.Controls.Add(this.chkCopyFromScreen);
             this.panel3D3.Controls.Add(this.dotThresholdInput);
             this.panel3D3.Controls.Add(this.dashThresholdInput);
             this.panel3D3.Controls.Add(this.label17);
@@ -317,45 +315,11 @@
             this.panel3D3.Controls.Add(this.panel3D5);
             this.panel3D3.Controls.Add(this.cmbDevices);
             this.panel3D3.Controls.Add(this.VolumeTrackBar);
+            this.panel3D3.Controls.Add(this.chkCopyFromScreen);
             this.panel3D3.Location = new System.Drawing.Point(12, 214);
             this.panel3D3.Name = "panel3D3";
             this.panel3D3.Size = new System.Drawing.Size(594, 249);
             this.panel3D3.TabIndex = 36;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.AccessibleName = "Dot Threshold";
-            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDown1.Location = new System.Drawing.Point(361, 217);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            999,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(54, 21);
-            this.numericUpDown1.TabIndex = 309;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            200,
-            0,
-            0,
-            0});
-            // 
-            // label19
-            // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label19.Location = new System.Drawing.Point(250, 218);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(105, 21);
-            this.label19.TabIndex = 310;
-            this.label19.Text = "Dot Threshold";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // cmbWaveForm
             // 
@@ -374,7 +338,7 @@
             this.cmbWaveForm.Location = new System.Drawing.Point(99, 165);
             this.cmbWaveForm.Name = "cmbWaveForm";
             this.cmbWaveForm.Size = new System.Drawing.Size(145, 21);
-            this.cmbWaveForm.TabIndex = 12;
+            this.cmbWaveForm.TabIndex = 15;
             this.cmbWaveForm.SelectedIndexChanged += new System.EventHandler(this.cmbWaveForm_SelectedIndexChanged);
             // 
             // chkAuralize
@@ -382,7 +346,7 @@
             this.chkAuralize.Location = new System.Drawing.Point(9, 166);
             this.chkAuralize.Name = "chkAuralize";
             this.chkAuralize.Size = new System.Drawing.Size(84, 22);
-            this.chkAuralize.TabIndex = 11;
+            this.chkAuralize.TabIndex = 14;
             this.chkAuralize.Text = "Auralize";
             this.chkAuralize.UseVisualStyleBackColor = true;
             this.chkAuralize.CheckedChanged += new System.EventHandler(this.chkAuralize_CheckedChanged);
@@ -392,7 +356,7 @@
             this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 194);
             this.chkCopyFromScreen.Name = "chkCopyFromScreen";
             this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
-            this.chkCopyFromScreen.TabIndex = 16;
+            this.chkCopyFromScreen.TabIndex = 19;
             this.chkCopyFromScreen.Text = "Copy From Screen";
             this.chkCopyFromScreen.UseVisualStyleBackColor = true;
             this.chkCopyFromScreen.CheckedChanged += new System.EventHandler(this.chkCopyFromScreen_CheckedChanged);
@@ -414,7 +378,7 @@
             0});
             this.dotThresholdInput.Name = "dotThresholdInput";
             this.dotThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.dotThresholdInput.TabIndex = 21;
+            this.dotThresholdInput.TabIndex = 20;
             this.dotThresholdInput.Value = new decimal(new int[] {
             200,
             0,
@@ -434,7 +398,7 @@
             0});
             this.dashThresholdInput.Name = "dashThresholdInput";
             this.dashThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.dashThresholdInput.TabIndex = 22;
+            this.dashThresholdInput.TabIndex = 21;
             this.dashThresholdInput.Value = new decimal(new int[] {
             600,
             0,
@@ -499,7 +463,7 @@
             0});
             this.idleTicksInput.Name = "idleTicksInput";
             this.idleTicksInput.Size = new System.Drawing.Size(54, 21);
-            this.idleTicksInput.TabIndex = 18;
+            this.idleTicksInput.TabIndex = 17;
             this.idleTicksInput.Value = new decimal(new int[] {
             8,
             0,
@@ -523,7 +487,7 @@
             this.chkTopMost.Location = new System.Drawing.Point(9, 194);
             this.chkTopMost.Name = "chkTopMost";
             this.chkTopMost.Size = new System.Drawing.Size(84, 22);
-            this.chkTopMost.TabIndex = 15;
+            this.chkTopMost.TabIndex = 18;
             this.chkTopMost.Text = "Top Most";
             this.chkTopMost.UseVisualStyleBackColor = true;
             this.chkTopMost.CheckedChanged += new System.EventHandler(this.chkTopMost_CheckedChanged);
@@ -547,7 +511,7 @@
             this.eyeMoveMaxInput.Size = new System.Drawing.Size(54, 21);
             this.eyeMoveMaxInput.TabIndex = 10;
             this.eyeMoveMaxInput.Value = new decimal(new int[] {
-            4000,
+            800,
             0,
             0,
             0});
@@ -567,7 +531,7 @@
             this.eyeMoveMinInput.Size = new System.Drawing.Size(54, 21);
             this.eyeMoveMinInput.TabIndex = 9;
             this.eyeMoveMinInput.Value = new decimal(new int[] {
-            800,
+            20,
             0,
             0,
             0});
@@ -612,7 +576,7 @@
             0});
             this.tossHalfLifeInput.Name = "tossHalfLifeInput";
             this.tossHalfLifeInput.Size = new System.Drawing.Size(54, 21);
-            this.tossHalfLifeInput.TabIndex = 14;
+            this.tossHalfLifeInput.TabIndex = 13;
             this.tossHalfLifeInput.Value = new decimal(new int[] {
             10,
             0,
@@ -632,9 +596,9 @@
             0});
             this.tossThresholdInput.Name = "tossThresholdInput";
             this.tossThresholdInput.Size = new System.Drawing.Size(54, 21);
-            this.tossThresholdInput.TabIndex = 13;
+            this.tossThresholdInput.TabIndex = 12;
             this.tossThresholdInput.Value = new decimal(new int[] {
-            80000,
+            8000,
             0,
             0,
             0});
@@ -667,7 +631,7 @@
             this.chkRecordVideo.Location = new System.Drawing.Point(99, 220);
             this.chkRecordVideo.Name = "chkRecordVideo";
             this.chkRecordVideo.Size = new System.Drawing.Size(145, 22);
-            this.chkRecordVideo.TabIndex = 20;
+            this.chkRecordVideo.TabIndex = 23;
             this.chkRecordVideo.Text = "Record Video";
             this.chkRecordVideo.UseVisualStyleBackColor = true;
             this.chkRecordVideo.CheckedChanged += new System.EventHandler(this.chkRecordVideo_CheckedChanged);
@@ -782,7 +746,7 @@
             this.cmbIgnorePercentage.Location = new System.Drawing.Point(361, 165);
             this.cmbIgnorePercentage.Name = "cmbIgnorePercentage";
             this.cmbIgnorePercentage.Size = new System.Drawing.Size(54, 21);
-            this.cmbIgnorePercentage.TabIndex = 17;
+            this.cmbIgnorePercentage.TabIndex = 16;
             this.cmbIgnorePercentage.SelectedIndexChanged += new System.EventHandler(this.cmbIgnorePercentage_SelectedIndexChanged);
             // 
             // label2
@@ -1112,6 +1076,8 @@
             // txtDeviceURL
             // 
             this.txtDeviceURL.AccessibleName = "Device URL";
+            this.txtDeviceURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDeviceURL.Enabled = false;
             this.txtDeviceURL.Location = new System.Drawing.Point(99, 111);
             this.txtDeviceURL.Name = "txtDeviceURL";
@@ -1133,8 +1099,8 @@
             // 
             this.chkTCMP.Location = new System.Drawing.Point(9, 220);
             this.chkTCMP.Name = "chkTCMP";
-            this.chkTCMP.Size = new System.Drawing.Size(145, 22);
-            this.chkTCMP.TabIndex = 19;
+            this.chkTCMP.Size = new System.Drawing.Size(84, 22);
+            this.chkTCMP.TabIndex = 22;
             this.chkTCMP.Text = "TCMP";
             this.chkTCMP.UseVisualStyleBackColor = true;
             this.chkTCMP.CheckedChanged += new System.EventHandler(this.chkTCMP_CheckedChanged);
@@ -1661,12 +1627,55 @@
             // 
             // VolumeTrackBar
             // 
+            this.VolumeTrackBar.AccessibleName = "Volume";
+            this.VolumeTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.VolumeTrackBar.Location = new System.Drawing.Point(99, 138);
             this.VolumeTrackBar.Maximum = 100;
             this.VolumeTrackBar.Name = "VolumeTrackBar";
             this.VolumeTrackBar.Size = new System.Drawing.Size(145, 45);
-            this.VolumeTrackBar.TabIndex = 313;
+            this.VolumeTrackBar.TabIndex = 11;
             this.VolumeTrackBar.Scroll += new System.EventHandler(this.VolumeTrackBar_Scroll);
+            // 
+            // label19
+            // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label19.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label19.Location = new System.Drawing.Point(250, 219);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(87, 21);
+            this.label19.TabIndex = 316;
+            this.label19.Text = "Rotate Flip";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cmbRotateFlip
+            // 
+            this.cmbRotateFlip.AccessibleName = "Rotate Flip";
+            this.cmbRotateFlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbRotateFlip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRotateFlip.FormattingEnabled = true;
+            this.cmbRotateFlip.Items.AddRange(new object[] {
+            "RotateNoneFlipNone",
+            "Rotate90FlipNone",
+            "Rotate180FlipNone",
+            "Rotate270FlipNone",
+            "RotateNoneFlipX",
+            "Rotate90FlipX",
+            "Rotate180FlipX",
+            "Rotate270FlipX",
+            "RotateNoneFlipY",
+            "Rotate90FlipY",
+            "Rotate180FlipY",
+            "Rotate270FlipY",
+            "RotateNoneFlipXY",
+            "Rotate90FlipXY",
+            "Rotate180FlipXY",
+            "Rotate270FlipXY"});
+            this.cmbRotateFlip.Location = new System.Drawing.Point(361, 219);
+            this.cmbRotateFlip.Name = "cmbRotateFlip";
+            this.cmbRotateFlip.Size = new System.Drawing.Size(227, 21);
+            this.cmbRotateFlip.TabIndex = 24;
+            this.cmbRotateFlip.SelectedIndexChanged += new System.EventHandler(this.cmbRotateFlip_SelectedIndexChanged);
             // 
             // VisionForm
             // 
@@ -1683,6 +1692,7 @@
             this.Text = "Halovision";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VisionForm_FormClosing);
             this.Load += new System.EventHandler(this.PortForm_Load);
+            this.ResizeEnd += new System.EventHandler(this.VisionForm_ResizeEnd);
             this.pnlPlugins.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).EndInit();
             this.mnuReconnect.ResumeLayout(false);
@@ -1693,7 +1703,6 @@
             this.panel3D2.ResumeLayout(false);
             this.panel3D3.ResumeLayout(false);
             this.panel3D3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dotThresholdInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dashThresholdInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.idleTicksInput)).EndInit();
@@ -1765,9 +1774,9 @@
         private System.Windows.Forms.CheckBox chkCopyFromScreen;
         private System.Windows.Forms.CheckBox chkAuralize;
         private System.Windows.Forms.ComboBox cmbWaveForm;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        internal System.Windows.Forms.Label label19;
         internal System.Windows.Forms.Label label20;
         private System.Windows.Forms.TrackBar VolumeTrackBar;
+        internal System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox cmbRotateFlip;
     }
 }
