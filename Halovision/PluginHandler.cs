@@ -94,6 +94,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             return visionForm.TossThreshold;
         }
 
+        public static bool DetectREM()
+        {
+            return visionForm.DetectREM;
+        }
+
         public static int GetTossHalfLife()
         {
             return visionForm.TossHalfLife;
@@ -548,7 +553,15 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     int eyeMoveMax = Device.GetEyeMoveMax();
                     int idleTicks = Device.GetIdleTicks();
 
-                    history.Add(Device.GetVision());
+                    if (Device.DetectREM())
+                    {
+                        history.Add(Device.GetVision());
+                    }
+                    else
+                    {
+                        history.Add(0);
+                    }
+                    
                     if (history.Count > 768) { history.RemoveAt(0); }
 
                     // Check for blinks
