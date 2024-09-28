@@ -62,6 +62,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private VideoCaptureDevice videoSource;
         private Rectangle[] faceRegions;
         private CascadeClassifier cascadeClassifier;
+        public bool DetectREM = true;
 
         private bool processing = false;
         private Bitmap currentBitmap = null;
@@ -165,6 +166,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             try
             {
+                DetectREM = true;
                 cascadeClassifier = null;
                 if (cmbClassifier.Text != "" && cmbClassifier.Text != "None")
                 {
@@ -650,6 +652,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     Image<Bgr, byte> imageFrame = new Image<Bgr, Byte>(currentBitmap);
                     Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
                     faceRegions = cascadeClassifier.DetectMultiScale(grayFrame);
+                    DetectREM = faceRegions != null && faceRegions.Length > 0;
                 }
 
                 Difference(ref previousBitmap, ref currentBitmap, out diff);
