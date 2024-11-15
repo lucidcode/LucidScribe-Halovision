@@ -50,7 +50,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private bool RecordVideo = false;
         private bool CopyFromScreen = false;
-        private bool feedChanged = true;
 
         public bool TCMP = false;
         public int DotThreshold = 200;
@@ -673,21 +672,17 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                 if (RecordVideo)
                 {
-                    if (feedChanged || diff > 0)
+                    bool saveSnapshot = cascadeClassifier == null && diff >= EyeMoveMin;
+                    if (cascadeClassifier != null && faceRegions != null && faceRegions.Length > 0 && diff > 1)
+                    {
+                        saveSnapshot = true;
+                    }
+                    if (saveSnapshot)
                     {
                         CreateDirectories();
                         String secondFile = $"{lucidScribeDataPath}\\Days\\{Strings.Format(DateTime.Now, "yyyy")}\\{Strings.Format(DateTime.Now, "MM")}\\{Strings.Format(DateTime.Now, "dd")}\\{Strings.Format(DateTime.Now, "HH")}\\{Strings.Format(DateTime.Now, "mm")}\\{Strings.Format(DateTime.Now, "ss.")}{DateTime.Now.Millisecond}.jpg";
                         pbDifference.Image.Save(secondFile, System.Drawing.Imaging.ImageFormat.Jpeg);
-                        if (diff == 0)
-                        {
-                            feedChanged = false;
-                        }
                     }
-                }
-
-                if (diff > 0)
-                {
-                    feedChanged = true;
                 }
 
                 if (ValueChanged != null)
