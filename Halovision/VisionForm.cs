@@ -39,12 +39,12 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private int IgnorePercentage = 16;
         private int Sensitivity = 5;
 
-        public int TossThreshold = 80000;
+        public int TossThreshold = 2000;
         public int TossHalfLife = 10;
         public int TossValue = 0;
 
-        public int EyeMoveMin = 800;
-        public int EyeMoveMax = 4000;
+        public int EyeMoveMin = 20;
+        public int EyeMoveMax = 800;
         public int IdleTicks = 8;
         private int PixelSize = 4;
 
@@ -244,10 +244,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 defaultSettings += "<PixelsInARow>4</PixelsInARow>";
                 defaultSettings += "<FrameThreshold>960</FrameThreshold>";
                 defaultSettings += "<Sensitivity>0</Sensitivity>";
-                defaultSettings += "<TossThreshold>80000</TossThreshold>";
+                defaultSettings += "<TossThreshold>2000</TossThreshold>";
                 defaultSettings += "<TossHalfLife>10</TossHalfLife>";
-                defaultSettings += "<EyeMoveMin>800</EyeMoveMin>";
-                defaultSettings += "<EyeMoveMax>4000</EyeMoveMax>";
+                defaultSettings += "<EyeMoveMin>20</EyeMoveMin>";
+                defaultSettings += "<EyeMoveMax>800</EyeMoveMax>";
                 defaultSettings += "<IdleTicks>8</IdleTicks>";
                 defaultSettings += "<IgnorePercentage>100</IgnorePercentage>";
                 defaultSettings += "<CopyFromScreen>0</CopyFromScreen>";
