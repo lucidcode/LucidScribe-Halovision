@@ -14,7 +14,17 @@ using Microsoft.VisualBasic;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using LibVLCSharp.Shared;
-using System.Runtime.Remoting.Messaging;
+using System.Configuration;
+using System.Runtime.InteropServices;
+using TensorFlow;
+using Emgu.CV.Dnn;
+using Emgu.CV.CvEnum;
+using System.Runtime.ExceptionServices;
+using System.Windows.Threading;
+using Emgu.CV.Util;
+using System.Collections.Generic;
+using System.Linq;
+using static PoseNet;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
 {
@@ -58,7 +68,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         public bool Auralize = false;
         public WaveType WaveForm = WaveType.Triangle;
 
-        private VideoCaptureDevice videoSource;
+        //private VideoCaptureDevice videoSource;
+
+        internal VideoCapture cameraCapture;
         private Rectangle[] faceRegions;
         private CascadeClassifier cascadeClassifier;
         public bool DetectREM = true;
@@ -67,6 +79,124 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private Bitmap currentBitmap = null;
         private PictureBox pictureBoxCurrent = new PictureBox();
         private Bitmap previousBitmap = null;
+
+        private readonly string modelPath = "Models\\model-mobilenet_v1_101.pb";
+        private readonly string deployPath = "Models\\model-mobilenet_v1_101.pbtxt";
+
+        private int GPUCard;
+        private bool UsesGpu;
+
+        private readonly Mat frame = new Mat();
+
+        private int resolutionX = 640;
+
+        private int resolutionY = 480;
+
+        System.Windows.Point eyeRight;
+        System.Windows.Point eyeLeft;
+        System.Windows.Point nose;
+        private TFSession session;
+        private TFGraph graph;
+        private readonly PoseNet posenet = new PoseNet();
+        private readonly int detectionSizeTFT = 337;
+
+        private Image<Bgr, byte> originalFrame;
+        private Image<Bgr, byte> Frame; //current Frame from camera
+        private Image<Bgr, byte> Previous_Frame; //Previousframe aquired
+
+        private Image<Bgr, byte> Previous_Rect_Frame; //Previousframe aquired
+
+        private Image<Bgr, byte> ImageDifferenceLd { get; set; }
+        private Image<Gray, byte> DifferenceImageRect; //Difference between the two frame detected rect
+        private Image<Bgr, byte> resultImage; //Difference between the two frame detected rect
+        private Image<Bgr, byte> additionFramediff; //Additional Difference
+        private Image<Bgr, byte> additionFrameDiffRegion; //Additional Difference
+        private readonly Image<Gray, byte> additionFrameDiffREM; //Additional Difference
+        private Image<Bgr, byte> display;
+        private Image<Bgr, byte> result;
+        private Image<Bgr, byte> previousFrameRegion; //Additional Difference
+
+        private float ratioXFrame;
+        private float ratioYFrame;
+        private bool ResetROI = false;
+        private Rectangle rectROIFinal = Rectangle.Empty;
+        private Rectangle rectROITESTDraw = Rectangle.Empty;
+        private bool noseKeyLost;
+        private bool FaceTracker, FindEyePositionROI;
+        private double WidthMulFT = 1.5;
+        private double HeighMulFT = 1;
+        private int xROIFT, yROIFT, WidthROIFT, HeightROIFT;
+
+        private bool detectedRect;
+
+        private Rectangle lastFaceRegion;
+
+        private Rectangle PreviouslastFaceRegion;
+        internal int redPixel;
+        private double diff;
+        internal int changedPixels;
+
+
+        internal List<double> m_arrHistory = new List<double>();
+        internal List<double> m_arrHistoryAdvert = new List<double>();
+        private readonly List<Rectangle> m_arrPreviouslastFaceRegionHistory = new List<Rectangle>();
+        private readonly List<int> m_arrDetectedFaceMove = new List<int>();
+        private readonly List<int> m_arrDetectedRectMove = new List<int>();
+        private readonly List<int> m_arrDetectedRegionMove = new List<int>();
+        private readonly List<int> m_arrDetectedFaceRectChangeInfo = new List<int>();
+        private readonly List<int> m_arrDetectedVREM = new List<int>();
+        private readonly List<double> m_arrDetectedAreaBelow = new List<double>();
+        private readonly List<double> m_arrDetectedAverageNotification = new List<double>();
+        private readonly List<double> m_AverageFaceTracker = new List<double>();
+
+        public int FaceTrackerCount;
+        public int FaceTrackerCountReset;
+        private List<RectangleArea> rectArchAreaRed;
+        private List<RectangleArea> rectArchAreaGreen;
+        private List<double> ArchAreaGreen;
+        private List<double> ArchAreaRed;
+        private bool bypassFrame;
+        public int vREM;
+        public int vREMResult;
+        public int vREMValidateResult;
+        public int messageAdvertCount = 0;
+        private bool vREMSlowMovement;
+        private readonly int NoseXValue = 30;
+        private readonly int NoseYValue = 40;
+        private int AreaMinThreshold = 1;
+        private int AreaMaxThreshold = 2500;
+        private double widthEyeRatio = 15;
+        private double heightEyeRatio = 20;
+        private double yEyeRatio = 12;
+        private double xEyeRatio = 13;
+        private int vREMResetFull = 3;
+        private decimal PixelThresholdDiff = 45;
+        public int FaceRectChange { get; set; }
+        public double Value;
+        public bool MovementBreathDetected { get; set; }
+        internal int FrameThresholdH = 3500;
+        private bool vREMLogOnce;
+        public bool Detected888 { get; set; }
+        public int CountVrem { get; set; }
+        private Mat resizedFrame = new Mat();
+        private Net net;
+        private Keypoint rightEye;
+        private Keypoint leftEye;
+        private Keypoint noseKey;
+        private readonly Pen jointColorRightGreen = new Pen(System.Drawing.Color.Green, 2);
+        private readonly Pen jointColorLeftBlue = new Pen(System.Drawing.Color.Blue, 5);
+        private readonly Pen jointColorNose = new Pen(System.Drawing.Color.Cyan, 5);
+        private decimal ScoreTF = (decimal)0.04;
+        readonly string[,] jointPairs = new string[,]
+        {
+            //{ "leftWrist", "leftElbow" }, { "leftElbow", "leftShoulder" }, { "leftShoulder", "rightShoulder" },
+            //{ "rightShoulder", "rightElbow" }, { "rightElbow", "rightWrist" }, { "leftShoulder", "leftHip" }, 
+            //{ "rightShoulder", "rightHip" }, { "leftHip", "rightHip" }, { "leftHip", "leftKnee" },
+            //{ "leftKnee", "leftAnkle" }, { "rightHip", "rightKnee" }, { "rightKnee", "rightAnkle" },
+            //{ "nose", "leftEye" }, { "leftEye", "leftEar" }, { "nose", "rightEye" }, { "rightEye", "rightEar" },
+            { "rightEye", "leftEye" }, { "leftEye", "rightEye" }, { "nose", "nose" }
+        };
+        private String cmbAlgorithmText;
 
         public VisionForm()
         {
@@ -131,19 +261,425 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 if (cmbDevices.Text == filterInfo.Name)
                 {
-                    // create video source
-                    videoSource = new VideoCaptureDevice(filterInfo.MonikerString);
-                    // set NewFrame event handler
-                    videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
-                    // start the video source
-                    videoSource.Start();
+
+                    Previous_Frame = new Image<Bgr, byte>(resolutionX, resolutionY);
+
+                    cameraCapture = new VideoCapture(0);
+                    cameraCapture.SetCaptureProperty(CapProp.FrameWidth, resolutionX);
+                    cameraCapture.SetCaptureProperty(CapProp.FrameHeight, resolutionY);
+                    //cameraCapture.SetCaptureProperty(CapProp.Buffersize, 50); // internal buffer will now store only 50 frames
+                    cameraCapture.ImageGrabbed -= Camera_ImageGrabbed;
+                    cameraCapture.ImageGrabbed += Camera_ImageGrabbed;
+                    //cameraCapture.SetCaptureProperty(CapProp.Fps, fpsThread);
+                    cameraCapture.Start();
+
+                    StartProcess();
                     return;
                 }
             }
         }
+
+
+        private int _statFrameCounter = 0;
+        private int _statFramesTotal = 0;
+        public bool IsLucidCamReady()
+        {
+            _statFramesTotal++;
+            return _readyEvent.WaitOne(0);
+        }
+        private ManualResetEvent _gotNewFrameEvent = new ManualResetEvent(false);
+        private ManualResetEvent _stopEvent = new ManualResetEvent(false);
+        private ManualResetEvent _readyEvent = new ManualResetEvent(false);
+
+        [HandleProcessCorruptedStateExceptions]
+        private void Camera_ImageGrabbed(object sender, EventArgs arg)
+        {
+            if (IsLucidCamReady())
+            {
+                _gotNewFrameEvent.Set();
+            }
+        }
+
+
+        private Thread _thread;
+
+        public void StartProcess()
+        {
+            if (_thread != null)
+            {
+                _thread.Abort();
+                _thread = null;
+            }
+
+            var _threadStart = new ThreadStart(ProcessFrames);
+            _thread = new Thread(_threadStart);
+            _thread.Priority = ThreadPriority.Highest;
+            _thread.Start();
+            _readyEvent.Set();
+        }
+
+        public void StopProcess()
+        {
+            _stopEvent.Set();
+            _stopEvent.Reset();
+            _readyEvent.Reset();
+            _gotNewFrameEvent.Reset();
+            if (_thread != null && !_thread.Join(100))
+            {
+                _thread.Abort();
+            }
+        }
+
+        private void ProcessFrames()
+        {
+            WaitHandle[] exitOrRetry = new WaitHandle[] { _stopEvent, _gotNewFrameEvent };
+
+            while (!_stopEvent.WaitOne(0))
+            {
+                if (_gotNewFrameEvent.WaitOne(0))
+                {
+                    _readyEvent.Reset();
+                    _gotNewFrameEvent.Reset();
+
+                    _statFrameCounter++;
+
+                    if (_statFrameCounter > 24)
+                    {
+                        DateTime now = DateTime.Now;
+                        _statFrameCounter = 0;
+                        _statFramesTotal = 0;
+                    }
+
+                    // Process the frame
+                    ProcessFramesStream();
+
+                    _readyEvent.Set();
+                }
+                else
+                {
+                    WaitHandle.WaitAny(exitOrRetry, 100);
+                }
+            }
+        }
+
+        public int CurrentFrameCount { get; set; }
+        public int CurrentFrameAverageCount { get; set; }
+        public int CurrentFrameAverageCountToClear { get; set; }
+        public int CurrentFrameChangedROICount { get; set; }
+
+
+        private void ProcessFramesStream()
+        {
+            try
+            {
+                CurrentFrameCount++;
+                CurrentFrameAverageCount++;
+                CurrentFrameAverageCountToClear++;
+                CurrentFrameChangedROICount++;
+                Application.DoEvents();
+
+
+
+
+                using (Frame = new Image<Bgr, byte>(resolutionX, resolutionY))
+                using (originalFrame = new Image<Bgr, byte>(resolutionX, resolutionY))
+                using (DifferenceImageRect = new Image<Gray, byte>(resolutionX, resolutionY))
+                using (additionFramediff = new Image<Bgr, byte>(resolutionX, resolutionY))
+                using (additionFrameDiffRegion = new Image<Bgr, byte>(resolutionX, resolutionY))
+                {
+
+                    cameraCapture.Retrieve(originalFrame);
+                    Frame = originalFrame.Resize(resolutionX, resolutionY, Inter.Linear);
+
+                    // Release to avoid memory leak create exception
+                    if (ImageDifferenceLd != null && ImageDifferenceLd.Ptr != IntPtr.Zero)
+                    {
+                        ImageDifferenceLd?.Dispose();
+                        ImageDifferenceLd = null;
+                    }
+
+                    // Release to avoid memory leak
+                    if (resultImage != null)
+                    {
+                        resultImage?.Dispose();
+                        resultImage = null;
+                    }
+
+                    // Release to avoid memory leak
+                    if (Previous_Rect_Frame != null)
+                    {
+                        Previous_Rect_Frame?.Dispose();
+                        Previous_Rect_Frame = null;
+                        Previous_Rect_Frame = new Image<Bgr, byte>(resolutionX, resolutionY);
+                    }
+
+                    using (var imgROI = new Image<Bgr, byte>(resolutionX, resolutionY))
+                    {
+                        Frame.CopyTo(imgROI);
+                        imgROI.ROI = rectROIFinal;
+                        Frame = imgROI.Resize(resolutionX, resolutionY, Inter.Linear);
+                    }
+
+
+                    ratioXFrame = (float)resolutionX / (float)pbDifference.Width;
+                    ratioYFrame = (float)resolutionY / (float)pbDifference.Height;
+
+                    noseKeyLost = false;
+                    FindEyePositionROI = false;
+
+                    if (nose.X != 0 && Math.Abs(Math.Abs(nose.X / ratioXFrame) - Math.Abs(eyeRight.X / ratioXFrame)) < 10 ||
+                       (nose.X != 0 && Math.Abs(Math.Abs(nose.X / ratioXFrame) - Math.Abs(eyeLeft.X / ratioXFrame)) < 10))
+                    {
+                        WidthMulFT = 1.2;
+                        HeighMulFT = 0.8;
+                    }
+                    else
+                    {
+                        WidthMulFT = 1.8;
+                        HeighMulFT = 0.8;
+                    }
+
+                    //if (foundROI)
+                    //{
+                    //  vREMResetFull = vREMResetFull * 2;
+                    //}
+                    //else
+                    //{
+                    //  vREMResetFull = vREMResetFull;
+                    //}
+
+                    // debug
+                    FaceTrackerModeDraw();
+
+
+                    if (detectedRect)
+                    {
+                        if (lastFaceRegion.X + lastFaceRegion.Width > resolutionX ||
+                            lastFaceRegion.Y + lastFaceRegion.Height > resolutionY || lastFaceRegion.Y < 0 ||
+                            lastFaceRegion.X < 0)
+                        {
+                            if (lastFaceRegion.Y < 0)
+                            {
+                                lastFaceRegion.Y = 0;
+                            }
+
+                            if (lastFaceRegion.X < 0)
+                            {
+                                lastFaceRegion.X = 0;
+                            }
+
+                            detectedRect = false;
+                        }
+                    }
+
+
+
+                    // Detection Code
+                    diff = 0.0;
+                    redPixel = 0;
+                    changedPixels = 0;
+                    {
+                        using (var toGrayScaleImg = new Image<Bgr, byte>(resolutionX, resolutionY))
+                        {
+                            Previous_Frame.AbsDiff(Frame).CopyTo(toGrayScaleImg);
+
+                            //copy the frame to act as the previous frame
+                            Frame.CopyTo(Previous_Frame);
+
+                            // Calcul pixel count
+                            // Code DNN Threshold
+                            /*Play with the value 60 to set a threshold for movement*/
+
+                            //// OK RTSP and Video
+                            //// for debugging purpose (displaying threshold diff on source)
+                            ////display the image using thread safe call
+                            //if (cameraCapture != null && pbSourceCheckBox.Checked)
+                            //{
+                            //  Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+                            //  {
+                            //    //// displaying only threshold diff
+                            //    //pbSource.Image = DifferenceImageRect.ToBitmap();
+
+                            //    // displaying only threshold diff
+                            //    pbSource.Image = Frame.ToBitmap();
+                            //  }));
+                            //}
+
+                            //// Call garbage collector
+                            //GC.Collect();
+                            //Application.DoEvents();
+                            //return;
+
+                            //if (modeColor)
+                            //{
+                            //    // checked Gray
+                            //    // trying to filter pixel using gray scale
+                            //    toGrayScaleImg.Convert<Gray, byte>().CopyTo(DifferenceImageRect);
+                            //    DifferenceImageRect.SmoothMedian(Sensitivity).CopyTo(DifferenceImageRect); // Sensitivity to 9
+                            //    var totalPixels = DifferenceImageRect.CountNonzero()[0];
+                            //    DifferenceImageRect.ThresholdBinary(new Gray(PixelThreshold), new Gray(255)).CopyTo(DifferenceImageRect);
+                            //    changedPixels = DifferenceImageRect.CountNonzero()[0];
+                            //}
+                            //else
+                            {
+                                // color Brg
+                                // trying to filter pixel using color bgr
+                                toGrayScaleImg.SmoothMedian(Sensitivity).CopyTo(toGrayScaleImg); // Sensitivity to 3
+                                var totalPixels = toGrayScaleImg.CountNonzero()[0];
+                                toGrayScaleImg.ThresholdBinary(new Bgr(PixelThreshold, PixelThreshold, PixelThreshold), new Bgr(255, 255, 255)).CopyTo(toGrayScaleImg);
+                                changedPixels = toGrayScaleImg.CountNonzero()[0];
+                                toGrayScaleImg.Convert<Gray, byte>().CopyTo(DifferenceImageRect);
+                            }
+                        }
+
+                        // for debugging purpose (displaying threshold diff on source)
+                        //display the image using thread safe call
+                        if (cameraCapture != null)
+                        {
+                            Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+                            {
+                                //// displaying only threshold diff
+                                //pbSource.Image = DifferenceImageRect.ToBitmap();
+
+                                // displaying only threshold diff
+                                pbDisplay.Image = Frame.ToBitmap();
+                            }));
+                        }
+                    }
+
+
+
+                    // detection area green and red
+                    var contourMultiFrameDetected = FindContours(changedPixels);
+                    //var contourMultiFrameDetected = false;
+
+                    #region Detection average
+
+                    if (m_arrDetectedFaceMove.Count > 5)
+                    {
+                        //var average = m_arrDetectedFaceMove.Average();
+                        var average = m_arrDetectedFaceMove.Where(predicate: x => { return x > FrameThreshold; })
+                          .DefaultIfEmpty().Average();
+
+                        if (Convert.ToInt32(average) > 20000)
+                        {
+                            // Reset eye position after big movement
+                            eyeRight = new System.Windows.Point(0, 0);
+                            eyeLeft = new System.Windows.Point(0, 0);
+                            contourMultiFrameDetected = false;
+                        }
+                        m_arrDetectedFaceMove.Clear();
+                    }
+                    #endregion
+
+
+                    #region Notification trigger average
+
+                    // check all 2 seconsd (for 10 FPS)
+                    //if (m_arrDetectedAverageNotification.Count > 20)
+                    //{
+                    //    // count how pass has past
+                    //    FaceTrackerCountReset++;
+
+                    //    var average = m_arrDetectedAverageNotification.Where(predicate: x => { return x > FrameThreshold; })
+                    //      .DefaultIfEmpty().Average();
+
+                    //    int averageTrigger = AverageTriggerONOFF;
+
+                    //    if (foundROI)
+                    //    {
+                    //        if (PixelThreshold <= 2)
+                    //        {
+                    //            averageTrigger = 200000;
+                    //        }
+                    //        else
+                    //        {
+                    //            averageTrigger = AverageTriggerONOFF;
+                    //        }
+                    //    }
+
+                    //    if (Convert.ToInt32(average) > averageTrigger && !firstDetectedAverageNotification && NotificationCheck)
+                    //    {
+                    //        FaceTrackerCount++;
+
+                    //        if (FaceTrackerCount >= 5)
+                    //        {
+                    //            if (checkBoxVerboseLog.Checked)
+                    //            {
+                    //                WriteOutput("vREM: " + vREMDigit + " detected higher notification average limit value: " + Convert.ToInt32(average), false);
+                    //            }
+                    //            SendUdpPacketNotification(Convert.ToInt32(average));
+                    //            FaceTrackerCount = 0;
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        // Reset FaceTrackerCount after 10 pass so 20 seconds
+                    //        if (FaceTrackerCountReset >= 10)
+                    //        {
+                    //            FaceTrackerCountReset = 0;
+                    //            FaceTrackerCount = 0;
+                    //        }
+                    //    }
+
+                    //    m_arrDetectedAverageNotification.Clear();
+                    //    firstDetectedAverageNotification = false;
+                    //}
+
+                    #endregion
+
+                    // displaying image
+                    if (contourMultiFrameDetected)
+                    {
+                        additionFramediff = DisplayingContour(DifferenceImageRect.Convert<Bgr, byte>(), display);
+                    }
+                    else
+                    {
+                        // Display with background image
+                        // add previous frame to addition frame
+                        CvInvoke.Add(DifferenceImageRect.Convert<Bgr, byte>(), Frame, additionFramediff);
+                    }
+
+                    // setup final image to display with rect area
+                    ImageDifferenceLd = additionFramediff;
+                    //using (ImageDifferenceLd = new Image<Bgr, byte>(resolutionX, resolutionY)) // not working ?
+                    //{
+                    //  additionFramediff.CopyTo(ImageDifferenceLd);
+                    //}
+
+                    VREMAnalyse(diff, contourMultiFrameDetected);
+
+                    // execute vREM blinks analyse
+                    vREMCodeExecution(false, diff);
+
+                }
+
+            }
+            catch (AccessViolationException ex)
+            {
+                // release TFT
+                if (session != null)
+                {
+                    session.Dispose();
+                }
+                if (graph != null)
+                {
+                    graph.Dispose();
+                }
+
+                Console.WriteLine(ex);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
         private void LoadClassifiers()
         {
             cmbClassifier.Items.Add("None");
+
+            cmbClassifier.Items.Add("TensorFlow");
 
             if (!Directory.Exists($"{lucidScribeDataPath}\\Classifiers"))
             {
@@ -169,6 +705,11 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 cascadeClassifier = null;
                 if (cmbClassifier.Text != "" && cmbClassifier.Text != "None")
                 {
+                    if (cmbClassifier.Text == "TensorFlow")
+                    {
+                        LoadTensorFlow();
+                        return;
+                    }
                     cascadeClassifier = new CascadeClassifier($"{lucidScribeDataPath}\\Classifiers\\{cmbClassifier.Text}.xml");
                 }
             }
@@ -176,6 +717,85 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 MessageBox.Show(ex.Message, "LucidScribe.LoadClassifier()", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void LoadTensorFlow()
+        {
+            GPUCard = Convert.ToInt32(ConfigurationManager.AppSettings.Get("GPU"));
+            CreateSession(modelPath, "/device:GPU:" + GPUCard);
+
+            var devices = session.ListDevices();
+
+            foreach (var item in devices)
+            {
+                if (item.DeviceType.ToString().Contains("GPU"))
+                {
+                    UsesGpu = true;
+                    break;
+                }
+                else
+                {
+                    UsesGpu = false;
+                }
+            }
+        }
+
+        public TFSession CreateSession(string graphPath, string deviceName)
+        {
+            if (session != null)
+            {
+                session.Dispose();
+            }
+
+            var graph = LoadGraph(modelPath, deviceName);
+
+            byte[] configBuffer = Convert.FromBase64String("OAFAAQ==");
+
+            var options = new TFSessionOptions();
+
+            unsafe
+            {
+                fixed (byte* pConfigBuffer = configBuffer)
+                {
+                    options.SetConfig((IntPtr)pConfigBuffer, configBuffer.Length);
+                }
+            }
+
+            return session = new TFSession(graph, options);
+        }
+
+        private TFGraph LoadGraph(string path, string deviceName)
+        {
+            if (graph != null)
+            {
+                graph.Dispose();
+            }
+
+            graph = new TFGraph();
+
+            var options = new TFImportGraphDefOptions();
+
+            try
+            {
+                SetDevice(options, deviceName);
+            }
+            catch
+            {
+                UsesGpu = false;
+            }
+
+            graph.Import(File.ReadAllBytes(path), options);
+
+            return graph;
+        }
+
+
+        [DllImport("libtensorflow")]
+        private static extern void TF_ImportGraphDefOptionsSetDefaultDevice(IntPtr opts, string device);
+
+        private static void SetDevice(TFImportGraphDefOptions options, string device)
+        {
+            TF_ImportGraphDefOptionsSetDefaultDevice(options.Handle, device);
         }
 
         public void Disconnect()
@@ -193,11 +813,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             }
             else
             {
-                videoSource.NewFrame -= video_NewFrame;
+                cameraCapture.Stop();
                 Thread.Sleep(256);
                 Application.DoEvents();
-                videoSource.SignalToStop();
-                videoSource = null;
+                cameraCapture = null;
             }
         }
 
@@ -227,6 +846,1597 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             catch (Exception ex)
             {
             }
+        }
+
+        private void FaceTrackerModeDraw()
+        {
+            try
+            {
+                // Find eye position
+                WidthROIFT = (int)(resolutionX / WidthMulFT / ratioXFrame);
+                HeightROIFT = (int)(resolutionY / HeighMulFT / ratioYFrame);
+                xROIFT = (int)((nose.X / ratioXFrame) - WidthROIFT / 2);
+                yROIFT = (int)((nose.Y / ratioYFrame) - HeightROIFT / 2);
+
+                // debug
+                rectROITESTDraw = new Rectangle((int)(xROIFT), (int)(yROIFT), (int)(WidthROIFT), (int)(HeightROIFT)); // x, y, width, height
+
+                if (xROIFT > 0 && yROIFT > 0)
+                {
+                    faceRegions = new Rectangle[] { rectROITESTDraw };
+                }
+            }
+            catch (Exception exception)
+            {
+                WidthMulFT = 1.5;
+                HeighMulFT = 1;
+                rectROITESTDraw = new Rectangle(0, 0, resolutionX, resolutionY);
+                Console.WriteLine(exception.Message);
+            }
+        }
+
+        private bool FindContours(int changedPixels)
+        {
+            bool debuggingPerf = false;
+            var contourMultiFrameDetected = false;
+            if (!debuggingPerf)
+            {
+                #region Find contour on frame diff
+
+                // init List here
+                rectArchAreaRed = new List<RectangleArea>();
+                rectArchAreaGreen = new List<RectangleArea>();
+
+                if (DifferenceImageRect != null && DifferenceImageRect.Ptr != IntPtr.Zero)
+                {
+                    using (display = new Image<Bgr, byte>(DifferenceImageRect.Width, DifferenceImageRect.Height))
+                    using (Mat m = new Mat())
+                    {
+                        // for reading log
+                        var vREMDigit = $"{vREM:000}";
+
+                        VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+                        Dictionary<int, double> shapes = new Dictionary<int, double>();
+
+                        if (DifferenceImageRect != null)
+                        {
+                            // reset bypassFrame
+                            bypassFrame = false;
+
+                            // Find eye position
+                            using (var tempImage = new Mat())
+                            {
+                                if (!FindEyePositionROI)
+                                {
+                                    Frame.Mat.CopyTo(tempImage);
+                                    FindEyePosition(tempImage, posenet.DNN);
+                                }
+                            }
+
+                            try
+                            {
+                                //CvInvoke.FindContours(DifferenceImageRect.Convert<Gray, byte>(), contours, m,
+                                //Emgu.CV.CvEnum.RetrType.Tree,
+                                //Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+
+                                CvInvoke.FindContours(DifferenceImageRect, contours, m,
+                                  Emgu.CV.CvEnum.RetrType.Tree,
+                                  Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+
+                                ArchAreaRed = new List<double>();
+                                ArchAreaGreen = new List<double>();
+
+                                var xRateEye = (float)DifferenceImageRect.Width / (float)detectionSizeTFT;
+                                var yRateEye = (float)DifferenceImageRect.Height / (float)detectionSizeTFT;
+                                var yRatioNose = (float)DifferenceImageRect.Width / (float)DifferenceImageRect.Height; ///*nose.Y * detectionSizeTFT **/ yRate; // eyeLeft.Y;
+                                var xRatioNose = (float)DifferenceImageRect.Width / (float)DifferenceImageRect.Height; ///*nose.X * detectionSizeTFT **/ xRate; // eyeLeft.X;
+
+                                bool logStop = false;
+                                bool logStart = false;
+
+                                contourMultiFrameDetected = false;
+
+                                // Selecting largest contour
+                                if (contours.Size > 0)
+                                {
+                                    //WriteOutput("Contour all detected " + contours.Size, false);
+
+                                    if (display != null)
+                                    {
+                                        display?.Dispose();
+                                        display = null;
+                                    }
+                                    display = new Image<Bgr, byte>(DifferenceImageRect.Width, DifferenceImageRect.Height);
+
+                                    for (int i = 0; i < contours.Size; i++)
+                                    {
+                                        // Testing
+                                        double perimeter = CvInvoke.ArcLength(contours[i], true);
+                                        VectorOfPoint approx = new VectorOfPoint();
+                                        CvInvoke.ApproxPolyDP(contours[i], approx, 0.04 * perimeter, true);
+
+                                        // set pixel to 0 for new count
+                                        int n_green_pix_rect = 0;
+                                        int n_red_pix_rect = 0;
+
+                                        var area = CvInvoke.ContourArea(contours[i]);
+                                        var rect = CvInvoke.BoundingRectangle(contours[i]);
+                                        double ar = (double)rect.Width / rect.Height;
+
+                                        //moments  center of the shape
+                                        var moments = CvInvoke.Moments(contours[i]);
+                                        int X = (int)(moments.M10 / moments.M00);
+                                        int Y = (int)(moments.M01 / moments.M00);
+                                        var WeightedCentroid = new Point((int)(moments.M10 / moments.M00), (int)(moments.M01 / moments.M00));
+                                        //var distLeft = CvInvoke.PointPolygonTest(contours[i], new PointF((float)eyeLeft.X, (float)eyeLeft.Y), true);
+                                        //var distRight = CvInvoke.PointPolygonTest(contours[i], new PointF((float)eyeRight.X, (float)eyeRight.Y), true);
+
+                                        //CvInvoke.Circle(display, new System.Drawing.Point((int)eyeLeft.X, (int)eyeLeft.Y), 10, new MCvScalar(255, 0, 0), 2);
+                                        //CvInvoke.Circle(display, new System.Drawing.Point((int)eyeRight.X, (int)eyeRight.Y), 10, new MCvScalar(255, 0, 0), 2);
+
+                                        // correct area
+                                        if (area == 0.5)
+                                        {
+                                            area = 1;
+                                        }
+
+                                        if (area > 0)//FrameThreshold && area < FrameThresholdH)
+                                        {
+                                            // check if it's REM eye detected
+                                            if (/*area >= AreaMinThreshold && */eyeRight != new System.Windows.Point(0, 0) || eyeLeft != new System.Windows.Point(0, 0) && area < AreaMaxThreshold)
+                                            {
+                                                // nose
+                                                if (Math.Abs(X - nose.X) < NoseXValue && Math.Abs(Y - nose.Y) < NoseYValue)
+                                                {
+                                                    // Draw rectangle in red for no matched REM eye position for area higher than "AreaMinThreshold"
+                                                    /*CvInvoke.Rectangle(display, rect, new MCvScalar(0, 0, 255), 2);
+                                                    //CvInvoke.DrawContours(display, contours, i, new MCvScalar(0, 0, 255), 2);
+                                                    RectangleArea rectAreaRed = new RectangleArea(rect.X, rect.Y, rect.Width, rect.Height, area, n_green_pix_rect, ar);
+                                                    rectArchAreaRed.Add(rectAreaRed);
+                                                    ArchAreaRed.Add(area);
+                                                    //DisplayingContour(Frame, display, true);  // Debugging
+
+                                                    // add information to tell rectangle detected
+                                                    contourMultiFrameDetected = true;
+
+                                                    // debugging
+                                                    if (checkBoxVerboseLog.Checked)
+                                                    {
+                                                      if (!logStart)
+                                                        WriteOutput("vREM: " + vREMDigit + " - Start red over nose 0", false);
+
+                                                      // debugging need to be enable manually
+                                                      //WriteOutput("vREM: " + vREMDigit + " - rect red - eye right center: " + eyeRight +
+                                                      //" - eye left center: " + eyeLeft + " - moment center: " + WeightedCentroid + " - diff: " + diff + " - area: " + area, false);
+                                                      logStop = true;
+                                                      logStart = true;
+                                                    }
+
+                                                    // Get red pixel into contour
+                                                    using (Image<Gray, byte> temp = DifferenceImageRect.Copy(rect))
+                                                    {
+                                                      n_red_pix_rect = temp.CountNonzero()[0];
+                                                    }
+                                                    redPixel += n_red_pix_rect;*/
+                                                }
+                                                // right eye
+                                                else if (eyeRight.X != 0 && (Math.Abs(X - eyeRight.X) < xEyeRatio * xRateEye && Math.Abs(Y - eyeRight.Y) < yEyeRatio * yRateEye) ||
+                                                  (eyeRight.X != 0 && Math.Abs(X - eyeRight.X) < xEyeRatio * xRateEye && Y - eyeRight.Y >= 0 && Y - eyeRight.Y < yEyeRatio * 3 * yRateEye))
+                                                {
+                                                    if (area >= AreaMinThreshold)
+                                                    {
+                                                        // Get green pixel into contour
+                                                        using (Image<Gray, byte> temp = DifferenceImageRect.Copy(rect))
+                                                        {
+                                                            n_green_pix_rect = temp.CountNonzero()[0];
+                                                        }
+
+                                                        // Draw rectangle green
+                                                        CvInvoke.Rectangle(display, rect, new MCvScalar(0, 255, 0), 2);
+                                                        //CvInvoke.DrawContours(display, contours, i, new MCvScalar(0, 255, 0), 2);
+                                                        diff += n_green_pix_rect;
+
+                                                        // add information to tell rectangle detected
+                                                        contourMultiFrameDetected = true;
+
+                                                        // Debugging
+                                                        //WriteOutput("Diff: " + Value);
+
+                                                        // added rect detected
+                                                        RectangleArea rectAreaGreen = new RectangleArea(rect.X, rect.Y, rect.Width, rect.Height, area, n_green_pix_rect, ar);
+                                                        rectArchAreaGreen.Add(rectAreaGreen);
+                                                        ArchAreaGreen.Add(area);
+                                                        //DisplayingContour(Frame, display, true);  // Debugging
+                                                    }
+                                                    else
+                                                    {
+                                                        // Get red pixel into contour
+                                                        /*using (Image<Gray, byte> temp = DifferenceImageRect.Copy(rect))
+                                                        {
+                                                          n_red_pix_rect = temp.CountNonzero()[0];
+                                                        }
+                                                        redPixel += n_red_pix_rect;
+
+                                                        // Draw rectangle in red for no matched REM eye position for area lower than "AreaMinThreshold"
+                                                        CvInvoke.Rectangle(display, rect, new MCvScalar(0, 0, 255), 2);
+                                                        RectangleArea rectAreaRed = new RectangleArea(rect.X, rect.Y, rect.Width, rect.Height, area, n_red_pix_rect, ar);
+                                                        rectArchAreaRed.Add(rectAreaRed);
+                                                        ArchAreaRed.Add(area);*/
+                                                        //DisplayingContour(Frame, display, true);  // Debugging
+
+                                                        // add information to tell rectangle detected
+                                                        contourMultiFrameDetected = true;
+                                                    }
+                                                }
+                                                // left eye
+                                                else if (eyeLeft.X != 0 && (Math.Abs(X - eyeLeft.X) < xEyeRatio * xRateEye && Math.Abs(Y - eyeLeft.Y) < yEyeRatio * yRateEye) ||
+                                                   (eyeLeft.X != 0 && Math.Abs(X - eyeLeft.X) < xEyeRatio * xRateEye && Y - eyeLeft.Y >= 0 && Y - eyeLeft.Y < yEyeRatio * 3 * yRateEye))/* ||
+                               (X - eyeLeft.X >= 0 && X - eyeLeft.X < xEyeRatio * 3 * xRateEye && Y - eyeLeft.Y >= 0 && Y - eyeLeft.Y < yEyeRatio * 3 * yRateEye))*/
+
+                                                /*||
+                                                Math.Abs(X - eyeLeft.X) < xEyeRatio * xRateEye || X - eyeLeft.X > 0 && X - eyeLeft.X < xEyeRatio * 3 * xRateEye &&
+                                                Math.Abs(Y - eyeLeft.Y) < yEyeRatio * yRateEye && Y - eyeLeft.Y > 0 && Y - eyeLeft.Y < yEyeRatio * 2 * yRateEye)*/
+                                                {
+                                                    if (area >= AreaMinThreshold)
+                                                    {
+                                                        // Get green pixel into contour
+                                                        using (Image<Gray, byte> temp = DifferenceImageRect.Copy(rect))
+                                                        {
+                                                            n_green_pix_rect = temp.CountNonzero()[0];
+                                                        }
+
+                                                        // Draw rectangle green
+                                                        CvInvoke.Rectangle(display, rect, new MCvScalar(0, 255, 0), 2);
+                                                        //CvInvoke.DrawContours(display, contours, i, new MCvScalar(0, 255, 0), 2);
+                                                        diff += n_green_pix_rect;
+
+                                                        // add information to tell rectangle detected
+                                                        contourMultiFrameDetected = true;
+
+                                                        // added rect detected
+                                                        RectangleArea rectAreaGreen = new RectangleArea(rect.X, rect.Y, rect.Width, rect.Height, area, n_red_pix_rect, ar);
+                                                        rectArchAreaGreen.Add(rectAreaGreen);
+                                                        ArchAreaGreen.Add(area);
+                                                        //DisplayingContour(Frame, display, true);  // Debugging
+                                                    }
+                                                    else
+                                                    {
+                                                        // Get red pixel into contour
+                                                        /*using (Image<Gray, byte> temp = DifferenceImageRect.Copy(rect))
+                                                        {
+                                                          n_red_pix_rect = temp.CountNonzero()[0];
+                                                        }
+                                                        redPixel += n_red_pix_rect;
+
+                                                        // Draw rectangle in red for no matched REM eye position for area lower than "AreaMinThreshold"
+                                                        CvInvoke.Rectangle(display, rect, new MCvScalar(0, 0, 255), 2);
+                                                        RectangleArea rectAreaRed = new RectangleArea(rect.X, rect.Y, rect.Width, rect.Height, area, n_red_pix_rect, ar);
+                                                        rectArchAreaRed.Add(rectAreaRed);
+                                                        ArchAreaRed.Add(area);
+                                                        //DisplayingContour(Frame, display, true);  // Debugging
+                                                        */
+                                                        // add information to tell rectangle detected
+                                                        contourMultiFrameDetected = true;
+                                                    }
+                                                }
+                                                else if (Math.Abs(X - nose.X) < widthEyeRatio * xRateEye * 10 &&
+                                                  (nose.Y - Y) > 0 && (nose.Y - Y) < heightEyeRatio * yRateEye * 10 ||
+                                                  (Math.Abs(X - nose.X) < widthEyeRatio * xRateEye * 10 &&
+                                                  (Y - nose.Y) > 0 && (Y - nose.Y) < heightEyeRatio * yRateEye * 5))
+                                                // cancel area video timecode detected on image and outside the face based on nose point
+                                                {
+                                                    // Get red pixel into contour
+                                                    /* using (Image<Gray, byte> temp = DifferenceImageRect.Copy(rect))
+                                                     {
+                                                       n_red_pix_rect = temp.CountNonzero()[0];
+                                                     }
+                                                     redPixel += n_red_pix_rect;
+
+                                                     // Draw rectangle in red for no matched REM eye position for area higher than "AreaMinThreshold"
+                                                     CvInvoke.Rectangle(display, rect, new MCvScalar(0, 0, 255), 2);
+                                                     //CvInvoke.DrawContours(display, contours, i, new MCvScalar(0, 0, 255), 2);
+                                                     RectangleArea rectAreaRed = new RectangleArea(rect.X, rect.Y, rect.Width, rect.Height, area, n_red_pix_rect, ar);
+                                                     rectArchAreaRed.Add(rectAreaRed);
+                                                     ArchAreaRed.Add(area);*/
+                                                    //DisplayingContour(Frame, display, true);  // Debugging
+
+                                                    // add information to tell rectangle detected
+                                                    contourMultiFrameDetected = true;
+                                                }
+                                            }
+                                            else if (area > 0 && Math.Abs(X - nose.X) < widthEyeRatio * xRateEye * 10 &&
+                                            (nose.Y - Y) > 0 && (nose.Y - Y) < heightEyeRatio * yRateEye * 10 ||
+                                            (Math.Abs(X - nose.X) < widthEyeRatio * xRateEye * 10 &&
+                                            (Y - nose.Y) > 0 && (Y - nose.Y) < heightEyeRatio * yRateEye * 5))
+                                            {
+
+                                                // Get red pixel into contour
+                                                /* using (Image<Gray, byte> temp = DifferenceImageRect.Copy(rect))
+                                                 {
+                                                   n_red_pix_rect = temp.CountNonzero()[0];
+                                                 }
+                                                 redPixel += n_red_pix_rect;
+
+                                                 // Draw rectangle in red for no matched REM eye position for area lower than "AreaMinThreshold"
+                                                 CvInvoke.Rectangle(display, rect, new MCvScalar(0, 0, 255), 2);
+                                                 //CvInvoke.DrawContours(display, contours, i, new MCvScalar(0, 0, 255), 2);
+                                                 RectangleArea rectAreaRed = new RectangleArea(rect.X, rect.Y, rect.Width, rect.Height, area, n_red_pix_rect, ar);
+                                                 rectArchAreaRed.Add(rectAreaRed);
+                                                 ArchAreaRed.Add(area);*/
+                                                //DisplayingContour(Frame, display, true);  // Debugging
+
+                                                // add information to tell rectangle detected
+                                                contourMultiFrameDetected = true;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // for average detection
+                                m_arrDetectedFaceMove.Add((int)changedPixels);
+                                m_arrDetectedAverageNotification.Add((int)changedPixels);
+                                m_AverageFaceTracker.Add((int)changedPixels);
+
+                                // for debugging
+                                //foreach (var item in rectArchAreaRed)
+                                //{
+                                //  WriteOutput("rect detected count: " + rectArchAreaRed.Count + " - area: " + item.Area + " - X: " + item.X + " - Y: " + item.Y + " - ratio: " + item.Ar, false);
+                                //}
+
+                                //// for debugging
+                                //int rectDiff = Math.Abs(rectArchAreaRed.Count - rectArchAreaGreen.Count);
+
+                                // set higher value for vREM analyse code (to lower blinks)
+                                if (rectArchAreaRed.Count >= vREMResetFull)
+                                {
+                                    diff += 0.555;
+                                }
+                                else if (ArchAreaRed.Count >= vREMResetFull)
+                                {
+                                    diff += 0.555;
+                                }
+                                else if (Math.Abs(diff - changedPixels) >= (int)PixelThresholdDiff && Math.Abs(diff - changedPixels) <= 150 && diff < (int)PixelThresholdDiff && diff > 0)
+                                {
+                                    // this code is for very little movement
+                                    diff += 0.555;
+                                    logStop = true;
+                                }
+                            }
+
+                            catch (Exception Ex)
+                            {
+                                Console.WriteLine(Ex.Message);
+                            }
+                        }
+                    }
+                }
+
+                #endregion
+            }
+            return contourMultiFrameDetected;
+        }
+
+        private Image<Bgr, byte> DisplayingContour(Image<Bgr, byte> DifferenceImage, Image<Bgr, byte> display, bool displayOnSource = false)
+        {
+            try
+            {
+                if (result != null)
+                {
+                    result?.Dispose();
+                    result = null;
+                }
+                result = new Image<Bgr, byte>(DifferenceImageRect.Width, DifferenceImageRect.Height);
+
+                if (additionFramediff != null)
+                {
+                    additionFramediff?.Dispose();
+                    additionFramediff = null;
+                }
+                additionFramediff = new Image<Bgr, byte>(resolutionX, resolutionY);
+
+                if (display != null)
+                {
+                    CvInvoke.Add(DifferenceImage, display, result);
+                }
+                // Display with background image and detect hole
+                // add previous frame to addition frame
+                CvInvoke.Add(result, Frame, additionFramediff);
+
+                // return mixed frame
+                return additionFramediff;
+            }
+            catch
+            {
+                // return mixed frame
+                return additionFramediff;
+            }
+        }
+
+        [HandleProcessCorruptedStateExceptions]
+        private void VREMAnalyse(double diff, bool multiFrame)
+        {
+            try
+            {
+                FaceRectChange = 0;
+
+                //Display stats
+                var displayStats = Convert.ToInt32(diff);
+                //if (EnableStats)
+                //{
+                //    SetTextTimer(DateTime.Now.ToString("yyy-MM-dd HH:mm:ss - ") + displayStats);
+                //    SetTextLblMov("Detected movement: " + displayStats);
+                //}
+
+                //display the previous image using thread safe call
+                //if (cameraCapture != null && pbDifferenceCheckBox.Checked)
+                //{
+                //    Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+                //    {
+                //        pbDifference.Image = Previous_Frame.ToBitmap();
+                //    }));
+                //}
+                //DisplayImageDifference(Previous_Frame.ToBitmap(), pbDifference);
+
+                if (ImageDifferenceLd != null && ImageDifferenceLd.Ptr != IntPtr.Zero)
+                {
+                    //display the absolute difference
+                    if (cameraCapture != null)
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(new Action(() =>
+                        {
+                            using (resultImage = new Image<Bgr, byte>(resolutionX, resolutionY))
+                            {
+                                ImageDifferenceLd.CopyTo(resultImage);
+                                pbDifference.Image = resultImage.ToBitmap();
+                            }
+                        }));
+                    }
+                    //DisplayImageResult(resultImage.ToBitmap(), resultbox);
+                }
+
+                //if (CurrentDevices.Equals("Video File"))
+                //{
+                //    // offset information
+                //    if ((int)numericUpDownOffsetH.Value != 0 || (int)numericUpDownOffsetM.Value != 0 || (int)numericUpDownOffsetS.Value != 0)
+                //    {
+                //        SetTextVideo("Video: " + displayTime + " - Recording offset: " + displayTimeOffsetString);
+                //    }
+                //    else
+                //    {
+                //        SetTextVideo("Video: " + displayTime);
+                //    }
+                //}
+            }
+            catch (AccessViolationException ex)
+            {
+                //WriteOutput("VREMAnalyse: " + ex.Message);
+                Console.WriteLine(ex);
+            }
+            catch (Exception ex)
+            {
+                //WriteOutput("VREMAnalyse: " + ex.Message);
+                Console.WriteLine(ex);
+            }
+        }
+
+
+        internal int vREMCodeExecution(bool validate, double diff)
+        {
+            // Notification in progress don't fill vREM algo
+            //while (notificationInProgress)
+            //{
+            //    // wait until sound if finished
+            //    if (vREMLogOnce)
+            //    {
+            //        WriteOutput("Notification in progress clear and restore vREM when finished", true, false);
+            //        vREMLogOnce = false;
+            //    }
+
+            //    // Clear current REM algo
+            //    m_arrHistory.Clear();
+            //    vREM = 0;
+            //    Value = 0;
+            //    return 0;
+            //}
+
+            // set checkBoxSlowMovement to true to use new vREM algo
+            int vREMRange = 256;
+            int intBelowAlgo1 = 6; // idleTicks
+            int intBelowAlgo2 = 256;
+
+            if (vREMSlowMovement)
+            {
+                vREMRange = 1024;
+                intBelowAlgo1 = 2; // idleTicks
+                intBelowAlgo2 = 64;
+            }
+
+            bool boolDreaming = false;
+            Value = diff;
+            if (cmbAlgorithmText == "Motion Detector")
+            {
+                if (Value >= FrameThreshold)
+                {
+                    boolDreaming = true;
+                }
+            }
+            else if (cmbAlgorithmText == "REM Detector" && !bypassFrame)
+            {
+                // Update the mem list
+                //m_arrHistory.Add(Convert.ToInt32(Device.GetVision()));
+
+                if (MovementBreathDetected)
+                {
+                    Value = FrameThresholdH + 10;
+                }
+
+                //if (bypassFrame)
+                //{
+                //  Value = 10500;
+                //}
+
+                var ValueDB = Value;
+                var decPart = (int)(((decimal)Value % 1) * 1000);
+                if (decPart == 555)
+                {
+                    ValueDB = 10500;
+                }
+
+                // Notification advert in progress freeze vREM algo (default 10s)
+                //while (DateTime.Now.Subtract(m_dtNowSpeechAdvert).TotalSeconds <= AdvertTimeOut)
+                //{
+                //    int vREMValidate = vREMCodeValidate(true, ValueDB);
+                //    if (vREMValidate != 888)
+                //    {
+                //        m_arrHistoryAdvert.Add(ValueDB);
+                //        if (m_arrHistoryAdvert.Count > vREMRange)
+                //        {
+                //            m_arrHistoryAdvert.RemoveAt(0);
+                //        }
+                //        vREMValidateLogOnce = true;
+                //    }
+                //    else
+                //    {
+                //        if (vREMValidateLogOnce)
+                //        {
+                //            WriteOutput("vREMValidate: " + vREMValidate + " - ADVERT count: " + messageAdvertCount, true, true);
+                //            vREMValidateLogOnce = false;
+                //        }
+                //    }
+
+                //    // reset trigger delay notification after 60 secondes
+                //    if (vREMValidateResult == 888 && messageAdvertCount > 0 &&
+                //      DateTime.Now.Subtract(m_dtNowSpeechFirstAdvert).TotalSeconds >= 60 && m_triggerDreamingREM)
+                //    {
+                //        m_triggerDreamingREM = false;
+                //        m_triggerAdvertDreamingREM = true;
+                //    }
+
+                //    //// execute analysing code to log vREMValidateResult change
+                //    //TmrUpdateDevice(true);
+
+                //    return 0;
+                //}
+
+                // trigger the vREM = 888
+                if (vREMValidateResult == 888)
+                {
+                    boolDreaming = true;
+                }
+
+                //int eyeMoveMin = Device.GetEyeMoveMin();
+                //int eyeMoveMax = Device.GetEyeMoveMax();
+                int idleTicks = IdleTicks;
+
+                // add false detection to vREM algo (default 10s)
+                //if (notificationAdvertInProgress && DateTime.Now.Subtract(m_dtNowSpeechAdvert).TotalSeconds > AdvertTimeOut)
+                //{
+                //    notificationAdvertInProgress = false;
+                //    messageAdvertCount = 0;
+                //    WriteOutput("vREM restore current detection Notification", true, false);
+
+                //    m_arrHistory = new List<double>(m_arrHistoryAdvert);
+                //    m_arrHistoryAdvert.Clear();
+
+                //    // clear
+                //    m_arrHistory.Clear();
+
+                //    // restore current detection
+                //    m_arrHistory.Add(ValueDB);
+                //    if (m_arrHistory.Count > vREMRange)
+                //    {
+                //        m_arrHistory.RemoveAt(0);
+                //    }
+                //}
+                //else
+                //{
+                //    if (Device.GetTossValue() > 0)
+                //    {
+                //        // clear
+                //        m_arrHistory.Clear();
+                //        WriteOutput("Toss clear history with red pixels value: " + Convert.ToInt32(redPixel), true, false);
+                //        return 0;
+                //    }
+
+                //    m_arrHistory.Add(ValueDB);
+                //    if (m_arrHistory.Count > vREMRange)
+                //    {
+                //        m_arrHistory.RemoveAt(0);
+                //    }
+                //}
+
+                if (!bypassFrame && !boolDreaming)
+                {
+                    // Check for blinks
+                    int intBlinks = 0;
+                    bool boolBlinking = false;
+
+                    int intBelow = 0;
+                    int intAbove = 0;
+
+                    for (int i = 0; i < m_arrHistory.Count; i++)
+                    {
+                        double dblValue = m_arrHistory[i];
+                        //bool overMax = false;
+
+                        //// Check if the last 10 or next 10 were 1000
+                        //// it's reset below blink or reset it to 0
+                        int lastOrNextOver4000 = 0;
+                        for (int l = i; l > 0 & l > i - 10; l--)
+                        {
+                            if (m_arrHistory[l] > 9999 || m_arrHistory[l] > FrameThresholdH)
+                            //if (m_arrHistory[l] > eyeMoveMax || m_arrHistory[l] > FrameThresholdH)
+                            {
+                                //overMax = true;
+                                //break;
+                                lastOrNextOver4000++;
+                            }
+                        }
+
+                        for (int n = i; n < m_arrHistory.Count & n < i + 10; n++)
+                        {
+                            if (m_arrHistory[n] > 9999 || m_arrHistory[n] > FrameThresholdH)
+                            //if (m_arrHistory[n] > eyeMoveMax || m_arrHistory[n] > FrameThresholdH)
+                            {
+                                //overMax = true;
+                                //break;
+                                lastOrNextOver4000++;
+                            }
+                        }
+
+                        //// Check if the last 10 or next 10 were over FrameThresholdH
+                        //// it's reset below blink or reset it to 0
+                        //for (int l = i; l > 0 & l > i - 10; l--)
+                        //{
+                        //  if (m_arrHistory[l] > FrameThresholdH)
+                        //  {
+                        //    lastOrNextOver1000++;
+                        //    //WriteOutput("l - " + l);
+                        //  }
+                        //}
+
+                        //for (int n = i; n < m_arrHistory.Count & n < i + 10; n++)
+                        //{
+                        //  if (m_arrHistory[n] > FrameThresholdH)
+                        //  {
+                        //    lastOrNextOver1000++;
+                        //    //WriteOutput("n - " + n);
+                        //  }
+                        //}
+
+                        if (lastOrNextOver4000 == 0) //if (!overMax)
+                        {
+                            //if (dblValue > eyeMoveMin & dblValue < eyeMoveMax)
+                            if (dblValue > FrameThreshold & dblValue < FrameThresholdH)
+                            {
+                                intAbove += 1;
+                                intBelow = 0;
+                                //WriteOutput("intAbove - " + intAbove + "dblValue - " + dblValue);
+                            }
+                            else
+                            {
+                                intBelow += 1;
+                                intAbove = 0;
+                                //if (intBelow > 0)
+                                //WriteOutput("intBelow - " + intBelow);
+                            }
+                        }
+
+                        if (lastOrNextOver4000 > 10)
+                        {
+                            intBlinks = 0;
+                            //WriteOutput("lastOrNextOver1000 > 10");
+                        }
+
+                        if (!boolBlinking)
+                        {
+                            if (intAbove >= 1)
+                            {
+                                boolBlinking = true;
+                                intBlinks += 1;
+                                intAbove = 0;
+                                intBelow = 0;
+                                //WriteOutput("boolBlinking - intBlinks - "+ intBlinks);
+                            }
+                        }
+                        else
+                        {
+                            // speed detection - reduce will get faster and value updated faster goes to 0 more quickly
+                            if (intBelow >= idleTicks) //intBelowAlgo1) // default Algo1 = 6
+                            {
+                                boolBlinking = false;
+                                intBelow = 0;
+                                intAbove = 0;
+                                //WriteOutput("intBelow >= 24 - " + intBelow);
+                            }
+                            else
+                            {
+                                // speed detection - reduce will get faster and value updated faster goes to 0 more quickly
+                                if (intAbove >= 24)
+                                {
+                                    // reset
+                                    boolBlinking = false;
+                                    intBlinks = 0;
+                                    intBelow = 0;
+                                    intAbove = 0; // Todo
+                                                  //WriteOutput("intAbove >= 12 - " + intBelow);
+                                }
+                            }
+                        }
+
+                        if (intBlinks > 8)
+                        {
+                            if (bypassFrame)
+                            {
+                                intBlinks = 8;
+                            }
+                            else
+                            {
+                                //WriteOutput("boolDreaming - " + intBlinks);
+                                boolDreaming = true;
+                                break;
+                            }
+                        }
+
+                        if (intAbove > 24)
+                        {
+                            // reset
+                            boolBlinking = false;
+                            intBlinks = 0;
+                            intBelow = 0;
+                            intAbove = 0;
+                            //WriteOutput("intAbove > 12 - " + intAbove);
+                        }
+
+                        // Reset to 0 (higher value will delay it)
+                        // 8 seconds for 64 when "m_arrHistory.Count = 256"
+                        // 16 seconds for 128 when "m_arrHistory.Count = 256"
+                        if (intBelow > intBelowAlgo2) // default algo1 = 256
+                        {
+                            // reset
+                            //WriteOutput("intBelow > " + " intBelowAlgo2 - " + intBelow);
+                            boolBlinking = false;
+                            if (!vREMSlowMovement)
+                            {
+                                intBlinks = 0;
+                            }
+                            intBelow = 0;
+                            intAbove = 0;
+                        }
+                    }
+
+                    if (boolDreaming && !MovementBreathDetected)
+                    {
+                        if (validate)
+                        {
+                            vREMResult = 888;
+                            vREMLogOnce = true;
+                        }
+                        else
+                        {
+                            vREM = 888;
+                            m_arrHistory.Clear();
+                            vREMLogOnce = true;
+                            //detectedRectAreaMaxPass = 0;
+                            //detectedRectAreaMinPass = 0;
+                        }
+                    }
+                    else
+                    {
+                        // For counting vREM at 888
+                        Detected888 = false;
+                        intBlinks = Math.Min(10, intBlinks);
+
+                        if (validate)
+                        {
+                            vREMResult = intBlinks * 100;
+                        }
+                        else
+                        {
+                            vREM = intBlinks * 100;
+                        }
+                    }
+
+                    if (MovementBreathDetected)
+                    {
+                        // Reset bool movement
+                        MovementBreathDetected = false;
+                    }
+                }
+            }
+
+            // for Motion Detector
+            if (boolDreaming)
+            {
+                if (validate)
+                {
+                    vREMResult = 888;
+                    vREMLogOnce = true;
+                }
+                else
+                {
+                    vREM = 888;
+                    if (!Detected888)
+                    {
+                        CountVrem++;
+                        Detected888 = true;
+                    }
+
+                    // reset vREMValidateResult when notification is trigger
+                    if (vREMValidateResult == 888)
+                    {
+                        vREMValidateResult = 0;
+                    }
+                    vREMLogOnce = true;
+                }
+            }
+
+            if (!validate)
+            {
+                // execute analysing code
+                TmrUpdateDevice();
+            }
+            return vREMResult;
+        }
+
+        private void FindEyePosition(Mat Image, bool DNN = false)
+        {
+            try
+            {
+                // TFT
+                using (Image)
+                {
+                    if (resizedFrame != null)
+                    {
+                        resizedFrame.Dispose();
+                        resizedFrame = null;
+                        resizedFrame = new Mat();
+                    }
+                    else
+                    {
+                        resizedFrame = new Mat();
+                    }
+
+                    CvInvoke.Resize(Image, resizedFrame, new System.Drawing.Size(detectionSizeTFT, detectionSizeTFT), 0, 0);
+
+                    if (!DNN)
+                    {
+                        if (session != null && graph != null)
+                        {
+                            //// code to test execution delay
+                            //var timer = Stopwatch.StartNew();
+                            using (TFTensor tensor = TransformInput(resizedFrame.ToBitmap()))
+                            {
+                                TFSession.Runner runner = session.GetRunner();
+                                runner.AddInput(graph["image"][0], tensor);
+                                runner.Fetch(
+                                    graph["heatmap"][0],
+                                    graph["offset_2"][0],
+                                    graph["displacement_fwd_2"][0],
+                                    graph["displacement_bwd_2"][0]
+                                );
+
+                                var resultTFT = runner.Run();
+
+                                //// log execution delay
+                                //timer.Stop();
+                                //Debug.WriteLine($"Detected boxes in {timer.ElapsedMilliseconds} ms");
+
+                                var heatmap = (float[,,,])resultTFT[0].GetValue(jagged: false);
+                                var offsets = (float[,,,])resultTFT[1].GetValue(jagged: false);
+                                var displacementsFwd = (float[,,,])resultTFT[2].GetValue(jagged: false);
+                                var displacementsBwd = (float[,,,])resultTFT[3].GetValue(jagged: false);
+
+                                Pose[] poses = posenet.DecodeMultiplePoses(
+                                           heatmap, offsets,
+                                           displacementsFwd,
+                                           displacementsBwd,
+                                           outputStride: 16, maxPoseDetections: 2,
+                                           scoreThreshold: 0.5f, nmsRadius: 20);
+
+                                Drawing(Frame.Mat, poses);
+
+                                // release for avoid memory leak
+                                tensor.Dispose();
+                                // release output (result) tensor
+                                foreach (var item in resultTFT)
+                                {
+                                    item.Dispose();
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // not used
+                        //var frameWidth = resizedFrame.Cols;
+                        //var frameHeight = resizedFrame.Rows;
+                        //var aspect_ratio = frameWidth / (double)frameHeight;
+                        //var inHeight = frameHeight;
+                        //var inWidth = System.Convert.ToDouble(aspect_ratio * inHeight * 8) / (double)8;
+                        //using (Mat blobs = DnnInvoke.BlobFromImage(Frame, 1.0 / 255, new System.Drawing.Size((int)inWidth, inHeight), new MCvScalar(127.5, 127.5, 127.5), true, false))
+                        //using (Mat blobs = DnnInvoke.BlobFromImage(resizedFrame/*.ToImage<Bgr,byte>()*/, 1.0 / 255, new System.Drawing.Size(resizedFrame.Width, resizedFrame.Height), new MCvScalar(127.5, 127.5, 127.5), true, false))
+
+                        using (Mat blobs = DnnInvoke.BlobFromImage(resizedFrame, 1.0 / 255, new Size(detectionSizeTFT, detectionSizeTFT), default, false, false))
+                        {
+                            net.SetInput(blobs);
+
+                            using (var output1 = net.Forward("heatmap"))
+                            using (var output2 = net.Forward("Conv2D_1"))
+                            using (var output3 = net.Forward("Conv2D_2"))
+                            using (var output4 = net.Forward("Conv2D_3"))
+                            {
+                                // new test
+                                float[,,,] heatmap = output1.GetData() as float[,,,];
+                                float[,,,] offsets = output2.GetData() as float[,,,];
+                                float[,,,] displacementsFwd = output3.GetData() as float[,,,];
+                                float[,,,] displacementsBwd = output4.GetData() as float[,,,];
+
+                                Pose[] poses = posenet.DecodeMultiplePoses(
+                                                           heatmap, offsets,
+                                                           displacementsFwd,
+                                                           displacementsBwd,
+                                                           outputStride: 16, maxPoseDetections: 100,
+                                                           scoreThreshold: 0.5f, nmsRadius: 20);
+
+                                Drawing(Frame.Mat, poses);
+                                //DisplayImageSource(Frame.ToBitmap(), pbSource);
+                            }
+                        }
+
+                    }
+
+                    GC.Collect();
+                    GC.Collect();
+                    GC.Collect();
+                    GC.Collect();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // release memory leak
+                if (resizedFrame != null)
+                {
+                    resizedFrame.Dispose();
+                    resizedFrame = null;
+                }
+
+                if (!posenet.DNN)
+                {   // load Tensor for new usage
+                    LoadTensorFlow();
+                }
+
+                //GC.Collect();
+                //GC.Collect();
+                //GC.Collect();
+                //GC.Collect();
+
+                //GC.WaitForPendingFinalizers();
+                Console.Write(ex.Message);
+            }
+        }
+        private TFTensor TransformInput(Bitmap bitmap)
+        {
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            var length = bitmapData.Stride * bitmapData.Height;
+
+            byte[] bytes = new byte[length];
+
+            int strideWithoutReserved = bitmapData.Stride - bitmapData.Reserved;
+
+            Marshal.Copy(bitmapData.Scan0, bytes, 0, length);
+            bitmap.UnlockBits(bitmapData);
+
+            float[] floatValues = new float[bitmap.Width * bitmap.Height * 3];
+
+            int idx = 0;
+
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                if (i == strideWithoutReserved)
+                {
+                    //Reserved byte.
+                    continue;
+                }
+
+                if ((i - strideWithoutReserved) % bitmapData.Stride == 0)
+                {
+                    //Reserved byte.
+                    continue;
+                }
+
+                floatValues[idx] = bytes[i] * (2.0f / 255.0f) - 1.0f;
+                idx++;
+            }
+
+            TFShape shape = new TFShape(1, bitmap.Width, bitmap.Height, 3);
+            bitmap.Dispose();
+            return TFTensor.FromBuffer(shape, floatValues, 0, floatValues.Length);
+        }
+        private void Drawing(Mat image, Pose[] poses, bool poseChain = false)
+        {
+            noseKeyLost = false;
+            if (poses.Length > 0)
+            {
+                var xRateEye = image.Width / (float)detectionSizeTFT;
+                var yRateEye = image.Height / (float)detectionSizeTFT;
+                var ratio = (float)image.Width / (float)image.Height;
+
+                using (Graphics g = Graphics.FromImage(image.ToBitmap()))
+                {
+                    for (int i = 0; i < 1; i++)
+                    {
+                        Pose pose = poses[i];
+
+                        float score = (float)ScoreTF;
+
+                        if (pose.score > score)
+                        {
+                            for (int j = 0;
+                                j < (poseChain ? posenet.poseChain.GetLength(0) : jointPairs.GetLength(0));
+                                j++)
+                            {
+                                rightEye = new Keypoint();
+                                leftEye = new Keypoint();
+                                noseKey = new Keypoint();
+
+                                // detect correct point (eye left/right and nose) for Item1 and 2
+                                // Item1
+                                if (posenet.poseChain[j].Item1.Equals("rightEye"))
+                                {
+                                    rightEye = pose.keypoints.FirstOrDefault(item => item.part.Equals(
+                                        posenet.poseChain[j].Item1));
+                                }
+                                else if (posenet.poseChain[j].Item1.Equals("leftEye"))
+                                {
+                                    leftEye = pose.keypoints.FirstOrDefault(item => item.part.Equals(
+                                        posenet.poseChain[j].Item1));
+                                }
+                                else if (posenet.poseChain[j].Item1.Equals("nose"))
+                                {
+                                    noseKey = pose.keypoints.FirstOrDefault(item => item.part.Equals(
+                                        posenet.poseChain[j].Item1));
+                                }
+
+                                // Item2
+                                if (posenet.poseChain[j].Item2.Equals("rightEye"))
+                                {
+                                    rightEye = pose.keypoints.FirstOrDefault(item => item.part.Equals(
+                                        posenet.poseChain[j].Item2));
+                                }
+                                else if (posenet.poseChain[j].Item2.Equals("leftEye"))
+                                {
+                                    leftEye = pose.keypoints.FirstOrDefault(item => item.part.Equals(
+                                        posenet.poseChain[j].Item2));
+                                }
+                                else if (posenet.poseChain[j].Item2.Equals("nose"))
+                                {
+                                    noseKey = pose.keypoints.FirstOrDefault(item => item.part.Equals(
+                                        posenet.poseChain[j].Item2));
+                                }
+
+                                // draw righteye
+                                if (!rightEye.IsEmpty && rightEye.score >= score)
+                                {
+                                    eyeRight = new System.Windows.Point(rightEye.position.X * xRateEye, rightEye.position.Y * yRateEye);
+                                    g.DrawRectangle(jointColorRightGreen, rightEye.position.X * xRateEye - 16, rightEye.position.Y * yRateEye - 16, 32, 32);
+                                    CurrentFrameCount = 0;
+                                }
+                                // draw lefteye
+                                if (!leftEye.IsEmpty && leftEye.score >= score)
+                                {
+                                    eyeLeft = new System.Windows.Point(leftEye.position.X * xRateEye, leftEye.position.Y * yRateEye);
+                                    g.DrawRectangle(jointColorRightGreen, leftEye.position.X * xRateEye - 16, leftEye.position.Y * yRateEye - 16, 32, 32);
+                                    CurrentFrameCount = 0;
+                                }
+                                // draw nose
+                                if (!noseKey.IsEmpty && noseKey.score >= score)
+                                {
+                                    nose = new System.Windows.Point(noseKey.position.X * xRateEye, noseKey.position.Y * yRateEye);
+                                    //g.DrawEllipse(jointColorNose, noseKey.position.X * xRateEye, noseKey.position.Y * yRateEye, 3, 3);
+                                    if (nose.X > 0 && nose.Y > 0 && nose.X < image.Cols && nose.Y < image.Rows)
+                                    {
+                                        CurrentFrameAverageCountToClear = 0;
+                                        noseKeyLost = false;
+                                    }
+                                    else
+                                    {
+                                        // Nose position lost
+                                        noseKeyLost = true;
+                                    }
+                                }
+                                else
+                                {
+                                    // Nose position lost
+                                    noseKeyLost = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Nose position lost
+                noseKeyLost = true;
+            }
+        }
+
+        public void TmrUpdateDevice(bool validate = false)
+        {
+            //try
+            //{
+            //    foreach (LucidPluginBase arrPlugin in m_arrPlugins)
+            //    {
+            //        if (arrPlugin == null)
+            //        {
+            //            m_arrPlugins.Remove(arrPlugin);
+            //            break;
+            //        }
+
+            //        // this part is to log when alog is in freezing mode
+            //        if (notificationAdvertInProgress && validate)
+            //        {
+            //            double num1;
+            //            if (arrPlugin.Name.Contains("REM"))
+            //            {
+            //                num1 = vREMValidateResult;
+            //            }
+            //            else
+            //            {
+            //                num1 = Value;
+            //            }
+
+            //            var num1Digit = $"{num1:000}";
+            //            var valueDigit = $"{Value:0000}";
+            //            var rectGreenDigit = $"{rectArchAreaGreen?.Count:000}";
+            //            var rectRedDigit = $"{rectArchAreaRed?.Count:000}";
+            //            var redPixelDigit = $"{redPixel:000}";
+
+            //            var item = arrPlugin.Ticks[arrPlugin.Ticks.Count - 1];
+            //            if ( /*(int) num1 != 0 &&*/ item != (short)num1)
+            //            {
+            //                // use this code for logging purpose
+            //                double num = Value;
+            //                if (num > 999.0)
+            //                    num = 999.0;
+            //                if (num < 0.0)
+            //                    num = 0.0;
+
+            //                var numDigit = $"{num:000}";
+            //                var vRemDigit = $"{vREMValidateResult:000}";
+
+            //                if (num1Digit.Equals("888"))
+            //                {
+            //                    WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
+            //                                numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit + " - Advert", true, true);
+
+            //                    if (delayNotification)
+            //                    {
+            //                        WriteOutput("REM Detected - Notification disabled by UDP timer set to: " + TimerNotificationOffOn + " minute(s)", true, true);
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
+            //                                numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit + " - Advert");
+            //                }
+
+            //                if (RecordVideo)
+            //                {
+            //                    // Save image in thread safe
+            //                    CreateDirectories();
+
+            //                    if (resultbox.Image != null)
+            //                    {
+            //                        SaveImageResult(resultbox, "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
+            //                    }
+            //                    else
+            //                    {
+            //                        SaveImageResultDirect(ImageDifferenceLd.ToBitmap(), "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
+            //                    }
+            //                }
+            //            }
+
+            //            if (arrPlugin.Ticks.Count > 200 && !algoVersion2)
+            //            {
+            //                arrPlugin.Ticks.Clear();
+            //            }
+
+            //            arrPlugin.Ticks.Add((short)num1);
+            //            arrPlugin.LastMinute += Convert.ToInt32(num1 / 10.0);
+            //            return;
+            //        }
+
+            //        while (DateTime.Now.Subtract(m_dtNowSpeechNotification).TotalSeconds <= 10)
+            //        {
+            //            // wait 10 seconds before handle new UPD speech (it's to avoid to much UDP in a row)
+            //            // Reset UDP notification turned OFF or OK (ON)
+            //            {
+            //                if (speechProgress)
+            //                {
+            //                    TimeSpan elapsedTimeSpan = DateTime.Now - m_dtNowSpeechNotification;
+            //                    var timeLeft = Math.Abs(10 - Math.Round(elapsedTimeSpan.TotalSeconds, 0));
+
+            //                    WriteOutput("Speech Notification in progress reset/freeze vREM for: " + timeLeft + " seconds", true, true);
+            //                    speechProgress = false;
+            //                }
+            //            }
+
+            //            // Clear current REM algo
+            //            m_arrHistory.Clear();
+            //            vREM = 0;
+            //            Value = 0;
+            //            return;
+            //        }
+
+            //        // Reset UDP notification turned OFF or OK (ON)
+            //        if (DateTime.Now.Subtract(m_dtNowNotification).TotalMinutes >= TimerNotificationOffOn)
+            //        {
+            //            if (delayNotification)
+            //            {
+            //                WriteOutput("Timer elapsed - ready for new ON/OFF notification", true, true);
+            //            }
+            //            delayNotification = false;
+            //        }
+
+            //        if (arrPlugin.Initialized && arrPlugin.Enabled)
+            //        {
+            //            double num1;
+            //            //num1 = arrPlugin.Value;
+            //            if (arrPlugin.Name.Contains("REM"))
+            //            {
+            //                num1 = vREM;
+            //            }
+            //            else
+            //            {
+            //                num1 = Value;
+            //            }
+
+            //            var num1Digit = $"{num1:000}";
+            //            var valueDigit = $"{Value:0000}";
+            //            var rectGreenDigit = $"{rectArchAreaGreen?.Count:000}";
+            //            var rectRedDigit = $"{rectArchAreaRed?.Count:000}";
+            //            var redPixelDigit = $"{redPixel:000}";
+
+            //            // Write num1 value
+            //            if (arrPlugin.Ticks.Count > 0 && arrPlugin.Name.Contains("REM"))
+            //            {
+            //                if (algoVersion2)
+            //                {
+            //                    // check if we get an higher detection and delay new notification
+            //                    var previousNum = arrPlugin.Ticks[arrPlugin.Ticks.Count - 1];
+            //                    if (((short)num1 > previousNum || (short)num1 == 888) && vREMValidateResult != 888)
+            //                    {
+            //                        // only delay is a notification has already be sent
+            //                        if (m_triggerDreamingREM)
+            //                        {
+            //                            m_dtNowLastTime888Notification = DateTime.Now;
+            //                        }
+            //                    }
+            //                    else if (DateTime.Now.Subtract(m_dtNowLastTime888Notification).TotalSeconds >= algoVersion2Delay && (m_triggerDreamingREM || m_triggerAdvertDreamingREM))
+            //                    {
+            //                        // reset trigger delay notification
+            //                        m_triggerDreamingREM = false;
+            //                        m_triggerAdvertDreamingREM = false;
+            //                        vREMValidateResult = 0;
+            //                        //m_arrHistory.Clear();
+            //                    }
+            //                }
+
+            //                var item = arrPlugin.Ticks[arrPlugin.Ticks.Count - 1];
+            //                if ( /*(int) num1 != 0 &&*/ item != (short)num1)
+            //                {
+            //                    // use this code for logging purpose
+            //                    double num = Value;
+            //                    if (num > 999.0)
+            //                        num = 999.0;
+            //                    if (num < 0.0)
+            //                        num = 0.0;
+
+            //                    var numDigit = $"{num:000}";
+            //                    var vRemDigit = $"{vREM:000}";
+            //                    //var FaceRectChangeInfoLog = FaceRectChangeInfo / StrongNotifDelay;
+            //                    //var rectMovementDigit = $"{FaceRectChangeInfoLog:000}";
+
+            //                    if (num1Digit.Equals("888"))
+            //                    {
+            //                        WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
+            //                                    numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit, true, true);
+
+            //                        if (delayNotification)
+            //                        {
+            //                            WriteOutput("REM Detected - Notification disabled by UDP timer set to: " + TimerNotificationOffOn + " minute(s)", true, true);
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
+            //                                    numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit);
+            //                    }
+
+            //                    if (RecordVideo)
+            //                    {
+            //                        // Save image in thread safe
+            //                        CreateDirectories();
+
+            //                        if (resultbox.Image != null)
+            //                        {
+            //                            SaveImageResult(resultbox, "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
+            //                        }
+            //                        else
+            //                        {
+            //                            SaveImageResultDirect(ImageDifferenceLd.ToBitmap(), "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
+            //                        }
+            //                    }
+
+            //                    // for information log
+            //                    FaceRectChangeInfo = 0;
+            //                }
+            //                //else if ((short)num1 == 888 && item == (short)num1 && algoVersion2)
+            //                //{
+            //                //  arrPlugin.Ticks.Add((short)num1);
+            //                //  arrPlugin.LastMinute += Convert.ToInt32(num1 / 10.0);
+            //                //  return;
+            //                //}
+
+            //                if (arrPlugin.Ticks.Count > 200 && !algoVersion2)
+            //                {
+            //                    arrPlugin.Ticks.Clear();
+            //                }
+            //            }
+
+            //            if (arrPlugin.Name.Contains("REM"))
+            //            {
+            //                if (num1 == 888.0)
+            //                {
+            //                    m_boolDreamingREM = true;
+            //                    //WriteOutput("REM Detected - Ready for Notification" + " - Value: " + num1);
+            //                }
+            //                else
+            //                {
+            //                    m_boolDreamingREM = false;
+            //                    //m_boolPlayedREM = false;
+            //                }
+            //            }
+
+            //            // When running RTSP DelayStartREM for testing, avoid delayed TriggerDelay
+            //            int TriggerDelayStartREM = 0;
+            //            if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes <= DelayStartREM)
+            //            {
+            //                TriggerDelay = TriggerDelayStartREM;
+            //            }
+            //            else
+            //            {
+            //                TriggerDelay = TriggerDelayBackup;
+            //            }
+
+            //            boolPlay = false;
+            //            bool dtLastTriggered = false;
+            //            if (m_boolDreamingREM &&
+            //                DateTime.Now.Subtract(m_dtLastTriggered).TotalMinutes >= (double)TimeBetweenTriggers)
+            //            {
+            //                if (TriggerDelay != 0 & !StartedTriggerDelay)
+            //                {
+            //                    m_dtTriggerDelayedSince = DateTime.Now;
+            //                    StartedTriggerDelay = true;
+            //                }
+            //                else if (!StartedTriggerDelay)
+            //                {
+            //                    //m_boolPlayedREM = true;
+            //                    boolPlay = true;
+
+            //                    // don't enable trigger delay for the first DelayStartREM minutes (default 5 minutes) after starting detection
+            //                    if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= DelayStartREM)
+            //                    //if (DateTime.Now.Subtract(m_dtNowPlay) >= TimeSpan.FromMinutes(DelayStartREM))
+            //                    //if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= (double)TimeBetweenTriggers)
+            //                    {
+            //                        m_dtLastTriggered = DateTime.Now;
+            //                        dtLastTriggered = true;
+            //                    }
+
+            //                    // Reset UDP notification turned OFF or OK (ON)
+            //                    if (DateTime.Now.Subtract(m_dtNowNotification).TotalMinutes >= TimerNotificationOffOn)
+            //                    {
+            //                        if (delayNotification)
+            //                        {
+            //                            WriteOutput("Timer elapsed - ready for new ON/OFF notification", true, true);
+            //                        }
+            //                        delayNotification = false;
+            //                    }
+            //                }
+            //            }
+
+            //            //if (StartedTriggerDelay &
+            //            //  DateTime.Now.Subtract(m_dtTriggerDelayedSince).TotalMinutes > (double)TriggerDelay)
+            //            if (StartedTriggerDelay &
+            //                DateTime.Now.Subtract(m_dtTriggerDelayedSince).TotalSeconds > (double)TriggerDelay)
+            //            {
+            //                StartedTriggerDelay = false;
+            //                //m_boolPlayedREM = true;
+            //                boolPlay = true;
+
+            //                if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= DelayStartREM)
+            //                //if (DateTime.Now.Subtract(m_dtNowPlay) >= TimeSpan.FromMinutes(DelayStartREM))
+            //                //if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= (double)TimeBetweenTriggers)
+            //                {
+            //                    m_dtLastTriggered = DateTime.Now;
+            //                    dtLastTriggered = true;
+            //                }
+
+            //                // Reset UDP notification turned OFF or OK (ON)
+            //                if (DateTime.Now.Subtract(m_dtNowNotification).TotalMinutes >= TimerNotificationOffOn)
+            //                {
+            //                    if (delayNotification)
+            //                    {
+            //                        WriteOutput("Timer elapsed - ready for new ON/OFF notification", true, true);
+            //                    }
+            //                    delayNotification = false;
+            //                }
+
+            //                // need to set this value for delayed
+            //                num1Digit = "888";
+
+            //                WriteOutput("Start to send notification after delayed: " + TriggerDelay + " seconds for REM Detected");
+            //            }
+
+            //            if (boolPlay)
+            //            {
+            //                if (!m_boolPlayErr)
+            //                {
+            //                    try
+            //                    {
+            //                        // Save image in thread safe
+            //                        CreateDirectories();
+
+            //                        if (resultbox.Image != null)
+            //                        {
+            //                            SaveImageResult(resultbox, "-REM");
+            //                        }
+            //                        else if (ImageDifferenceLd != null && ImageDifferenceLd.Ptr != IntPtr.Zero)
+            //                        {
+            //                            SaveImageResultDirect(ImageDifferenceLd?.ToBitmap(), "-REM");
+            //                        }
+
+            //                        // Delayed Timer but need to let 5 minutes working for based testing
+            //                        TimeSpan elapsedTimeSpan = DateTime.Now - m_dtNow;
+            //                        if (TimerNotification && elapsedTimeSpan > TimeSpan.FromMinutes(DelayStartREM) && !NotificationConf2)
+            //                        {
+            //                            if (TimerStart)
+            //                            {
+            //                                TimerNotification = false;
+            //                                TimerStart = false;
+            //                                WriteOutput("REM Detected - Send Notification after timer delayed");
+            //                            }
+            //                            else
+            //                            {
+            //                                if (num1Digit.Equals("888"))
+            //                                {
+            //                                    WriteOutput("REM Detected - Notification not send (delay notification timer not yet reached)" + " - Value: " + num1Digit, true, true);
+            //                                }
+            //                                else
+            //                                {
+            //                                    WriteOutput("REM Detected - Notification not send (delay notification timer not yet reached)" + " - Value: " + num1Digit);
+            //                                }
+            //                                return;
+            //                            }
+            //                        }
+            //                        else if (TimerNotification && !NotificationConf2)
+            //                        {
+            //                            var timeElapse = m_dtNow;
+            //                            timeElapse = timeElapse.AddMinutes(DelayStartREM);
+            //                            String hourMinute = timeElapse.ToString("HH:mm:ss");
+            //                            WriteOutput("REM Detected - Notification send in " + DelayStartREM + " minutes delay testing until " + hourMinute);
+            //                        }
+
+            //                        // Able to send notification avec delayed
+            //                        bool forceNotification = false;
+            //                        if (TimerNotification && NotificationConf2 && dtLastTriggered)
+            //                        {
+            //                            forceNotification = true;
+            //                        }
+
+            //                        if (checkBoxNotification.Checked)
+            //                        {
+            //                            if (!delayNotification)
+            //                            {
+            //                                // new algo version2
+            //                                if (algoVersion2)
+            //                                {
+            //                                    if (!m_triggerDreamingREM || DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes <= DelayStartREM || forceNotification)
+            //                                    {
+            //                                        if (num1Digit.Equals("888"))
+            //                                        {
+            //                                            WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit, true, true);
+            //                                        }
+            //                                        else
+            //                                        {
+            //                                            WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit);
+            //                                        }
+
+            //                                        // Send notification
+            //                                        m_dtNowLastTime888Notification = DateTime.Now;
+            //                                        m_triggerDreamingREM = true;
+            //                                        m_triggerAdvertDreamingREM = false;
+            //                                        SendUdpPacketClickNotification();
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        if (arrPlugin.Ticks.Count > 0)
+            //                                        {
+            //                                            WriteOutput("REM Detected - Notification trigger recently don't send notification", true, true);
+            //                                        }
+            //                                    }
+            //                                }
+            //                                else
+            //                                {
+            //                                    if (num1Digit.Equals("888"))
+            //                                    {
+            //                                        WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit, true, true);
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit);
+            //                                    }
+
+            //                                    // Send notification
+            //                                    SendUdpPacketClickNotification();
+            //                                }
+            //                            }
+            //                        }
+            //                        else
+            //                        {
+            //                            // Notification disabled
+            //                            if (num1Digit.Equals("888"))
+            //                            {
+            //                                WriteOutput("REM Detected - Notification disabled" + " - Value: " + num1Digit, true, true);
+            //                            }
+            //                            else
+            //                            {
+            //                                WriteOutput("REM Detected - Notification disabled" + " - Value: " + num1Digit);
+            //                            }
+            //                        }
+            //                    }
+            //                    catch (Exception ex)
+            //                    {
+            //                        m_boolPlayErr = true;
+            //                        int num2 = (int)MessageBox.Show(ex.Message, "LucidScribe.Trigger()", MessageBoxButtons.OK,
+            //                          MessageBoxIcon.Hand);
+            //                    }
+            //                }
+            //            }
+
+            //            arrPlugin.Ticks.Add((short)num1);
+            //            arrPlugin.LastMinute += Convert.ToInt32(num1 / 10.0);
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _ = (int)MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace, "LucidScribe.Tick()", MessageBoxButtons.OK,
+            //      MessageBoxIcon.Hand);
+            //}
         }
 
         private void LoadSettings()
@@ -648,10 +2858,10 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                 if (cascadeClassifier != null && currentBitmap != null)
                 {
-                    Image<Bgr, byte> imageFrame = new Image<Bgr, Byte>(currentBitmap);
-                    Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
-                    faceRegions = cascadeClassifier.DetectMultiScale(grayFrame);
-                    DetectREM = faceRegions != null && faceRegions.Length > 0;
+                    //Image<Bgr, byte> imageFrame = new Image<Bgr, Byte>(Frame.ToBitmap());
+                    //Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
+                    //faceRegions = cascadeClassifier.DetectMultiScale(grayFrame);
+                    //DetectREM = faceRegions != null && faceRegions.Length > 0;
                 }
 
                 Difference(ref previousBitmap, ref currentBitmap, out diff);
@@ -942,6 +3152,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
         private void cmbAlgorithm_SelectedIndexChanged(object sender, EventArgs e)
         {
+            cmbAlgorithmText = cmbAlgorithm.Text;
             SaveSettings();
         }
 
