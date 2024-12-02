@@ -189,11 +189,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private decimal ScoreTF = (decimal)0.04;
         readonly string[,] jointPairs = new string[,]
         {
-            //{ "leftWrist", "leftElbow" }, { "leftElbow", "leftShoulder" }, { "leftShoulder", "rightShoulder" },
-            //{ "rightShoulder", "rightElbow" }, { "rightElbow", "rightWrist" }, { "leftShoulder", "leftHip" }, 
-            //{ "rightShoulder", "rightHip" }, { "leftHip", "rightHip" }, { "leftHip", "leftKnee" },
-            //{ "leftKnee", "leftAnkle" }, { "rightHip", "rightKnee" }, { "rightKnee", "rightAnkle" },
-            //{ "nose", "leftEye" }, { "leftEye", "leftEar" }, { "nose", "rightEye" }, { "rightEye", "rightEar" },
             { "rightEye", "leftEye" }, { "leftEye", "rightEye" }, { "nose", "nose" }
         };
         private String cmbAlgorithmText;
@@ -702,6 +697,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             try
             {
                 DetectREM = true;
+                Console.WriteLine($"DetectREM:{DetectREM}");
                 cascadeClassifier = null;
                 if (cmbClassifier.Text != "" && cmbClassifier.Text != "None")
                 {
@@ -1172,6 +1168,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                                     }
                                 }
 
+
                                 // for average detection
                                 m_arrDetectedFaceMove.Add((int)changedPixels);
                                 m_arrDetectedAverageNotification.Add((int)changedPixels);
@@ -1201,6 +1198,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                                     diff += 0.555;
                                     logStop = true;
                                 }
+
+                                Console.WriteLine(diff);
                             }
 
                             catch (Exception Ex)
@@ -1691,11 +1690,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 }
             }
 
-            if (!validate)
-            {
-                // execute analysing code
-                TmrUpdateDevice();
-            }
             return vREMResult;
         }
 
@@ -1940,14 +1934,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                                 if (!rightEye.IsEmpty && rightEye.score >= score)
                                 {
                                     eyeRight = new System.Windows.Point(rightEye.position.X * xRateEye, rightEye.position.Y * yRateEye);
-                                    g.DrawRectangle(jointColorRightGreen, rightEye.position.X * xRateEye - 16, rightEye.position.Y * yRateEye - 16, 32, 32);
+                                    //g.DrawRectangle(jointColorRightGreen, rightEye.position.X * xRateEye - 16, rightEye.position.Y * yRateEye - 16, 32, 32);
                                     CurrentFrameCount = 0;
                                 }
                                 // draw lefteye
                                 if (!leftEye.IsEmpty && leftEye.score >= score)
                                 {
                                     eyeLeft = new System.Windows.Point(leftEye.position.X * xRateEye, leftEye.position.Y * yRateEye);
-                                    g.DrawRectangle(jointColorRightGreen, leftEye.position.X * xRateEye - 16, leftEye.position.Y * yRateEye - 16, 32, 32);
+                                    //g.DrawRectangle(jointColorRightGreen, leftEye.position.X * xRateEye - 16, leftEye.position.Y * yRateEye - 16, 32, 32);
                                     CurrentFrameCount = 0;
                                 }
                                 // draw nose
@@ -1981,462 +1975,6 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 // Nose position lost
                 noseKeyLost = true;
             }
-        }
-
-        public void TmrUpdateDevice(bool validate = false)
-        {
-            //try
-            //{
-            //    foreach (LucidPluginBase arrPlugin in m_arrPlugins)
-            //    {
-            //        if (arrPlugin == null)
-            //        {
-            //            m_arrPlugins.Remove(arrPlugin);
-            //            break;
-            //        }
-
-            //        // this part is to log when alog is in freezing mode
-            //        if (notificationAdvertInProgress && validate)
-            //        {
-            //            double num1;
-            //            if (arrPlugin.Name.Contains("REM"))
-            //            {
-            //                num1 = vREMValidateResult;
-            //            }
-            //            else
-            //            {
-            //                num1 = Value;
-            //            }
-
-            //            var num1Digit = $"{num1:000}";
-            //            var valueDigit = $"{Value:0000}";
-            //            var rectGreenDigit = $"{rectArchAreaGreen?.Count:000}";
-            //            var rectRedDigit = $"{rectArchAreaRed?.Count:000}";
-            //            var redPixelDigit = $"{redPixel:000}";
-
-            //            var item = arrPlugin.Ticks[arrPlugin.Ticks.Count - 1];
-            //            if ( /*(int) num1 != 0 &&*/ item != (short)num1)
-            //            {
-            //                // use this code for logging purpose
-            //                double num = Value;
-            //                if (num > 999.0)
-            //                    num = 999.0;
-            //                if (num < 0.0)
-            //                    num = 0.0;
-
-            //                var numDigit = $"{num:000}";
-            //                var vRemDigit = $"{vREMValidateResult:000}";
-
-            //                if (num1Digit.Equals("888"))
-            //                {
-            //                    WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
-            //                                numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit + " - Advert", true, true);
-
-            //                    if (delayNotification)
-            //                    {
-            //                        WriteOutput("REM Detected - Notification disabled by UDP timer set to: " + TimerNotificationOffOn + " minute(s)", true, true);
-            //                    }
-            //                }
-            //                else
-            //                {
-            //                    WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
-            //                                numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit + " - Advert");
-            //                }
-
-            //                if (RecordVideo)
-            //                {
-            //                    // Save image in thread safe
-            //                    CreateDirectories();
-
-            //                    if (resultbox.Image != null)
-            //                    {
-            //                        SaveImageResult(resultbox, "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
-            //                    }
-            //                    else
-            //                    {
-            //                        SaveImageResultDirect(ImageDifferenceLd.ToBitmap(), "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
-            //                    }
-            //                }
-            //            }
-
-            //            if (arrPlugin.Ticks.Count > 200 && !algoVersion2)
-            //            {
-            //                arrPlugin.Ticks.Clear();
-            //            }
-
-            //            arrPlugin.Ticks.Add((short)num1);
-            //            arrPlugin.LastMinute += Convert.ToInt32(num1 / 10.0);
-            //            return;
-            //        }
-
-            //        while (DateTime.Now.Subtract(m_dtNowSpeechNotification).TotalSeconds <= 10)
-            //        {
-            //            // wait 10 seconds before handle new UPD speech (it's to avoid to much UDP in a row)
-            //            // Reset UDP notification turned OFF or OK (ON)
-            //            {
-            //                if (speechProgress)
-            //                {
-            //                    TimeSpan elapsedTimeSpan = DateTime.Now - m_dtNowSpeechNotification;
-            //                    var timeLeft = Math.Abs(10 - Math.Round(elapsedTimeSpan.TotalSeconds, 0));
-
-            //                    WriteOutput("Speech Notification in progress reset/freeze vREM for: " + timeLeft + " seconds", true, true);
-            //                    speechProgress = false;
-            //                }
-            //            }
-
-            //            // Clear current REM algo
-            //            m_arrHistory.Clear();
-            //            vREM = 0;
-            //            Value = 0;
-            //            return;
-            //        }
-
-            //        // Reset UDP notification turned OFF or OK (ON)
-            //        if (DateTime.Now.Subtract(m_dtNowNotification).TotalMinutes >= TimerNotificationOffOn)
-            //        {
-            //            if (delayNotification)
-            //            {
-            //                WriteOutput("Timer elapsed - ready for new ON/OFF notification", true, true);
-            //            }
-            //            delayNotification = false;
-            //        }
-
-            //        if (arrPlugin.Initialized && arrPlugin.Enabled)
-            //        {
-            //            double num1;
-            //            //num1 = arrPlugin.Value;
-            //            if (arrPlugin.Name.Contains("REM"))
-            //            {
-            //                num1 = vREM;
-            //            }
-            //            else
-            //            {
-            //                num1 = Value;
-            //            }
-
-            //            var num1Digit = $"{num1:000}";
-            //            var valueDigit = $"{Value:0000}";
-            //            var rectGreenDigit = $"{rectArchAreaGreen?.Count:000}";
-            //            var rectRedDigit = $"{rectArchAreaRed?.Count:000}";
-            //            var redPixelDigit = $"{redPixel:000}";
-
-            //            // Write num1 value
-            //            if (arrPlugin.Ticks.Count > 0 && arrPlugin.Name.Contains("REM"))
-            //            {
-            //                if (algoVersion2)
-            //                {
-            //                    // check if we get an higher detection and delay new notification
-            //                    var previousNum = arrPlugin.Ticks[arrPlugin.Ticks.Count - 1];
-            //                    if (((short)num1 > previousNum || (short)num1 == 888) && vREMValidateResult != 888)
-            //                    {
-            //                        // only delay is a notification has already be sent
-            //                        if (m_triggerDreamingREM)
-            //                        {
-            //                            m_dtNowLastTime888Notification = DateTime.Now;
-            //                        }
-            //                    }
-            //                    else if (DateTime.Now.Subtract(m_dtNowLastTime888Notification).TotalSeconds >= algoVersion2Delay && (m_triggerDreamingREM || m_triggerAdvertDreamingREM))
-            //                    {
-            //                        // reset trigger delay notification
-            //                        m_triggerDreamingREM = false;
-            //                        m_triggerAdvertDreamingREM = false;
-            //                        vREMValidateResult = 0;
-            //                        //m_arrHistory.Clear();
-            //                    }
-            //                }
-
-            //                var item = arrPlugin.Ticks[arrPlugin.Ticks.Count - 1];
-            //                if ( /*(int) num1 != 0 &&*/ item != (short)num1)
-            //                {
-            //                    // use this code for logging purpose
-            //                    double num = Value;
-            //                    if (num > 999.0)
-            //                        num = 999.0;
-            //                    if (num < 0.0)
-            //                        num = 0.0;
-
-            //                    var numDigit = $"{num:000}";
-            //                    var vRemDigit = $"{vREM:000}";
-            //                    //var FaceRectChangeInfoLog = FaceRectChangeInfo / StrongNotifDelay;
-            //                    //var rectMovementDigit = $"{FaceRectChangeInfoLog:000}";
-
-            //                    if (num1Digit.Equals("888"))
-            //                    {
-            //                        WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
-            //                                    numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit, true, true);
-
-            //                        if (delayNotification)
-            //                        {
-            //                            WriteOutput("REM Detected - Notification disabled by UDP timer set to: " + TimerNotificationOffOn + " minute(s)", true, true);
-            //                        }
-            //                    }
-            //                    else
-            //                    {
-            //                        WriteOutput(arrPlugin.Name + ": " + vRemDigit + " - Vision corrected: " +
-            //                                    numDigit + " - Vision: " + valueDigit + " - rect green/pixel: " + rectGreenDigit + "/" + numDigit + " - rect red/pixel: " + rectRedDigit + "/" + redPixelDigit);
-            //                    }
-
-            //                    if (RecordVideo)
-            //                    {
-            //                        // Save image in thread safe
-            //                        CreateDirectories();
-
-            //                        if (resultbox.Image != null)
-            //                        {
-            //                            SaveImageResult(resultbox, "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
-            //                        }
-            //                        else
-            //                        {
-            //                            SaveImageResultDirect(ImageDifferenceLd.ToBitmap(), "-" + arrPlugin.Name + "." + num1Digit + "-Vision." + valueDigit);
-            //                        }
-            //                    }
-
-            //                    // for information log
-            //                    FaceRectChangeInfo = 0;
-            //                }
-            //                //else if ((short)num1 == 888 && item == (short)num1 && algoVersion2)
-            //                //{
-            //                //  arrPlugin.Ticks.Add((short)num1);
-            //                //  arrPlugin.LastMinute += Convert.ToInt32(num1 / 10.0);
-            //                //  return;
-            //                //}
-
-            //                if (arrPlugin.Ticks.Count > 200 && !algoVersion2)
-            //                {
-            //                    arrPlugin.Ticks.Clear();
-            //                }
-            //            }
-
-            //            if (arrPlugin.Name.Contains("REM"))
-            //            {
-            //                if (num1 == 888.0)
-            //                {
-            //                    m_boolDreamingREM = true;
-            //                    //WriteOutput("REM Detected - Ready for Notification" + " - Value: " + num1);
-            //                }
-            //                else
-            //                {
-            //                    m_boolDreamingREM = false;
-            //                    //m_boolPlayedREM = false;
-            //                }
-            //            }
-
-            //            // When running RTSP DelayStartREM for testing, avoid delayed TriggerDelay
-            //            int TriggerDelayStartREM = 0;
-            //            if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes <= DelayStartREM)
-            //            {
-            //                TriggerDelay = TriggerDelayStartREM;
-            //            }
-            //            else
-            //            {
-            //                TriggerDelay = TriggerDelayBackup;
-            //            }
-
-            //            boolPlay = false;
-            //            bool dtLastTriggered = false;
-            //            if (m_boolDreamingREM &&
-            //                DateTime.Now.Subtract(m_dtLastTriggered).TotalMinutes >= (double)TimeBetweenTriggers)
-            //            {
-            //                if (TriggerDelay != 0 & !StartedTriggerDelay)
-            //                {
-            //                    m_dtTriggerDelayedSince = DateTime.Now;
-            //                    StartedTriggerDelay = true;
-            //                }
-            //                else if (!StartedTriggerDelay)
-            //                {
-            //                    //m_boolPlayedREM = true;
-            //                    boolPlay = true;
-
-            //                    // don't enable trigger delay for the first DelayStartREM minutes (default 5 minutes) after starting detection
-            //                    if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= DelayStartREM)
-            //                    //if (DateTime.Now.Subtract(m_dtNowPlay) >= TimeSpan.FromMinutes(DelayStartREM))
-            //                    //if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= (double)TimeBetweenTriggers)
-            //                    {
-            //                        m_dtLastTriggered = DateTime.Now;
-            //                        dtLastTriggered = true;
-            //                    }
-
-            //                    // Reset UDP notification turned OFF or OK (ON)
-            //                    if (DateTime.Now.Subtract(m_dtNowNotification).TotalMinutes >= TimerNotificationOffOn)
-            //                    {
-            //                        if (delayNotification)
-            //                        {
-            //                            WriteOutput("Timer elapsed - ready for new ON/OFF notification", true, true);
-            //                        }
-            //                        delayNotification = false;
-            //                    }
-            //                }
-            //            }
-
-            //            //if (StartedTriggerDelay &
-            //            //  DateTime.Now.Subtract(m_dtTriggerDelayedSince).TotalMinutes > (double)TriggerDelay)
-            //            if (StartedTriggerDelay &
-            //                DateTime.Now.Subtract(m_dtTriggerDelayedSince).TotalSeconds > (double)TriggerDelay)
-            //            {
-            //                StartedTriggerDelay = false;
-            //                //m_boolPlayedREM = true;
-            //                boolPlay = true;
-
-            //                if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= DelayStartREM)
-            //                //if (DateTime.Now.Subtract(m_dtNowPlay) >= TimeSpan.FromMinutes(DelayStartREM))
-            //                //if (DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes >= (double)TimeBetweenTriggers)
-            //                {
-            //                    m_dtLastTriggered = DateTime.Now;
-            //                    dtLastTriggered = true;
-            //                }
-
-            //                // Reset UDP notification turned OFF or OK (ON)
-            //                if (DateTime.Now.Subtract(m_dtNowNotification).TotalMinutes >= TimerNotificationOffOn)
-            //                {
-            //                    if (delayNotification)
-            //                    {
-            //                        WriteOutput("Timer elapsed - ready for new ON/OFF notification", true, true);
-            //                    }
-            //                    delayNotification = false;
-            //                }
-
-            //                // need to set this value for delayed
-            //                num1Digit = "888";
-
-            //                WriteOutput("Start to send notification after delayed: " + TriggerDelay + " seconds for REM Detected");
-            //            }
-
-            //            if (boolPlay)
-            //            {
-            //                if (!m_boolPlayErr)
-            //                {
-            //                    try
-            //                    {
-            //                        // Save image in thread safe
-            //                        CreateDirectories();
-
-            //                        if (resultbox.Image != null)
-            //                        {
-            //                            SaveImageResult(resultbox, "-REM");
-            //                        }
-            //                        else if (ImageDifferenceLd != null && ImageDifferenceLd.Ptr != IntPtr.Zero)
-            //                        {
-            //                            SaveImageResultDirect(ImageDifferenceLd?.ToBitmap(), "-REM");
-            //                        }
-
-            //                        // Delayed Timer but need to let 5 minutes working for based testing
-            //                        TimeSpan elapsedTimeSpan = DateTime.Now - m_dtNow;
-            //                        if (TimerNotification && elapsedTimeSpan > TimeSpan.FromMinutes(DelayStartREM) && !NotificationConf2)
-            //                        {
-            //                            if (TimerStart)
-            //                            {
-            //                                TimerNotification = false;
-            //                                TimerStart = false;
-            //                                WriteOutput("REM Detected - Send Notification after timer delayed");
-            //                            }
-            //                            else
-            //                            {
-            //                                if (num1Digit.Equals("888"))
-            //                                {
-            //                                    WriteOutput("REM Detected - Notification not send (delay notification timer not yet reached)" + " - Value: " + num1Digit, true, true);
-            //                                }
-            //                                else
-            //                                {
-            //                                    WriteOutput("REM Detected - Notification not send (delay notification timer not yet reached)" + " - Value: " + num1Digit);
-            //                                }
-            //                                return;
-            //                            }
-            //                        }
-            //                        else if (TimerNotification && !NotificationConf2)
-            //                        {
-            //                            var timeElapse = m_dtNow;
-            //                            timeElapse = timeElapse.AddMinutes(DelayStartREM);
-            //                            String hourMinute = timeElapse.ToString("HH:mm:ss");
-            //                            WriteOutput("REM Detected - Notification send in " + DelayStartREM + " minutes delay testing until " + hourMinute);
-            //                        }
-
-            //                        // Able to send notification avec delayed
-            //                        bool forceNotification = false;
-            //                        if (TimerNotification && NotificationConf2 && dtLastTriggered)
-            //                        {
-            //                            forceNotification = true;
-            //                        }
-
-            //                        if (checkBoxNotification.Checked)
-            //                        {
-            //                            if (!delayNotification)
-            //                            {
-            //                                // new algo version2
-            //                                if (algoVersion2)
-            //                                {
-            //                                    if (!m_triggerDreamingREM || DateTime.Now.Subtract(m_dtNowPlay).TotalMinutes <= DelayStartREM || forceNotification)
-            //                                    {
-            //                                        if (num1Digit.Equals("888"))
-            //                                        {
-            //                                            WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit, true, true);
-            //                                        }
-            //                                        else
-            //                                        {
-            //                                            WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit);
-            //                                        }
-
-            //                                        // Send notification
-            //                                        m_dtNowLastTime888Notification = DateTime.Now;
-            //                                        m_triggerDreamingREM = true;
-            //                                        m_triggerAdvertDreamingREM = false;
-            //                                        SendUdpPacketClickNotification();
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        if (arrPlugin.Ticks.Count > 0)
-            //                                        {
-            //                                            WriteOutput("REM Detected - Notification trigger recently don't send notification", true, true);
-            //                                        }
-            //                                    }
-            //                                }
-            //                                else
-            //                                {
-            //                                    if (num1Digit.Equals("888"))
-            //                                    {
-            //                                        WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit, true, true);
-            //                                    }
-            //                                    else
-            //                                    {
-            //                                        WriteOutput("REM Detected - Send Notification" + " - Value: " + num1Digit);
-            //                                    }
-
-            //                                    // Send notification
-            //                                    SendUdpPacketClickNotification();
-            //                                }
-            //                            }
-            //                        }
-            //                        else
-            //                        {
-            //                            // Notification disabled
-            //                            if (num1Digit.Equals("888"))
-            //                            {
-            //                                WriteOutput("REM Detected - Notification disabled" + " - Value: " + num1Digit, true, true);
-            //                            }
-            //                            else
-            //                            {
-            //                                WriteOutput("REM Detected - Notification disabled" + " - Value: " + num1Digit);
-            //                            }
-            //                        }
-            //                    }
-            //                    catch (Exception ex)
-            //                    {
-            //                        m_boolPlayErr = true;
-            //                        int num2 = (int)MessageBox.Show(ex.Message, "LucidScribe.Trigger()", MessageBoxButtons.OK,
-            //                          MessageBoxIcon.Hand);
-            //                    }
-            //                }
-            //            }
-
-            //            arrPlugin.Ticks.Add((short)num1);
-            //            arrPlugin.LastMinute += Convert.ToInt32(num1 / 10.0);
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    _ = (int)MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace, "LucidScribe.Tick()", MessageBoxButtons.OK,
-            //      MessageBoxIcon.Hand);
-            //}
         }
 
         private void LoadSettings()
@@ -2635,6 +2173,18 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             {
                 this.Height = Convert.ToInt32(xmlSettings.DocumentElement.SelectSingleNode("//Height").InnerText);
             }
+
+            Console.WriteLine($"TossThreshold:{tossThresholdInput.Value}");
+            Console.WriteLine($"DetectREM:{DetectREM}");
+            Console.WriteLine($"TossHalfLife:{tossHalfLifeInput.Value}");
+            Console.WriteLine($"EyeMoveMin:{eyeMoveMinInput.Value}");
+            Console.WriteLine($"EyeMoveMax:{eyeMoveMaxInput.Value}");
+            Console.WriteLine($"IdleTicks:{idleTicksInput.Value}");
+            Console.WriteLine($"DashThreshold:{dashThresholdInput.Value}");
+            Console.WriteLine($"DotThreshold:{dotThresholdInput.Value}");
+            Console.WriteLine($"TCMP:{chkTCMP.Checked}");
+            Console.WriteLine($"Auralize:{chkAuralize.Checked}");
+            Console.WriteLine($"WaveForm:{WaveForm}");
         }
 
         private void cmbDevices_SelectedIndexChanged(object sender, EventArgs e)
@@ -2844,6 +2394,8 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         }
         private void tmrDiff_Tick(object sender, EventArgs e)
         {
+            lblTime.Text = DateTime.Now.ToString("yyy-MM-dd hh:mm:ss - ") + diff;
+            return;
             if (processing)
             {
                 return;
@@ -2862,6 +2414,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     //Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
                     //faceRegions = cascadeClassifier.DetectMultiScale(grayFrame);
                     //DetectREM = faceRegions != null && faceRegions.Length > 0;
+                    //Console.WriteLine($"DetectREM:{DetectREM}");
                 }
 
                 Difference(ref previousBitmap, ref currentBitmap, out diff);
@@ -3279,17 +2832,20 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void VisionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Disconnect();
+            StopProcess();
         }
 
         private void chkTCMP_CheckedChanged(object sender, EventArgs e)
         {
             TCMP = chkTCMP.Checked;
+            Console.WriteLine($"TCMP:{TCMP}");
             SaveSettings();
         }
 
         private void chkAuralize_CheckedChanged(object sender, EventArgs e)
         {
             Auralize = chkAuralize.Checked;
+            Console.WriteLine($"Auralize:{chkAuralize.Checked}");
             SaveSettings();
         }
 
@@ -3319,30 +2875,35 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void tossThreshold_ValueChanged(object sender, EventArgs e)
         {
             TossThreshold = (int)tossThresholdInput.Value;
+            Console.WriteLine($"TossThreshold:{TossThreshold}");
             SaveSettings();
         }
 
         private void tossHalfLife_ValueChanged(object sender, EventArgs e)
         {
             TossHalfLife = (int)tossHalfLifeInput.Value;
+            Console.WriteLine($"TossHalfLife:{TossHalfLife}");
             SaveSettings();
         }
 
         private void eyeMoveMinInput_ValueChanged(object sender, EventArgs e)
         {
             EyeMoveMin = (int)eyeMoveMinInput.Value;
+            Console.WriteLine($"EyeMoveMin:{EyeMoveMin}");
             SaveSettings();
         }
 
         private void eyeMoveMaxInput_ValueChanged(object sender, EventArgs e)
         {
             EyeMoveMax = (int)eyeMoveMaxInput.Value;
+            Console.WriteLine($"EyeMoveMax:{EyeMoveMax}");
             SaveSettings();
         }
 
         private void idleTicksInput_ValueChanged(object sender, EventArgs e)
         {
             IdleTicks = (int)idleTicksInput.Value;
+            Console.WriteLine($"IdleTicks:{IdleTicks}");
             SaveSettings();
         }
 
@@ -3355,12 +2916,14 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         private void dotThresholdInput_ValueChanged(object sender, EventArgs e)
         {
             DotThreshold = (int)dotThresholdInput.Value;
+            Console.WriteLine($"DotThreshold:{DotThreshold}");
             SaveSettings();
         }
 
         private void dashThresholdInput_ValueChanged(object sender, EventArgs e)
         {
             DashThreshold = (int)dashThresholdInput.Value;
+            Console.WriteLine($"DashThreshold:{DashThreshold}");
             SaveSettings();
         }
 
@@ -3396,6 +2959,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                     WaveForm = WaveType.Triangle;
                     break;
             }
+            Console.WriteLine($"WaveForm:{WaveForm}");
             SaveSettings();
         }
 
