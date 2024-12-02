@@ -45,9 +45,11 @@
             this.panel3D2 = new lucidcode.Controls.Panel3D();
             this.lblTime = new System.Windows.Forms.Label();
             this.panel3D3 = new lucidcode.Controls.Panel3D();
+            this.label19 = new System.Windows.Forms.Label();
+            this.cmbRotateFlip = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.cmbWaveForm = new System.Windows.Forms.ComboBox();
             this.chkAuralize = new System.Windows.Forms.CheckBox();
-            this.chkCopyFromScreen = new System.Windows.Forms.CheckBox();
             this.dotThresholdInput = new System.Windows.Forms.NumericUpDown();
             this.dashThresholdInput = new System.Windows.Forms.NumericUpDown();
             this.label17 = new System.Windows.Forms.Label();
@@ -86,10 +88,9 @@
             this.panel3D5 = new lucidcode.Controls.Panel3D();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
             this.VolumeTrackBar = new System.Windows.Forms.TrackBar();
-            this.label19 = new System.Windows.Forms.Label();
-            this.cmbRotateFlip = new System.Windows.Forms.ComboBox();
+            this.chkCopyFromScreen = new System.Windows.Forms.CheckBox();
+            this.chromiumWebBrowser = new CefSharp.WinForms.ChromiumWebBrowser();
             this.pnlPlugins.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbDisplay)).BeginInit();
             this.mnuReconnect.SuspendLayout();
@@ -116,6 +117,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlPlugins.BackColor = System.Drawing.Color.White;
+            this.pnlPlugins.Controls.Add(this.chromiumWebBrowser);
             this.pnlPlugins.Controls.Add(this.pbDisplay);
             this.pnlPlugins.Controls.Add(this.Panel3D4);
             this.pnlPlugins.Location = new System.Drawing.Point(3, 3);
@@ -321,6 +323,56 @@
             this.panel3D3.Size = new System.Drawing.Size(594, 249);
             this.panel3D3.TabIndex = 36;
             // 
+            // label19
+            // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label19.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label19.Location = new System.Drawing.Point(250, 219);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(87, 21);
+            this.label19.TabIndex = 316;
+            this.label19.Text = "Rotate Flip";
+            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cmbRotateFlip
+            // 
+            this.cmbRotateFlip.AccessibleName = "Rotate Flip";
+            this.cmbRotateFlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbRotateFlip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRotateFlip.FormattingEnabled = true;
+            this.cmbRotateFlip.Items.AddRange(new object[] {
+            "RotateNoneFlipNone",
+            "Rotate90FlipNone",
+            "Rotate180FlipNone",
+            "Rotate270FlipNone",
+            "RotateNoneFlipX",
+            "Rotate90FlipX",
+            "Rotate180FlipX",
+            "Rotate270FlipX",
+            "RotateNoneFlipY",
+            "Rotate90FlipY",
+            "Rotate180FlipY",
+            "Rotate270FlipY",
+            "RotateNoneFlipXY",
+            "Rotate90FlipXY",
+            "Rotate180FlipXY",
+            "Rotate270FlipXY"});
+            this.cmbRotateFlip.Location = new System.Drawing.Point(361, 219);
+            this.cmbRotateFlip.Name = "cmbRotateFlip";
+            this.cmbRotateFlip.Size = new System.Drawing.Size(227, 21);
+            this.cmbRotateFlip.TabIndex = 24;
+            this.cmbRotateFlip.SelectedIndexChanged += new System.EventHandler(this.cmbRotateFlip_SelectedIndexChanged);
+            // 
+            // label20
+            // 
+            this.label20.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.label20.Location = new System.Drawing.Point(6, 139);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(87, 21);
+            this.label20.TabIndex = 312;
+            this.label20.Text = "Volume";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // cmbWaveForm
             // 
             this.cmbWaveForm.AccessibleName = "Wave Form";
@@ -350,16 +402,6 @@
             this.chkAuralize.Text = "Auralize";
             this.chkAuralize.UseVisualStyleBackColor = true;
             this.chkAuralize.CheckedChanged += new System.EventHandler(this.chkAuralize_CheckedChanged);
-            // 
-            // chkCopyFromScreen
-            // 
-            this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 194);
-            this.chkCopyFromScreen.Name = "chkCopyFromScreen";
-            this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
-            this.chkCopyFromScreen.TabIndex = 19;
-            this.chkCopyFromScreen.Text = "Copy From Screen";
-            this.chkCopyFromScreen.UseVisualStyleBackColor = true;
-            this.chkCopyFromScreen.CheckedChanged += new System.EventHandler(this.chkCopyFromScreen_CheckedChanged);
             // 
             // dotThresholdInput
             // 
@@ -1615,16 +1657,6 @@
             this.label4.Text = "Settings";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label20
-            // 
-            this.label20.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label20.Location = new System.Drawing.Point(6, 139);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(87, 21);
-            this.label20.TabIndex = 312;
-            this.label20.Text = "Volume";
-            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // VolumeTrackBar
             // 
             this.VolumeTrackBar.AccessibleName = "Volume";
@@ -1637,45 +1669,27 @@
             this.VolumeTrackBar.TabIndex = 11;
             this.VolumeTrackBar.Scroll += new System.EventHandler(this.VolumeTrackBar_Scroll);
             // 
-            // label19
+            // chkCopyFromScreen
             // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.label19.Location = new System.Drawing.Point(250, 219);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(87, 21);
-            this.label19.TabIndex = 316;
-            this.label19.Text = "Rotate Flip";
-            this.label19.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.chkCopyFromScreen.Location = new System.Drawing.Point(99, 194);
+            this.chkCopyFromScreen.Name = "chkCopyFromScreen";
+            this.chkCopyFromScreen.Size = new System.Drawing.Size(145, 22);
+            this.chkCopyFromScreen.TabIndex = 19;
+            this.chkCopyFromScreen.Text = "Copy From Screen";
+            this.chkCopyFromScreen.UseVisualStyleBackColor = true;
+            this.chkCopyFromScreen.CheckedChanged += new System.EventHandler(this.chkCopyFromScreen_CheckedChanged);
             // 
-            // cmbRotateFlip
+            // chromiumWebBrowser
             // 
-            this.cmbRotateFlip.AccessibleName = "Rotate Flip";
-            this.cmbRotateFlip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbRotateFlip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbRotateFlip.FormattingEnabled = true;
-            this.cmbRotateFlip.Items.AddRange(new object[] {
-            "RotateNoneFlipNone",
-            "Rotate90FlipNone",
-            "Rotate180FlipNone",
-            "Rotate270FlipNone",
-            "RotateNoneFlipX",
-            "Rotate90FlipX",
-            "Rotate180FlipX",
-            "Rotate270FlipX",
-            "RotateNoneFlipY",
-            "Rotate90FlipY",
-            "Rotate180FlipY",
-            "Rotate270FlipY",
-            "RotateNoneFlipXY",
-            "Rotate90FlipXY",
-            "Rotate180FlipXY",
-            "Rotate270FlipXY"});
-            this.cmbRotateFlip.Location = new System.Drawing.Point(361, 219);
-            this.cmbRotateFlip.Name = "cmbRotateFlip";
-            this.cmbRotateFlip.Size = new System.Drawing.Size(227, 21);
-            this.cmbRotateFlip.TabIndex = 24;
-            this.cmbRotateFlip.SelectedIndexChanged += new System.EventHandler(this.cmbRotateFlip_SelectedIndexChanged);
+            this.chromiumWebBrowser.ActivateBrowserOnCreation = false;
+            this.chromiumWebBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chromiumWebBrowser.Location = new System.Drawing.Point(3, 25);
+            this.chromiumWebBrowser.Name = "chromiumWebBrowser";
+            this.chromiumWebBrowser.Size = new System.Drawing.Size(288, 162);
+            this.chromiumWebBrowser.TabIndex = 34;
+            this.chromiumWebBrowser.Visible = false;
             // 
             // VisionForm
             // 
@@ -1778,5 +1792,6 @@
         private System.Windows.Forms.TrackBar VolumeTrackBar;
         internal System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox cmbRotateFlip;
+        private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser;
     }
 }

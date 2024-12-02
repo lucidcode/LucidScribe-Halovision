@@ -273,6 +273,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0A90F0D94F8F45C3814FF841F62E7463"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0ADF42E60E2E32B5790C8A2311464FE6"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
@@ -286,6 +292,12 @@
         "Entry"
         {
         "MsmKey" = "8:_0B3B8C41499848C089622402E14AFC95"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0BC835B5D6094DDBB0110B96EF9302A3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -340,6 +352,12 @@
         "Entry"
         {
         "MsmKey" = "8:_0ECC507122D144C498F7C2BE7F77854A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0EF2498DCD7746AFA8579DC635E1ADFC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -569,6 +587,66 @@
         {
         "MsmKey" = "8:_191829B461914D44B7AE9D2581BDD9C6"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_2461841EB6F029E1698E897F8C9C0D8B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_D088ED54B053446680D6CE3291496A6A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_B7FED1E432204DF8AA7DB2AB719EB026"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_3F85EC2FDFF849C4A3312B60B8C9E2E1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_C109D278A08A45E399E223B510242127"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_356D4779CB837852637EF969CC737B81"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_5B9EDE0258F24B1AAD526805E02C28D8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_528B2818D3D1F675DD517F3B9623ED02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
+        "OwnerKey" = "8:_3A3F06C20FEAF1E5BB3F817C875D64BB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -849,6 +927,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_240A7BEF7CE14DAD9C0656E2E98F7279"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_244E655B00E94B5DA00FD12BF7A87B94"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -857,6 +941,24 @@
         {
         "MsmKey" = "8:_245B97637BBA48B9B0184D7DB2CC6AA5"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2461841EB6F029E1698E897F8C9C0D8B"
+        "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2461841EB6F029E1698E897F8C9C0D8B"
+        "OwnerKey" = "8:_3F85EC2FDFF849C4A3312B60B8C9E2E1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2461841EB6F029E1698E897F8C9C0D8B"
+        "OwnerKey" = "8:_3A3F06C20FEAF1E5BB3F817C875D64BB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -957,6 +1059,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_28D739F58E004A2DA382481E248EB224"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_28F36734D8AD9920E0DC9F42582209E4"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
@@ -988,6 +1096,12 @@
         "Entry"
         {
         "MsmKey" = "8:_2BCF876BEAE0492EB81FF9CEB71544B1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2BE15977D060483790A4FCF2D4AD210E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1137,6 +1251,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_344BEF6033544DACBF35D4A648738192"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_347AC0F48AF3493A8D1EEED7609CBB83"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1145,6 +1265,12 @@
         {
         "MsmKey" = "8:_3520E97B20E74E86BE32CA9A8207F7F5"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_356D4779CB837852637EF969CC737B81"
+        "OwnerKey" = "8:_C109D278A08A45E399E223B510242127"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1287,6 +1413,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3A3F06C20FEAF1E5BB3F817C875D64BB"
+        "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3A3F06C20FEAF1E5BB3F817C875D64BB"
+        "OwnerKey" = "8:_D088ED54B053446680D6CE3291496A6A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3A3F06C20FEAF1E5BB3F817C875D64BB"
+        "OwnerKey" = "8:_528B2818D3D1F675DD517F3B9623ED02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3AE992B71C214EB0B545FADA3BD1F627"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1413,6 +1557,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3F85EC2FDFF849C4A3312B60B8C9E2E1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3F8FC59B41F14D96A2527050C113D918"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1474,6 +1624,12 @@
         "Entry"
         {
         "MsmKey" = "8:_41D91280169E4DCA869BFD521DA7DFE7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_42543EE3CAB243A18068999AD06411B3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1845,6 +2001,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_513989F5CE6244C4AD010B82181E3F0F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_513B55A494BF436EB95DFEF7286B8048"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1883,6 +2045,12 @@
         {
         "MsmKey" = "8:_5274F82332694C158D6E40F06C79452F"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_528B2818D3D1F675DD517F3B9623ED02"
+        "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2057,6 +2225,12 @@
         {
         "MsmKey" = "8:_5B801B23ED980A8AEC890DAD3E0B622A"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5B9EDE0258F24B1AAD526805E02C28D8"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2295,6 +2469,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_64EF7CE2D67B444C911C3DB9AEEEF7C9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_65433FE91E04499B8F2D51E533D3FFEF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2368,6 +2548,18 @@
         "Entry"
         {
         "MsmKey" = "8:_683AECF95B82464DA3234E9B7BC37C0C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6859A038B41F4D008D6503D03C673232"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_688DD592B5BF46E0AEAF4C806D070123"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2523,6 +2715,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6F04A511B4A34B9E90F6FE175A84A7AA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6F387238A74B405D92CACF0F318793A9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2661,6 +2859,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_74A9AD4C6C0642ADAE56EC44A1706160"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_74F93C8AC76746A29B87F0C077648C2F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -2680,6 +2884,12 @@
         "Entry"
         {
         "MsmKey" = "8:_76345E6E9C9641D8822E4289AD61530A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_76389534B87E4A0198FC798AA32292A8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3465,6 +3675,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9765AECA0B484C7781D1138D80F023B0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9768C46742605F22AB604239F03E17DD"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
@@ -3615,6 +3831,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9E4118B3ACE54588BBE7367F85D57422"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9E4CEE564EF944F9A3D9834C119395D8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -3682,6 +3904,12 @@
         "Entry"
         {
         "MsmKey" = "8:_A1FB33056D7E45FDB7032BBDD5BF43AB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A209ABA0333844E99D13E44EACE84317"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -3766,6 +3994,12 @@
         "Entry"
         {
         "MsmKey" = "8:_A717ADA8BD954D2984E6AAF95D240404"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A72D12ADCCB042A5B873FCE045F54DA8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -4083,6 +4317,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B7FED1E432204DF8AA7DB2AB719EB026"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B8091110F9324D4286614EB099B122EE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -4156,6 +4396,12 @@
         "Entry"
         {
         "MsmKey" = "8:_BC4C8128F3B144FBB65CE163A6CED051"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BCF01029963A426B9C17E82E4A42F055"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -4252,6 +4498,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C0AFF6BE7C2C4A8EA337C5AC711F5D5D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C109D278A08A45E399E223B510242127"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -4461,6 +4713,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_CBB4289530C44E63A7B019116B529B33"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_CBBBF4A3AED1DCF53F0D5FD2361F0AC0"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
@@ -4593,6 +4851,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D088ED54B053446680D6CE3291496A6A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D14E862086A14CCC935D9EA581A4B074"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -4713,6 +4977,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D946CF94C386428E9365FF372FF517F8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D9604996FE7906CE337DF7483611D1E1"
         "OwnerKey" = "8:_395AC690E5F04358B866710FD743FFE4"
         "MsmSig" = "8:_UNDEFINED"
@@ -4726,6 +4996,12 @@
         "Entry"
         {
         "MsmKey" = "8:_D995F19D395E4E91A3D541AC034829B8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D99620F5FB43421F8855A423D001DBF5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -5157,6 +5433,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F0158427DCDA4B5981DE938C9EB74C6A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F04B8B0B6E184AEB9B453E8CE16FF7E5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -5385,6 +5667,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_FB5883DAE2C640D08D2BAF91D5B72841"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_FB5E44897A9B46B5AA8ED7880F03F421"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -5536,6 +5824,48 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D088ED54B053446680D6CE3291496A6A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_76389534B87E4A0198FC798AA32292A8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B7FED1E432204DF8AA7DB2AB719EB026"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3F85EC2FDFF849C4A3312B60B8C9E2E1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C109D278A08A45E399E223B510242127"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_356D4779CB837852637EF969CC737B81"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_5B9EDE0258F24B1AAD526805E02C28D8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9768C46742605F22AB604239F03E17DD"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -5639,6 +5969,30 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_136B24E1446CCB333E6825BE0D16FDAD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_528B2818D3D1F675DD517F3B9623ED02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3A3F06C20FEAF1E5BB3F817C875D64BB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2461841EB6F029E1698E897F8C9C0D8B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_19804C70D22F5B5058BF2CD1FAC07D08"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -6428,7 +6782,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729                              "
+                "FrameworkVersion" = "8:3.5.30729                               "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -7251,6 +7605,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0A90F0D94F8F45C3814FF841F62E7463"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.WinForms.xml"
+            "TargetName" = "8:CefSharp.WinForms.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0ADF42E60E2E32B5790C8A2311464FE6"
             {
             "AssemblyRegister" = "3:1"
@@ -7308,6 +7682,26 @@
             "TargetName" = "8:libscaletempo_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_66A99EBF1C8A4FB7B793ACA0CC1DADC7"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0BC835B5D6094DDBB0110B96EF9302A3"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\libEGL.dll"
+            "TargetName" = "8:libEGL.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -7488,6 +7882,26 @@
             "TargetName" = "8:libgain_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_66A99EBF1C8A4FB7B793ACA0CC1DADC7"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0EF2498DCD7746AFA8579DC635E1ADFC"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\snapshot_blob.bin"
+            "TargetName" = "8:snapshot_blob.bin"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -8288,6 +8702,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_19804C70D22F5B5058BF2CD1FAC07D08"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_19804C70D22F5B5058BF2CD1FAC07D08"
+                    {
+                    "Name" = "8:CefSharp.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CefSharp.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_19ABF58EC3A041E38E271BB8290C6316"
@@ -9236,6 +9681,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_240A7BEF7CE14DAD9C0656E2E98F7279"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.Core.Runtime.xml"
+            "TargetName" = "8:CefSharp.Core.Runtime.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_244E655B00E94B5DA00FD12BF7A87B94"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\plugins\\video_chroma\\librv32_plugin.dll"
@@ -9274,6 +9739,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2461841EB6F029E1698E897F8C9C0D8B"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.Core.Runtime, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_2461841EB6F029E1698E897F8C9C0D8B"
+                    {
+                    "Name" = "8:CefSharp.Core.Runtime.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CefSharp.Core.Runtime.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_246B2A2D2FAA41A18D1A048F6EDEAEA3"
@@ -9640,6 +10136,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_28D739F58E004A2DA382481E248EB224"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\chrome_100_percent.pak"
+            "TargetName" = "8:chrome_100_percent.pak"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_28F36734D8AD9920E0DC9F42582209E4"
             {
             "AssemblyRegister" = "3:1"
@@ -9768,6 +10284,26 @@
             "TargetName" = "8:libtcp_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_7FBB73D81DF2438B9D3504C7CD09CE0D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2BE15977D060483790A4FCF2D4AD210E"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\libcef.dll"
+            "TargetName" = "8:libcef.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -10284,6 +10820,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_344BEF6033544DACBF35D4A648738192"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\vulkan-1.dll"
+            "TargetName" = "8:vulkan-1.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_347AC0F48AF3493A8D1EEED7609CBB83"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\locale\\bs\\LC_MESSAGES\\vlc.mo"
@@ -10322,6 +10878,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_356D4779CB837852637EF969CC737B81"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.BrowserSubprocess.Core, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_356D4779CB837852637EF969CC737B81"
+                    {
+                    "Name" = "8:CefSharp.BrowserSubprocess.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CefSharp.BrowserSubprocess.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_35B8D001A7AB4FAEB94D2CB7D5D2B296"
@@ -10786,6 +11373,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3A3F06C20FEAF1E5BB3F817C875D64BB"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.Core, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3A3F06C20FEAF1E5BB3F817C875D64BB"
+                    {
+                    "Name" = "8:CefSharp.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CefSharp.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3AE992B71C214EB0B545FADA3BD1F627"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\plugins\\stream_out\\libstream_out_dummy_plugin.dll"
@@ -11119,6 +11737,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3F85EC2FDFF849C4A3312B60B8C9E2E1"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.Core, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3F85EC2FDFF849C4A3312B60B8C9E2E1"
+                    {
+                    "Name" = "8:CefSharp.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F8FC59B41F14D96A2527050C113D918"
             {
             "SourcePath" = "8:..\\Halovision\\Dependencies\\libvlc\\win-x86\\plugins\\codec\\libaom_plugin.dll"
@@ -11336,6 +11985,26 @@
             "TargetName" = "8:libqt_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_00D3822175B94891A0406703492B7B90"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_42543EE3CAB243A18068999AD06411B3"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\chrome_elf.dll"
+            "TargetName" = "8:chrome_elf.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -12658,6 +13327,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_513989F5CE6244C4AD010B82181E3F0F"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.Core.xml"
+            "TargetName" = "8:CefSharp.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_513B55A494BF436EB95DFEF7286B8048"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\locale\\ff\\LC_MESSAGES\\vlc.mo"
@@ -12807,6 +13496,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_528B2818D3D1F675DD517F3B9623ED02"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.WinForms, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_528B2818D3D1F675DD517F3B9623ED02"
+                    {
+                    "Name" = "8:CefSharp.WinForms.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CefSharp.WinForms.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5294BB40EE33B2C3602EF328FF25AADE"
@@ -13435,6 +14155,37 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5B9EDE0258F24B1AAD526805E02C28D8"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.BrowserSubprocess.Core, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_5B9EDE0258F24B1AAD526805E02C28D8"
+                    {
+                    "Name" = "8:CefSharp.BrowserSubprocess.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.BrowserSubprocess.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5BB43D0F2F9C477993CF767B6C9ED3E9"
@@ -14261,6 +15012,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_64EF7CE2D67B444C911C3DB9AEEEF7C9"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.BrowserSubprocess.pdb"
+            "TargetName" = "8:CefSharp.BrowserSubprocess.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_65433FE91E04499B8F2D51E533D3FFEF"
             {
             "SourcePath" = "8:..\\Halovision\\Dependencies\\libvlc\\win-x86\\plugins\\codec\\libd3d11va_plugin.dll"
@@ -14562,6 +15333,46 @@
             "TargetName" = "8:libfluidsynth_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_FE5EE0944A0245E8BE60C8F99288616A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6859A038B41F4D008D6503D03C673232"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.WinForms.pdb"
+            "TargetName" = "8:CefSharp.WinForms.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_688DD592B5BF46E0AEAF4C806D070123"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.Core.pdb"
+            "TargetName" = "8:CefSharp.Core.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -15098,6 +15909,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F04A511B4A34B9E90F6FE175A84A7AA"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.Core.Runtime.pdb"
+            "TargetName" = "8:CefSharp.Core.Runtime.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F387238A74B405D92CACF0F318793A9"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\lua\\http\\custom.lua"
@@ -15560,6 +16391,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74A9AD4C6C0642ADAE56EC44A1706160"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\icudtl.dat"
+            "TargetName" = "8:icudtl.dat"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74F93C8AC76746A29B87F0C077648C2F"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\lua\\intf\\http.luac"
@@ -15626,6 +16477,37 @@
             "TargetName" = "8:libdca_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_B18D5E4478814E95BC831F3874E13DD9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_76389534B87E4A0198FC798AA32292A8"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_76389534B87E4A0198FC798AA32292A8"
+                    {
+                    "Name" = "8:CefSharp.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -18345,6 +19227,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9765AECA0B484C7781D1138D80F023B0"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\resources.pak"
+            "TargetName" = "8:resources.pak"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9768C46742605F22AB604239F03E17DD"
             {
             "AssemblyRegister" = "3:1"
@@ -18867,6 +19769,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E4118B3ACE54588BBE7367F85D57422"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\chrome_200_percent.pak"
+            "TargetName" = "8:chrome_200_percent.pak"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E4CEE564EF944F9A3D9834C119395D8"
             {
             "SourcePath" = "8:..\\Halovision\\Dependencies\\libvlc\\win-x86\\plugins\\codec\\libsvcdsub_plugin.dll"
@@ -19126,6 +20048,26 @@
             "TargetName" = "8:libkate_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_B18D5E4478814E95BC831F3874E13DD9"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A209ABA0333844E99D13E44EACE84317"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.BrowserSubprocess.Core.pdb"
+            "TargetName" = "8:CefSharp.BrowserSubprocess.Core.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -19408,6 +20350,26 @@
             "TargetName" = "8:vlc.mo"
             "Tag" = "8:"
             "Folder" = "8:_A594431DC2944282B28217A0D3C07EF5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A72D12ADCCB042A5B873FCE045F54DA8"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\d3dcompiler_47.dll"
+            "TargetName" = "8:d3dcompiler_47.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -20550,6 +21512,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B7FED1E432204DF8AA7DB2AB719EB026"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.Core.Runtime, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_B7FED1E432204DF8AA7DB2AB719EB026"
+                    {
+                    "Name" = "8:CefSharp.Core.Runtime.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.Core.Runtime.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B8091110F9324D4286614EB099B122EE"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\plugins\\demux\\libnuv_plugin.dll"
@@ -20798,6 +21791,26 @@
             "TargetName" = "8:vlc.mo"
             "Tag" = "8:"
             "Folder" = "8:_6FB1B891EC3C464392BF4D69D4B6BB5A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCF01029963A426B9C17E82E4A42F055"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\vk_swiftshader.dll"
+            "TargetName" = "8:vk_swiftshader.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -21100,6 +22113,37 @@
             "TargetName" = "8:vlc16x16.png"
             "Tag" = "8:"
             "Folder" = "8:_AA4D81719C7C4F1BA469957A1A6B49EB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C109D278A08A45E399E223B510242127"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.BrowserSubprocess, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_C109D278A08A45E399E223B510242127"
+                    {
+                    "Name" = "8:CefSharp.BrowserSubprocess.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.BrowserSubprocess.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -21860,6 +22904,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CBB4289530C44E63A7B019116B529B33"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\v8_context_snapshot.bin"
+            "TargetName" = "8:v8_context_snapshot.bin"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CBBBF4A3AED1DCF53F0D5FD2361F0AC0"
             {
             "AssemblyRegister" = "3:1"
@@ -22366,6 +23430,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D088ED54B053446680D6CE3291496A6A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CefSharp.WinForms, Version=112.3.0.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D088ED54B053446680D6CE3291496A6A"
+                    {
+                    "Name" = "8:CefSharp.WinForms.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.WinForms.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D14E862086A14CCC935D9EA581A4B074"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\plugins\\video_output\\libdirect3d9_plugin.dll"
@@ -22799,6 +23894,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D946CF94C386428E9365FF372FF517F8"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\libGLESv2.dll"
+            "TargetName" = "8:libGLESv2.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D9604996FE7906CE337DF7483611D1E1"
             {
             "AssemblyRegister" = "3:1"
@@ -22856,6 +23971,26 @@
             "TargetName" = "8:libpacketizer_h264_plugin.dll"
             "Tag" = "8:"
             "Folder" = "8:_79D5FEA540544F32A6F320061C0A63CF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D99620F5FB43421F8855A423D001DBF5"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.xml"
+            "TargetName" = "8:CefSharp.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -24404,6 +25539,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F0158427DCDA4B5981DE938C9EB74C6A"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\vk_swiftshader_icd.json"
+            "TargetName" = "8:vk_swiftshader_icd.json"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F04B8B0B6E184AEB9B453E8CE16FF7E5"
             {
             "SourcePath" = "8:..\\Vision Monitor\\bin\\x86\\Release\\libvlc\\win-x86\\plugins\\stream_out\\libstream_out_bridge_plugin.dll"
@@ -25238,6 +26393,26 @@
             "TargetName" = "8:ui-icons_ef8c08_256x240.png"
             "Tag" = "8:"
             "Folder" = "8:_E548B5C4F860434C8F73D6AF57CA1E11"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FB5883DAE2C640D08D2BAF91D5B72841"
+            {
+            "SourcePath" = "8:..\\Halovision\\Dependencies\\cef\\CefSharp.pdb"
+            "TargetName" = "8:CefSharp.pdb"
+            "Tag" = "8:"
+            "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -28626,15 +29801,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Lucid Scribe Halovision"
-        "ProductCode" = "8:{C2E414BA-1880-4B34-9DD4-485E3B43B744}"
-        "PackageCode" = "8:{1EBDB15F-DF7E-4C6C-BA2C-D0E029B12AC3}"
+        "ProductCode" = "8:{7A094D75-AB7B-4771-AD2B-15B35E771516}"
+        "PackageCode" = "8:{1808FB2D-22BB-491A-BD1F-4C9E4FBF9EB8}"
         "UpgradeCode" = "8:{CAAB2187-AD23-435C-A3DB-568744247625}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.3.4"
+        "ProductVersion" = "8:1.3.5"
         "Manufacturer" = "8:lucidcode"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://www.lucidcode.com/Contact"
@@ -29158,7 +30333,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_395AC690E5F04358B866710FD743FFE4"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\Halovision\\obj\\x86\\Release\\lucidcode.LucidScribe.Plugin.Halovision.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_491A001224CF4D699EA475B2FB5F2890"

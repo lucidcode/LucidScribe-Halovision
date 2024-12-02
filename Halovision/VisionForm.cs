@@ -15,6 +15,8 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using LibVLCSharp.Shared;
 using System.Runtime.Remoting.Messaging;
+using CefSharp.WinForms;
+using CefSharp;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
 {
@@ -87,6 +89,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
 
                 if (cmbDevices.Text == "") cmbDevices.Text = cmbDevices.Items[0].ToString();
 
+                chromiumWebBrowser.Visible = false;
                 if (cmbDevices.Text == "lucidcode Halovision Device")
                 {
                     loaded = true;
@@ -445,6 +448,7 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
             SaveSettings();
             if (!loaded) { return; }
 
+            chromiumWebBrowser.Visible = false;
             if (cmbDevices.SelectedText == "lucidcode Halovision Device")
             {
                 ConnectHalovisionDevice();
@@ -551,16 +555,9 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
         {
             try
             {
-                Core.Initialize();
-
-                libvlc = new LibVLC(enableDebugLogs: false);
-                using (Media media = new Media(libvlc, txtDeviceURL.Text, FromType.FromLocation))
-                {
-                    player = new MediaPlayer(media);
-                    player.Hwnd = pbDisplay.Handle;
-                    player.Volume = VolumeTrackBar.Value;
-                    player.Play();
-                }
+                var html = "<html><head></head><body><img crossorigin=\"anonymous\" id=\"inspecVideo\" width=\"100%\" height=\"100%\" src=\"" + txtDeviceURL.Text + "\" /></body></html>";
+                chromiumWebBrowser.LoadHtml(html);
+                chromiumWebBrowser.Visible = true;
             }
             catch (Exception ex)
             {
