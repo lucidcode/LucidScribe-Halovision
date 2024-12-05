@@ -17,6 +17,7 @@ using LibVLCSharp.Shared;
 using System.Runtime.Remoting.Messaging;
 using CefSharp.WinForms;
 using CefSharp;
+using System.Collections.Generic;
 
 namespace lucidcode.LucidScribe.Plugin.Halovision
 {
@@ -647,7 +648,17 @@ namespace lucidcode.LucidScribe.Plugin.Halovision
                 {
                     Image<Bgr, byte> imageFrame = new Image<Bgr, Byte>(currentBitmap);
                     Image<Gray, byte> grayFrame = imageFrame.Convert<Gray, byte>();
-                    faceRegions = cascadeClassifier.DetectMultiScale(grayFrame);
+                    var detectedRegions = cascadeClassifier.DetectMultiScale(grayFrame);
+                    
+                    var regions = new List<Rectangle>();
+                    for (int i = 0; i < detectedRegions.Length; i++)
+                    {
+                        if (detectedRegions[i].Height > grayFrame.Height / 2.6) {
+                            regions.Add(detectedRegions[i]);
+                        }
+                    }
+                    faceRegions = regions.ToArray();
+                    
                     DetectREM = faceRegions != null && faceRegions.Length > 0;
                 }
 
